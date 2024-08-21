@@ -1,0 +1,42 @@
+.wrapper_header {
+    position: relative;
+    margin-left: 200px;
+    background-color: black;
+  }
+  
+  .header {
+    position: absolute;
+    top: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    width: 100%;
+  }
+  
+  .wrapper_search {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 4px;
+    /* width: 300px; */
+  }
+  
+  .user-profile {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 5px;
+    width: 50px;
+    justify-content: center;
+  }
+  
+  .wrapper_tooltip {
+    position: relative;
+  }
+  .tooltip {
+    position: absolute;
+  }
+  

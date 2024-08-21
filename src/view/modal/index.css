@@ -1,0 +1,91 @@
+/* modal.css */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .modal-content {
+    background: #fff !important;
+    border-radius: 8px;
+    padding: 20px;
+    width: 50% !important;
+    height: 80vh; 
+    overflow: auto; /* Allow scrolling if content is too large */
+    position: relative;
+    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
+  }
+  .modal-content1 {
+    background: #fff !important;
+    border-radius: 8px;
+    padding: 30px;
+    width: fit-content !important;
+    height: 80vh; 
+    overflow: auto; 
+    position: relative;
+    margin-right: -200px;
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    background: transparent;
+    border: none;
+    color: #000;
+    /* float: right; */
+    font-size: 30px;
+    font-weight: bold;
+  }
+  .modal-close:hover,
+  .modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .modal-close1 {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    background: transparent;
+    border: none;
+    color: #000;
+    /* float: right; */
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .modal-close1:hover,
+  .modal-close1:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  /* .file-preview {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+  } */
+  .file-preview {
+    height: 100%;
+    max-height: 100%;
+    display: block;
+  }
+  .modal-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+  }
+  
+  .email-editor {
+    width: 100%;
+    height: 150px;
+    margin-top: 10px;
+  }

@@ -1,0 +1,43 @@
+.hsyw {
+  position: relative;
+  margin-top: 30px;
+}
+
+.button11 {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 150px;
+  text-align: center;
+  opacity: 0;
+  font-size: 15px;
+  font-weight: 700;
+  transition: opacity 0.35s ease;
+}
+
+.group:hover .button11 {
+  opacity: 1;
+}
+
+.loders {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+/* Loader style */
+
+#loader {
+  height: 80px;
+  width: 80px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 5px solid #ddd;
+  border-top-color: #7b2cbf;
+  animation: rotate 1s infinite;
+}
+@keyframes rotate {
+  100% {
+    rotate: 360deg;
+  }
+}
