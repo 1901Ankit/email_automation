@@ -20,7 +20,7 @@
     height: 80vh; 
     overflow: auto; /* Allow scrolling if content is too large */
     position: relative;
-    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
+  
   }
   .modal-content1 {
     background: #fff !important;

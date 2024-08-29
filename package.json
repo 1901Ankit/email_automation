@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "Email-Automation",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,8 +13,9 @@
     "axios": "^1.7.3",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.3",
+    "cheerio": "^1.0.0",
     "draft-js": "^0.11.7",
-    "draft-js-export-html": "^1.4.1",
+    "html2json": "^1.0.2",
     "next": "^14.2.5",
     "papaparse": "^5.4.1",
     "react": "^18.3.1",
@@ -24,10 +25,12 @@
     "react-email-editor": "^1.7.11",
     "react-icons": "^5.2.1",
     "react-image-crop": "^11.0.6",
+    "react-modal": "^3.16.1",
     "react-phone-input-2": "^2.15.1",
     "react-redux": "^9.1.2",
     "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
+    "react-toastify": "^10.0.5",
     "redux": "^5.0.1",
     "web-vitals": "^2.1.4"
   },

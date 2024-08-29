@@ -1,0 +1,166 @@
+{
+    "counters": {
+      "u_row": 4,
+      "u_column": 2,
+      "u_content_image": 4,
+      "u_content_button": 1,
+      "u_content_text": 4,
+      "u_content_divider": 0,
+      "u_content_heading": 3
+    },
+    "body": {
+      "id": "0QFAKPxyzM",
+      "rows": [
+        {
+          "id": "row1",
+          "cells": [1],
+          "columns": [
+            {
+              "id": "col1",
+              "contents": [
+                {
+                  "id": "image1",
+                  "type": "image",
+                  "values": {
+                    "containerPadding": "0px",
+                    "anchor": "",
+                    "src": {
+                      "url": "https://usercontent.one/wp/www.showsecurity.se/wp-content/uploads/2018/11/logo-show-security.png",
+                      "width": 200,
+                      "height": null,
+                      "maxWidth": "100%",
+                      "autoWidth": true
+                    },
+                    "textAlign": "start",
+                    "altText": "Logo",
+                    "action": null,
+                    "hideDesktop": false,
+                    "displayCondition": null,
+                    "_meta": {
+                      "htmlID": "u_content_image_1",
+                      "htmlClassNames": "u_content_image"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "row2",
+          "cells": [1],
+          "columns": [
+            {
+              "id": "col2",
+              "contents": [
+                {
+                  "id": "heroImage",
+                  "type": "image",
+                  "values": {
+                    "containerPadding": "0px",
+                    "anchor": "",
+                    "src": {
+                      "url": "https://cirkus.se/wp-content/uploads/2024/03/Belle-and-Sebastian_Cirkus_1800x1280.jpg",
+                      "width": 600,
+                      "height": 350,
+                      "maxWidth": "100%",
+                      "autoWidth": true
+                    },
+                    "textAlign": "center",
+                    "altText": "Hero image",
+                    "action": null,
+                    "hideDesktop": false,
+                    "displayCondition": null,
+                    "_meta": {
+                      "htmlID": "u_content_image_2",
+                      "htmlClassNames": "u_content_image"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "row3",
+          "cells": [1],
+          "columns": [
+            {
+              "id": "col3",
+              "contents": [
+                {
+                  "id": "heading1",
+                  "type": "text",
+                  "values": {
+                    "containerPadding": "30px 30px 0px 30px",
+                    "textAlign": "left",
+                    "text": "Belle And Sebastian",
+                    "fontSize": "20px",
+                    "fontWeight": "600",
+                    "_meta": {
+                      "htmlID": "u_content_heading_1",
+                      "htmlClassNames": "u_content_heading"
+                    }
+                  }
+                },
+                {
+                  "id": "paragraph1",
+                  "type": "text",
+                  "values": {
+                    "containerPadding": "30px 30px 80px 30px",
+                    "textAlign": "left",
+                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam mattis ante sed imperdiet euismod. Vivamus fermentum bibendum turpis, et tempor dui. Sed vitae lectus egestas, finibus purus ac, rutrum mauris.",
+                    "fontSize": "15px",
+                    "fontWeight": "400",
+                    "_meta": {
+                      "htmlID": "u_content_text_1",
+                      "htmlClassNames": "u_content_text"
+                    }
+                  }
+                },
+              
+                {
+                  "id": "button1",
+                  "type": "button",
+                  "values": {
+                    "text": "Klicka för att läsa mer om Belle & Sebastian",
+                    "action": {
+                      "name": "web",
+                      "values": {
+                        "href": "#",
+                        "target": "_blank"
+                      }
+                    },
+                    "_meta": {
+                      "htmlID": "u_content_button_1",
+                      "htmlClassNames": "u_content_button",
+                      "style": "display: inline-block; padding: 12px 15px; font-size: 15px; font-weight: normal; color: #ffffff; background-color: #000000; text-decoration: none; border-radius: 5px; border: none; cursor: pointer;"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "row4",
+          "cells": [2],
+          "columns": [
+            {
+              "id": "col4",
+              "contents": [
+              
+              ]
+            },
+            {
+              "id": "col5",
+              "contents": [
+
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+  

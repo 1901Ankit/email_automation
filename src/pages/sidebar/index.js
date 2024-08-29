@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 import "./index.css";
 import { GrCircleInformation } from "react-icons/gr";
 import { BiMessageAltDetail } from "react-icons/bi";
 import { VscPreview } from "react-icons/vsc";
 import { VscServerEnvironment } from "react-icons/vsc";
 import { IoHomeOutline } from "react-icons/io5";
-import logo from "../../image/wishi.png";
+import logo from "../../assests/image/wishi.png";
 import { AiOutlineLogin } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 const Sidebar = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(checkAuthentication());
   const navigate = useNavigate();
   const location = useLocation();
   const tabs = [
@@ -41,7 +44,7 @@ const Sidebar = () => {
     },
     {
       name: "Log out",
-      path: "/Log_out",
+      path: "",
       icon: <AiOutlineLogin style={{ fontSize: "24px" }} />,
     },
   ];
@@ -56,9 +59,41 @@ const Sidebar = () => {
     }
   }, [location.pathname, tabs]);
 
-  const handleTabChange = (index) => {
-    setActiveTabIndex(index);
-    navigate(tabs[index].path);
+  useEffect(() => {
+    setIsAuthenticated(checkAuthentication());
+  }, []);
+
+  function checkAuthentication() {
+    return !!localStorage.getItem("authToken");
+  }
+
+  const handleTabChange = async (index) => {
+    if (index === tabs.length - 1) {
+      try {
+        const authToken = localStorage.getItem("access_token");
+        const res = await axios.post(
+          "http://127.0.0.1:8000/logout/",
+          { refresh: localStorage.getItem("refresh_token") },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        toast.success(res.data.message);
+        setIsAuthenticated(false);
+        navigate("/ ");
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    } else {
+      setActiveTabIndex(index);
+      navigate(tabs[index].path);
+    }
   };
 
   return (

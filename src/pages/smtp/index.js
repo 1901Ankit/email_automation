@@ -3,15 +3,17 @@ import "./index.css";
 import { FaPlus, FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "../modal";
 
-const Sender = () => {
+const Smtp = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
   const [formData, setFormData] = useState({
-    fromEmail: "",
-    displayName: "",
+    EmailHost: "",
+    EmailPort: "",
+    EmailUseTLS: "false",
     yourName: "",
-    supportEmail: "",
-    contactInfo: "",
-    senderInfo: "",
+    HostUser: "",
+    Password: "",
   });
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,11 +21,11 @@ const Sender = () => {
     key: null,
     direction: "ascending",
   });
-  const [editingIndex, setEditingIndex] = useState(null);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
+    setIsEditing(false);
     setEditingIndex(null);
   };
 
@@ -34,22 +36,34 @@ const Sender = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (editingIndex !== null) {
-      setTableData((prev) =>
-        prev.map((item, index) => (index === editingIndex ? formData : item))
-      );
+    if (isEditing) {
+      const updatedData = [...tableData];
+      updatedData[editingIndex] = formData;
+      setTableData(updatedData);
+      setIsEditing(false);
     } else {
       setTableData((prev) => [...prev, formData]);
     }
     setFormData({
-      fromEmail: "",
-      displayName: "",
+      EmailHost: "",
+      EmailPort: "",
+      EmailUseTLS: "false",
       yourName: "",
-      supportEmail: "",
-      contactInfo: "",
-      senderInfo: "",
+      HostUser: "",
+      Password: "",
     });
     closeModal();
+  };
+
+  const handleEdit = (index) => {
+    setFormData(tableData[index]);
+    setEditingIndex(index);
+    setIsEditing(true);
+    openModal();
+  };
+
+  const handleDelete = (index) => {
+    setTableData((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSearchChange = (e) => {
@@ -86,39 +100,18 @@ const Sender = () => {
     setSortConfig({ key, direction });
   };
 
-  const handleEdit = (index) => {
-    setFormData(tableData[index]);
-    setEditingIndex(index);
-    openModal();
-  };
-
-  const handleDelete = (index) => {
-    setTableData((prev) => prev.filter((_, i) => i !== index));
-  };
-
   return (
     <>
-      <div className="container-fluid max-h-[100vh] overflow-scroll mt-5 mx-auto px-3">
+      <div className="container mx-auto mt-5 px-3">
         <div className="mb-2">
-          <h1 className="text-3xl font-bold">Manage Campaigns</h1>
+          <h1 className="text-3xl font-bold">SMTP Campaigns</h1>
         </div>
 
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 mt-3">
           <button
             className="bg-[#7b2cbf] text-white border-[#7b2cbf] rounded-full p-3 text-xl"
             type="button"
-            onClick={() => {
-              setFormData({
-                fromEmail: "",
-                displayName: "",
-                yourName: "",
-                supportEmail: "",
-                contactInfo: "",
-                senderInfo: "",
-              });
-              setEditingIndex(null);
-              openModal();
-            }}
+            onClick={openModal}
           >
             <FaPlus />
           </button>
@@ -143,39 +136,33 @@ const Sender = () => {
               <tr>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
-                  onClick={() => requestSort("fromEmail")}
+                  onClick={() => requestSort("EmailHost")}
                 >
-                  From email
+                  Email Host
                 </th>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
-                  onClick={() => requestSort("displayName")}
+                  onClick={() => requestSort("EmailPort")}
                 >
-                  Display name
+                  Email Port
                 </th>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
-                  onClick={() => requestSort("yourName")}
+                  onClick={() => requestSort("EmailUseTLS")}
                 >
-                  Your name
+                  Email Use TLS
                 </th>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
-                  onClick={() => requestSort("supportEmail")}
+                  onClick={() => requestSort("HostUser")}
                 >
-                  Your support email
+                  Host User
                 </th>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
-                  onClick={() => requestSort("contactInfo")}
+                  onClick={() => requestSort("Password")}
                 >
-                  Contact information
-                </th>
-                <th
-                  className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
-                  onClick={() => requestSort("senderInfo")}
-                >
-                  Sender information
+                  Password
                 </th>
                 <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border">
                   Actions
@@ -186,33 +173,30 @@ const Sender = () => {
               {sortedData.map((data, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.fromEmail}
+                    {data.EmailHost}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.displayName}
+                    {data.EmailPort}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.yourName}
+                    {data.EmailUseTLS}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.supportEmail}
+                    {data.HostUser}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.contactInfo}
+                    {data.Password}
                   </td>
-                  <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.senderInfo}
-                  </td>
-                  <td className="px-6 py-4 text-xs text-gray-500 border">
+                  <td className="px-6 py-4 text-xs text-gray-500 border flex space-x-2">
                     <button
-                      className="text-blue-500 hover:text-blue-700 mr-3"
                       onClick={() => handleEdit(index)}
+                      className="text-blue-500 hover:text-blue-700"
                     >
                       <FaEdit className="" style={{ fontSize: "20px" }} />
                     </button>
                     <button
-                      className="text-red-500 hover:text-red-700"
                       onClick={() => handleDelete(index)}
+                      className="text-red-500 hover:text-red-700"
                     >
                       <FaTrash className="" style={{ fontSize: "20px" }} />
                     </button>
@@ -223,92 +207,103 @@ const Sender = () => {
           </table>
         </div>
 
-        <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <h3 className="font-bold">
-            {editingIndex !== null
-              ? "Edit Contact Information"
-              : "Add Contact Information"}
+        <Modal isOpen={isModalOpen} onClose={closeModal} >
+          <h3 className="font-bold text-lg mb-4 text-center">
+            {isEditing ? "Edit SMTP Entry" : "Add New SMTP Entry"}
           </h3>
           <form onSubmit={handleSubmit}>
             <div className="flex mt-3">
               <div className="w-full me-6">
-                <label htmlFor="fromEmail">From email</label>
+                <label
+                  htmlFor="EmailHost"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email Host
+                </label>
                 <input
-                  type="email"
-                  id="fromEmail"
-                  name="fromEmail"
-                  value={formData.fromEmail}
+                  type="text"
+                  id="EmailHost"
+                  name="EmailHost"
+                  value={formData.EmailHost}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
                 />
               </div>
               <div className="w-full">
-                <label htmlFor="displayName">Display name</label>
+                <label
+                  htmlFor="EmailPort"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email Port
+                </label>
                 <input
-                  type="text"
-                  id="displayName"
-                  name="displayName"
-                  value={formData.displayName}
+                  type="number"
+                  id="EmailPort"
+                  name="EmailPort"
+                  value={formData.EmailPort}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
                 />
               </div>
             </div>
-            <div className="flex mt-3">
+            <div className="flex mt-4">
               <div className="w-full me-6">
-                <label htmlFor="yourName">Your name</label>
-                <input
-                  type="text"
-                  id="yourName"
-                  name="yourName"
-                  value={formData.yourName}
+                <label
+                  htmlFor="EmailUseTLS"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email Use TLS
+                </label>
+                <select
+                  id="EmailUseTLS"
+                  name="EmailUseTLS"
+                  value={formData.EmailUseTLS}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
-                />
+                >
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </select>
               </div>
               <div className="w-full">
-                <label htmlFor="supportEmail">Support email</label>
+                <label
+                  htmlFor="HostUser"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Host User
+                </label>
                 <input
-                  type="email"
-                  id="supportEmail"
-                  name="supportEmail"
-                  value={formData.supportEmail}
+                  type="text"
+                  id="HostUser"
+                  name="HostUser"
+                  value={formData.HostUser}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
                 />
               </div>
             </div>
-            <div className="flex mt-3">
-              <div className="w-full me-6">
-                <label htmlFor="contactInfo">Contact information</label>
-                <input
-                  type="text"
-                  id="contactInfo"
-                  name="contactInfo"
-                  value={formData.contactInfo}
-                  onChange={handleChange}
-                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
-                />
-              </div>
-              <div className="w-full">
-                <label htmlFor="senderInfo">Sender information</label>
-                <input
-                  type="text"
-                  id="senderInfo"
-                  name="senderInfo"
-                  value={formData.senderInfo}
-                  onChange={handleChange}
-                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
-                />
-              </div>
+            <div className="mt-4">
+              <label
+                htmlFor="Password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="Password"
+                name="Password"
+                value={formData.Password}
+                onChange={handleChange}
+                className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
+              />
             </div>
-
             <div className="mt-4 flex justify-end">
               <button
                 type="submit"
                 className="bg-[#7b2cbf] text-white px-4 py-2 rounded mt-3 transition-colors duration-300"
               >
-                {editingIndex !== null ? "Update" : "Add"}
+                {isEditing ? "Update" : "Add"}
               </button>
             </div>
           </form>
@@ -318,4 +313,4 @@ const Sender = () => {
   );
 };
 
-export default Sender;
+export default Smtp;

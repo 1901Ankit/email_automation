@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Modal from "../../modal";
+import Modal from "../../pages/modal";
 import Papa from "papaparse";
 import "./csv.css";
 
@@ -141,8 +141,6 @@ const Csv = () => {
       setIsModalOpen(true);
     }
   };
-
-
 
   return (
     <>
