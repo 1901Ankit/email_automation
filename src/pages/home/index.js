@@ -3,7 +3,7 @@ import { data } from "../../assests/data";
 import Linechart from "../../component/linechart";
 import Barchart from "../../component/chart";
 import "./index.css";
-// import Rightside from "../component/rightsidebar";
+// import Rightside from "../../component/rightsidebar";
 
 const Home = () => {
   return (
