@@ -4,23 +4,24 @@ import { FaPlus, FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "../modal";
 import axios from "axios";
 
+
 const Sender = () => {
   const API_URL = "http://127.0.0.1:8000/senders/";
   const [tableData, setTableData] = useState([]);
   const [formData, setFormData] = useState({
-    fromEmail: "",
+    YourCompany: "",
     displayName: "",
     yourName: "",
     supportEmail: "",
     contactInfo: "",
-    senderInfo: "",
+    WebsiteURL: "",
   });
   const [errors, setErrors] = useState({});
   const [editingIndex, setEditingIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
-  const [sortKey, setSortKey] = useState("fromEmail");
+  const [sortKey, setSortKey] = useState("YourCompany");
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ const Sender = () => {
     e.preventDefault();
 
     const newErrors = {};
-    if (!formData.fromEmail) newErrors.fromEmail = "From Email is required";
+    if (!formData.YourCompany) newErrors.YourCompany = "From Email is required";
     if (!formData.displayName)
       newErrors.displayName = "Display Name is required";
     if (!formData.yourName) newErrors.yourName = "Your Name is required";
@@ -58,8 +59,7 @@ const Sender = () => {
       newErrors.supportEmail = "Support Email  is required";
     if (!formData.contactInfo)
       newErrors.contactInfo = "Contact Info is required";
-    if (!formData.senderInfo)
-      newErrors.senderInfo = "Sender Info is required";
+    if (!formData.WebsiteURL) newErrors.WebsiteURL = "Sender Info is required";
 
     if (Object.keys(newErrors).length === 0) {
       try {
@@ -86,12 +86,12 @@ const Sender = () => {
         }
 
         setFormData({
-          fromEmail: "",
+          YourCompany: "",
           displayName: "",
           yourName: "",
           supportEmail: "",
           contactInfo: "",
-          senderInfo: "",
+          WebsiteURL: "",
         });
         setEditingIndex(null);
         setIsModalOpen(false);
@@ -146,7 +146,7 @@ const Sender = () => {
     return filteredData.map((item, index) => (
       <tr key={item.id}>
         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-          {item.fromEmail}
+          {item.YourCompany}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
           {item.displayName}
@@ -161,7 +161,7 @@ const Sender = () => {
           {item.contactInfo}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          {item.senderInfo}
+          {item.WebsiteURL}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
           <button
@@ -184,12 +184,12 @@ const Sender = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setFormData({
-      fromEmail: "",
+      YourCompany: "",
       displayName: "",
       yourName: "",
       supportEmail: "",
       contactInfo: "",
-      senderInfo: "",
+      WebsiteURL: "",
     });
     setEditingIndex(null);
   };
@@ -198,7 +198,7 @@ const Sender = () => {
     <>
       <div className="container-fluid max-h-[100vh] overflow-scroll mt-5 mx-auto px-3">
         <div className="mb-2">
-          <h1 className="text-3xl font-bold">Manage Campaigns</h1>
+          <h1 className="text-3xl font-bold">Template Information</h1>
         </div>
 
         <div className="flex items-center justify-between mb-4">
@@ -207,12 +207,12 @@ const Sender = () => {
             type="button"
             onClick={() => {
               setFormData({
-                fromEmail: "",
+                YourCompany: "",
                 displayName: "",
                 yourName: "",
                 supportEmail: "",
                 contactInfo: "",
-                senderInfo: "",
+                WebsiteURL: "",
               });
               setEditingIndex(null);
               setIsModalOpen(true);
@@ -241,9 +241,9 @@ const Sender = () => {
               <tr>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
-                  onClick={() => requestSort("fromEmail")}
+                  onClick={() => requestSort("YourCompany")}
                 >
-                  From Email
+          Your Company
                 </th>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
@@ -271,9 +271,9 @@ const Sender = () => {
                 </th>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
-                  onClick={() => requestSort("senderInfo")}
+                  onClick={() => requestSort("WebsiteURL")}
                 >
-                  Sender Information
+                  Website URL
                 </th>
                 <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border">
                   Actions
@@ -285,7 +285,9 @@ const Sender = () => {
             </tbody>
           </table>
         </div>
+ 
       </div>
+
 
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={closeModal}>
@@ -296,24 +298,24 @@ const Sender = () => {
             <div className="flex ">
               <div className="w-full me-6">
                 <label
-                  htmlFor="fromEmail"
+                  htmlFor="YourCompany "
                   className="block text-sm font-medium text-gray-700"
                 >
-                  From Email
+                  Your Company
                 </label>
                 <input
                   type="email"
-                  id="fromEmail"
-                  name="fromEmail"
-                  value={formData.fromEmail}
+                  id="YourCompany"
+                  name="YourCompany"
+                  value={formData.YourCompany}
                   onChange={handleChange}
                   className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0 ${
-                    errors.fromEmail ? "border-red-500" : ""
+                    errors.YourCompany ? "border-red-500" : ""
                   }`}
                 />
-                {errors.fromEmail && (
+                {errors.YourCompany && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.fromEmail}
+                    {errors.YourCompany}
                   </p>
                 )}
               </div>
@@ -415,22 +417,22 @@ const Sender = () => {
 
               <div className="w-full">
                 <label
-                  htmlFor="senderInfo"
+                  htmlFor="WebsiteURL"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Sender Information
+                  Website URL
                 </label>
                 <input
                   type="text"
-                  id="senderInfo"
-                  name="senderInfo"
-                  value={formData.senderInfo}
+                  id="WebsiteURL"
+                  name="WebsiteURL"
+                  value={formData.WebsiteURL}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0 "
                 />
-                {errors.senderInfo && (
+                {errors.WebsiteURL && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.senderInfo}
+                    {errors.WebsiteURL}
                   </p>
                 )}
               </div>
@@ -447,6 +449,9 @@ const Sender = () => {
           </form>
         </Modal>
       )}
+
+
+     
     </>
   );
 };
