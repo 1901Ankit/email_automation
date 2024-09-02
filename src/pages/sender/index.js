@@ -3,6 +3,7 @@ import "./index.css";
 import { FaPlus, FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "../modal";
 import axios from "axios";
+import * as API from "../../api/sender";
 
 const Sender = () => {
   const API_URL = "http://127.0.0.1:8000/senders/";
@@ -28,7 +29,7 @@ const Sender = () => {
   }, []);
   const fetchData = async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await API.getAllSenders();
       setTableData(response.data);
     } catch (error) {
       if (error.response) {
@@ -63,17 +64,15 @@ const Sender = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const requestMethod = editingIndex !== null ? axios.put : axios.post;
-        const url =
-          editingIndex !== null
-            ? `${API_URL}/${tableData[editingIndex].id}/`
-            : API_URL;
-
-        const response = await requestMethod(url, formData, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", signInPassword);
+        let response;
+        if (editingIndex !== null) {
+          response = await API.editSenders(formData, tableData[editingIndex].id), 
+} else {
+          response = await API.createSenders(formData)
+        }
 
         if (editingIndex !== null) {
           setTableData((prev) =>
@@ -126,7 +125,7 @@ const Sender = () => {
     try {
       await axios.delete(`${API_URL}/${id}/`);
       setTableData((prev) => prev.filter((item) => item.id !== id));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const requestSort = (key) => {
@@ -307,9 +306,8 @@ const Sender = () => {
                   name="fromEmail"
                   value={formData.fromEmail}
                   onChange={handleChange}
-                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0 ${
-                    errors.fromEmail ? "border-red-500" : ""
-                  }`}
+                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0 ${errors.fromEmail ? "border-red-500" : ""
+                    }`}
                 />
                 {errors.fromEmail && (
                   <p className="text-red-500 text-sm mt-1">
@@ -331,9 +329,8 @@ const Sender = () => {
                   name="displayName"
                   value={formData.displayName}
                   onChange={handleChange}
-                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0${
-                    errors.displayName ? "border-red-500" : ""
-                  }`}
+                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0${errors.displayName ? "border-red-500" : ""
+                    }`}
                 />
                 {errors.displayName && (
                   <p className="text-red-500 text-sm mt-1">
@@ -357,9 +354,8 @@ const Sender = () => {
                   name="yourName"
                   value={formData.yourName}
                   onChange={handleChange}
-                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0${
-                    errors.yourName ? "border-red-500" : ""
-                  }`}
+                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0${errors.yourName ? "border-red-500" : ""
+                    }`}
                 />
                 {errors.yourName && (
                   <p className="text-red-500 text-sm mt-1">{errors.yourName}</p>
