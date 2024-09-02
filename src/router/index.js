@@ -7,16 +7,25 @@ import Content from "../pages/detail";
 import Preview from "../pages/Preview";
 import Sidebar from "../pages/sidebar";
 import Smtp from "../pages/smtp";
+import Errorpage from "../pages/404";
+import UserSelect from "../pages/userselect";
 
 const Router = () => {
   const location = useLocation();
+  const hideSidebarPaths = ["/", "/reset_password"];
+  const is404 =
+    location.pathname === "/404" ||
+    !location.pathname.match(
+      /^\/(home|sender|detail|preview|smtp|userselect|reset_password).*$/
+    );
+  const isSidebarVisible =
+    !hideSidebarPaths.includes(location.pathname) && !is404;
 
   return (
     <>
       <div className="d-flex">
-      {location.pathname !== "/" && 
-      !location.pathname.includes("reset_password") && <Sidebar />}
-        
+        {isSidebarVisible && <Sidebar />}
+
         <Routes>
           <Route exact path="/" element={<Login />} />
           <Route path="/reset_password/*" element={<Login />} />
@@ -25,6 +34,9 @@ const Router = () => {
           <Route path="/detail" element={<Content />} />
           <Route path="/preview" element={<Preview />} />
           <Route path="/smtp" element={<Smtp />} />
+          <Route path="/userselect" element={<UserSelect />} />
+          <Route path="/404" element={<Errorpage />} />
+          <Route path="*" element={<Errorpage />} />
         </Routes>
       </div>
     </>

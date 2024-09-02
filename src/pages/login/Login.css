@@ -273,16 +273,16 @@ form {
 }
 
 .otp-input {
-  width: 40px; /* Adjust width as needed */
-  height: 50px; /* Adjust height as needed */
+  width: 40px; 
+  height: 50px; 
   font-size: 20px;
   font-weight: 600;
   color: #3e3e3e;
   background-color: transparent;
-  border: 1px solid #3e3e3e; /* Adjust border color and style as needed */
+  border: 1px solid #3e3e3e; 
   text-align: center;
-  border-radius: 4px; /* Optional: for rounded corners */
-  margin: 0 5px; /* Adjust spacing between inputs */
+  border-radius: 4px; 
+  margin: 0 5px; 
 }
 
 .otp-input:focus {

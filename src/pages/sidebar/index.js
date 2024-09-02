@@ -10,6 +10,8 @@ import { IoHomeOutline } from "react-icons/io5";
 import logo from "../../assests/image/wishi.png";
 import { AiOutlineLogin } from "react-icons/ai";
 import { toast } from "react-toastify";
+import { LuSend } from "react-icons/lu";
+
 
 const Sidebar = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -23,9 +25,14 @@ const Sidebar = () => {
       icon: <IoHomeOutline style={{ fontSize: "24px" }} />,
     },
     {
-      name: "Information",
+      name: "Template Info",
       path: "/sender",
       icon: <GrCircleInformation style={{ fontSize: "24px" }} />,
+    },
+    {
+      name: "Sender Info",
+      path: "/userselect",
+      icon: <LuSend  style={{ fontSize: "24px" }} />,
     },
     {
       name: "SMTP Setup",

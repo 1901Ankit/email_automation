@@ -104,7 +104,7 @@ const Smtp = () => {
     <>
       <div className="container mx-auto mt-5 px-3">
         <div className="mb-2">
-          <h1 className="text-3xl font-bold">SMTP Campaigns</h1>
+          <h1 className="text-3xl font-bold">SMTP Setup</h1>
         </div>
 
         <div className="flex items-center justify-between mb-4 mt-3">
@@ -207,7 +207,7 @@ const Smtp = () => {
           </table>
         </div>
 
-        <Modal isOpen={isModalOpen} onClose={closeModal} >
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
           <h3 className="font-bold text-lg mb-4 text-center">
             {isEditing ? "Edit SMTP Entry" : "Add New SMTP Entry"}
           </h3>
@@ -226,7 +226,7 @@ const Smtp = () => {
                   name="EmailHost"
                   value={formData.EmailHost}
                   onChange={handleChange}
-                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
+                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
               </div>
               <div className="w-full">
@@ -242,7 +242,7 @@ const Smtp = () => {
                   name="EmailPort"
                   value={formData.EmailPort}
                   onChange={handleChange}
-                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
+                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
               </div>
             </div>
@@ -259,7 +259,7 @@ const Smtp = () => {
                   name="EmailUseTLS"
                   value={formData.EmailUseTLS}
                   onChange={handleChange}
-                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
+                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
                 >
                   <option value="true">True</option>
                   <option value="false">False</option>
@@ -278,7 +278,7 @@ const Smtp = () => {
                   name="HostUser"
                   value={formData.HostUser}
                   onChange={handleChange}
-                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
+                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
               </div>
             </div>
@@ -295,7 +295,7 @@ const Smtp = () => {
                 name="Password"
                 value={formData.Password}
                 onChange={handleChange}
-                className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300"
+                className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
               />
             </div>
             <div className="mt-4 flex justify-end">

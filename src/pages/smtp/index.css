@@ -12,7 +12,7 @@
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
   .inputfile:focus {
-    border-color: #7b2cbf;
+    border-color: #000;
     box-shadow: 0 0 0 0.2rem rgba(123, 44, 191, 0.25);
   }
   .form-container {
@@ -36,8 +36,8 @@
     line-height: 1.33;
   }
   .btnwhie {
-    background-color: #7b2cbf;
-    border-color: #7b2cbf;
+    background-color: #000;
+    border-color: #000;
     color: #ffffff !important;
   }
   
