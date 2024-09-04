@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 import { FaPlus, FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "../modal";
+import * as API from "../../api/smtp"
 
 const Smtp = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [id, setId] = useState("")
   const [formData, setFormData] = useState({
+    serverName: "",
     EmailHost: "",
     EmailPort: "",
     EmailUseTLS: "false",
@@ -28,23 +31,51 @@ const Smtp = () => {
     setIsEditing(false);
     setEditingIndex(null);
   };
-
+  useEffect(() => {
+    const fetchAllSMTPs = async () => {
+      try {
+        const response = await API.getAllSMTPs({user_id:localStorage.getItem('id')});
+        setTableData(response.data.servers);
+      } catch (error) {
+        console.log(error);
+        setTableData([]);
+      }
+    };
+    fetchAllSMTPs();
+  }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const newFormData = {
+      name: formData.serverName,
+      host: formData.EmailHost,
+      username: formData.HostUser || formData.EmailUsername,
+      password: formData.Password|| formData.EmailPassword,
+      port: formData.EmailPort,
+      use_tls: formData.UseTLS,
+    }
+    
     if (isEditing) {
+      const response = await API.editSMTPs(newFormData, id)     
       const updatedData = [...tableData];
       updatedData[editingIndex] = formData;
       setTableData(updatedData);
       setIsEditing(false);
     } else {
+      const response = await API.createSMTPs(newFormData)
+      console.log(response.data);
       setTableData((prev) => [...prev, formData]);
     }
     setFormData({
+      serverName: "",
+      EmailHost: "",
+      EmailPort: "",
+      EmailUseTLS: "false",
+      yourName: "",
       EmailHost: "",
       EmailPort: "",
       EmailUseTLS: "false",
@@ -55,42 +86,53 @@ const Smtp = () => {
     closeModal();
   };
 
-  const handleEdit = (index) => {
+  const handleEdit = (index, id) => {
     setFormData(tableData[index]);
+    setId(id);
     setEditingIndex(index);
     setIsEditing(true);
     openModal();
   };
 
-  const handleDelete = (index) => {
-    setTableData((prev) => prev.filter((_, i) => i !== index));
+  const handleDelete =async(index,id) => {
+try {
+  const response = await API.deleteSMTPs(id)
+  setTableData((prev) => prev.filter((_, i) => i !== index));
+} catch (error) {
+  console.log(error);
+  
+}
   };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredData = tableData.filter((data) =>
-    Object.values(data).some((value) =>
-      value.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  );
+  // const filteredData = tableData.filter((data) =>
+  //  { console.log(data);
+   
+  //    Object.values(data).some((value) =>
+  //   { console.log(value);
+    
+  //     value.toLowerCase().includes(searchQuery.toLowerCase())}
+  //   )}
+  // );
 
-  const sortedData = React.useMemo(() => {
-    let sortableData = [...filteredData];
-    if (sortConfig.key !== null) {
-      sortableData.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableData;
-  }, [filteredData, sortConfig]);
+  // const sortedData = React.useMemo(() => {
+  //   let sortableData = [...filteredData];
+  //   if (sortConfig.key !== null) {
+  //     sortableData.sort((a, b) => {
+  //       if (a[sortConfig.key] < b[sortConfig.key]) {
+  //         return sortConfig.direction === "ascending" ? -1 : 1;
+  //       }
+  //       if (a[sortConfig.key] > b[sortConfig.key]) {
+  //         return sortConfig.direction === "ascending" ? 1 : -1;
+  //       }
+  //       return 0;
+  //     });
+  //   }
+  //   return sortableData;
+  // }, [filteredData, sortConfig]);
 
   const requestSort = (key) => {
     let direction = "ascending";
@@ -138,6 +180,12 @@ const Smtp = () => {
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
                   onClick={() => requestSort("EmailHost")}
                 >
+                  Name of the server
+                </th>
+                <th
+                  className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
+                  onClick={() => requestSort("EmailHost")}
+                >
                   Email Host
                 </th>
                 <th
@@ -156,7 +204,7 @@ const Smtp = () => {
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
                   onClick={() => requestSort("HostUser")}
                 >
-                  Host User
+                  Host Email Address
                 </th>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
@@ -170,32 +218,35 @@ const Smtp = () => {
               </tr>
             </thead>
             <tbody className="bg-gray-50 divide-y divide-gray-200">
-              {sortedData.map((data, index) => (
-                <tr key={index}>
+              {tableData.map((data, i) => (
+                <tr key={data.id}>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.EmailHost}
+                    {data.name || data.name}
+                  </td>
+                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                    {data.host || data.EmailHost}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.EmailPort}
+                  {data.port || data.EmailPort}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.EmailUseTLS}
+                    {data?.use_tls|| data?.EmailUseTLS}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.HostUser}
+                    {data.username|| data.HostUser}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.Password}
+                    {data.password|| data.Password}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border flex space-x-2">
                     <button
-                      onClick={() => handleEdit(index)}
+                      onClick={() => handleEdit(i,data.id)}
                       className="text-blue-500 hover:text-blue-700"
                     >
                       <FaEdit className="" style={{ fontSize: "20px" }} />
                     </button>
                     <button
-                      onClick={() => handleDelete(index)}
+                      onClick={() => handleDelete(i, data.id)}
                       className="text-red-500 hover:text-red-700"
                     >
                       <FaTrash className="" style={{ fontSize: "20px" }} />
@@ -270,7 +321,7 @@ const Smtp = () => {
                   htmlFor="HostUser"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Host User
+                  Host Email Address
                 </label>
                 <input
                   type="text"
@@ -282,22 +333,42 @@ const Smtp = () => {
                 />
               </div>
             </div>
-            <div className="mt-4">
-              <label
-                htmlFor="Password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="Password"
-                name="Password"
-                value={formData.Password}
-                onChange={handleChange}
-                className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
-              />
+            <div className="flex mt-4">
+              <div className="w-full me-6">
+                <label
+                  htmlFor="EmailUseTLS"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Give a name of your server
+                </label>
+                <input
+                  type="text"
+                  id="serverName"
+                  name="serverName"
+                  value={formData.serverName}
+                  onChange={handleChange}
+                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
+                >
+                </input>
+              </div>
+              <div className="w-full">
+                <label
+                  htmlFor="Password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Host Password
+                </label>
+                <input
+                  type="password"
+                  id="Password"
+                  name="Password"
+                  value={formData.Password}
+                  onChange={handleChange}
+                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+                />
+              </div>
             </div>
+
             <div className="mt-4 flex justify-end">
               <button
                 type="submit"

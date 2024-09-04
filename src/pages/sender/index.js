@@ -65,22 +65,17 @@ const Sender = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const formData = new FormData();
-        formData.append("email", email);
-        formData.append("password", signInPassword);
-        let response;
+        formData.append("email", "dskjfjsdi");
+        formData.append("password", "sdkhuiewicz");
         if (editingIndex !== null) {
-          response = await API.editSenders(formData, tableData[editingIndex].id), 
-} else {
-          response = await API.createSenders(formData)
-        }
-
-        if (editingIndex !== null) {
-          setTableData((prev) =>
-            prev.map((item, index) =>
-              index === editingIndex ? response.data : item
-            )
-          );
+          const response = await API.editSenders(formData, tableData[editingIndex].id);
+            setTableData((prev) =>
+              prev.map((item, index) =>
+                index === editingIndex ? response.data : item
+              )
+            );
         } else {
+         const  response = await API.createSenders(formData)
           setTableData((prev) => [...prev, response.data]);
         }
 
@@ -109,11 +104,11 @@ const Sender = () => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredData = tableData.filter((item) =>
-    Object.values(item).some((val) =>
-      val.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  );
+  // const filteredData = tableData.filter((item) =>
+  //   Object.values(item).some((val) =>
+  //     val.toLowerCase().includes(searchQuery.toLowerCase())
+  //   )
+  // );
 
   const handleEdit = (index) => {
     setFormData(tableData[index]);
@@ -142,7 +137,7 @@ const Sender = () => {
   };
 
   const renderTableRows = () => {
-    return filteredData.map((item, index) => (
+    return tableData.map((item, index) => (
       <tr key={item.id}>
         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
           {item.YourCompany}
@@ -242,7 +237,7 @@ const Sender = () => {
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
                   onClick={() => requestSort("YourCompany")}
                 >
-          Your Company
+                  Your Company
                 </th>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
@@ -284,7 +279,7 @@ const Sender = () => {
             </tbody>
           </table>
         </div>
- 
+
       </div>
 
 
@@ -308,9 +303,8 @@ const Sender = () => {
                   name="YourCompany"
                   value={formData.YourCompany}
                   onChange={handleChange}
-                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0 ${
-                    errors.YourCompany ? "border-red-500" : ""
-                  }`}
+                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0 ${errors.YourCompany ? "border-red-500" : ""
+                    }`}
                 />
                 {errors.YourCompany && (
                   <p className="text-red-500 text-sm mt-1">
@@ -448,7 +442,7 @@ const Sender = () => {
       )}
 
 
-     
+
     </>
   );
 };

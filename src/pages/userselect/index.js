@@ -1,63 +1,91 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 import { FaPlus, FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "../modal";
+import * as API from "../../api/sender";
 
 const UserSelect = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-
   const [tableData, setTableData] = useState([]);
-  const [selectedSender, setSelectedSender] = useState("Uttam");
-
-  const senderEmails = {
-    Uttam: "Uttam@wishgeekstechserve.com",
-    Ankit: "Ankit@wishgeekstechserve.com",
-    Gokul: "Gokul@wishgeekstechserve.com",
-    Krishnam: "Krishnam@wishgeekstechserve.com",
-  };
-  
+  const [selectedSender, setSelectedSender] = useState("");
+  const [selectedSenderEmail, setSelectedSenderEmail] = useState("");
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
     setIsEditing(false);
     setEditingIndex(null);
+    setSelectedSender("");
+    setSelectedSenderEmail("");
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const fetchAllSenders = async () => {
+      try {
+        const response = await API.getAllSenders({user_id:localStorage.getItem("id")});
+        console.log(response.data);
+        
+        setTableData(response.data.senders);
+      } catch (error) {
+        console.log(error);
+        setTableData([]);
+      }
+    };
+    fetchAllSenders();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newFormData = {
-      SenderName: selectedSender,
-      SenderEmail: senderEmails[selectedSender],
+      name: selectedSender,
+      email: selectedSenderEmail,
     };
+
     if (isEditing) {
+      const response = await API.editSenders(newFormData, selectedId);
+      console.log(response);
+
       const updatedData = [...tableData];
       updatedData[editingIndex] = newFormData;
       setTableData(updatedData);
-      setIsEditing(false);
     } else {
+      const response = await API.createSenders(newFormData);
+      console.log(response);
       setTableData((prev) => [...prev, newFormData]);
     }
     closeModal();
   };
 
-  const handleEdit = (index) => {
-    setSelectedSender(tableData[index].SenderName);
+  const handleEdit = (index, id) => {
+    setSelectedSender(tableData[index].name);
+    setSelectedSenderEmail(tableData[index].email);
     setEditingIndex(index);
+    setSelectedId(id);
     setIsEditing(true);
     openModal();
   };
 
-  const handleDelete = (index) => {
-    setTableData((prev) => prev.filter((_, i) => i !== index));
+  const handleDelete = async (index, id) => {
+    try {
+      const response = await API.deleteSenders(id);
+      setTableData((prev) => prev.filter((_, i) => i !== index));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+
+  const filteredData = tableData.filter((data) =>
+    data.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
 
   return (
     <>
@@ -103,23 +131,23 @@ const UserSelect = () => {
               </tr>
             </thead>
             <tbody className="bg-gray-50 divide-y divide-gray-200">
-              {tableData.map((data, index) => (
-                <tr key={index}>
+              {filteredData.map((data, i) => (
+                <tr key={data.id}>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.SenderName}
+                    {data.name}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.SenderEmail}
+                    {data.email}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border flex space-x-2">
                     <button
-                      onClick={() => handleEdit(index)}
+                      onClick={() => handleEdit(i, data.id)}
                       className="text-blue-500 hover:text-blue-700"
                     >
                       <FaEdit style={{ fontSize: "20px" }} />
                     </button>
                     <button
-                      onClick={() => handleDelete(index)}
+                      onClick={() => handleDelete(i, data.id)}
                       className="text-red-500 hover:text-red-700"
                     >
                       <FaTrash style={{ fontSize: "20px" }} />
@@ -133,41 +161,32 @@ const UserSelect = () => {
 
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <h3 className="font-bold text-lg mb-4 text-center">
-            {isEditing ? "Edit SMTP Entry" : "Add New SMTP Entry"}
+            {isEditing ? "Edit Sender Entry" : "Add New Sender Entry"}
           </h3>
           <form onSubmit={handleSubmit}>
             <div className="flex mt-3">
               <div className="w-full me-6">
                 <label htmlFor="SenderName">Sender Name</label>
-                <select
+                <input
+                  type="text"
                   id="SenderName"
                   name="SenderName"
                   value={selectedSender}
                   onChange={(e) => setSelectedSender(e.target.value)}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
-                >
-                  <option value="Uttam">Uttam</option>
-                  <option value="Ankit">Ankit</option>
-                  <option value="Gokul">Gokul</option>
-                  <option value="Krishnam">Krishnam</option>
-                </select>
+                />
               </div>
 
               <div className="w-full">
                 <label htmlFor="SenderEmail">Sender Email</label>
-                <select
+                <input
+                  type="email"
                   id="SenderEmail"
                   name="SenderEmail"
-                  value={senderEmails[selectedSender]}
-                  readOnly
+                  value={selectedSenderEmail}
+                  onChange={(e) => setSelectedSenderEmail(e.target.value)}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
-                >
-                  {Object.entries(senderEmails).map(([name, email]) => (
-                    <option key={name} value={email}>
-                      {email}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 

@@ -119,12 +119,15 @@ const Login = () => {
         formData.append("email", signInEmail);
         formData.append("password", signInPassword);
         const res = await API.login(formData);
+        localStorage.setItem("id", res.data.user_id);
         localStorage.setItem("access_token", res.data.access);
         localStorage.setItem("refresh_token", res.data.refresh);
         toast.success(res.data.message);
         setShow(true);
         navigate("/home");
       } catch (error) {
+        console.log(error);
+        
         toast.error(error.response.data.message);
 
         setSignInErrors({
