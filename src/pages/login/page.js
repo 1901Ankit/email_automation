@@ -7,6 +7,7 @@ import "react-phone-input-2/lib/style.css";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons from react-icons
 import { toast } from "react-toastify";
+import * as API from "../../api/user";
 
 const Login = () => {
   const [Username, SetUsername] = useState("");
@@ -33,9 +34,6 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const BaseURL = axios.create({
-    baseURL: "http://127.0.0.1:8000/",
-  });
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const uidID = pathParts[2];
@@ -58,11 +56,7 @@ const Login = () => {
         formData.append("username", Username);
         formData.append("email", email);
         formData.append("password", password);
-        const res = await BaseURL.post("/register/", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const res = await API.register(formData);
         toast.success(res.data.message);
         console.log(res.data);
 
@@ -124,13 +118,16 @@ const Login = () => {
         const formData = new FormData();
         formData.append("email", signInEmail);
         formData.append("password", signInPassword);
-        const res = await BaseURL.post("login/", formData);
+        const res = await API.login(formData);
+        localStorage.setItem("id", res.data.user_id);
         localStorage.setItem("access_token", res.data.access);
         localStorage.setItem("refresh_token", res.data.refresh);
         toast.success(res.data.message);
         setShow(true);
         navigate("/home");
       } catch (error) {
+        console.log(error);
+        
         toast.error(error.response.data.message);
 
         setSignInErrors({
@@ -207,11 +204,7 @@ const Login = () => {
     formData.append("email", email);
     formData.append("otp", Number(otpValue));
     try {
-      const response = await BaseURL.post("/verify-otp/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await API.verifyOtp(formData);
       toast.success(response.data.message);
       handleSignInClick();
     } catch (error) {
@@ -227,17 +220,12 @@ const Login = () => {
     try {
       const formData = new FormData();
       formData.append("email", signInEmail);
-      const response = await BaseURL.post("/reset_password/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log(response.data);
+      const response = await API.forgotPassword( formData);
       toast.success(response.data.message);
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      error.response.status === 400 ? toast.error(error.response.data.errors.email[0]) : toast.error(error.message);
     }
+
     // setShowResetFields(true);
     // setShowSignupFields(false);
     // setShowSigninFields(false);
@@ -253,26 +241,23 @@ const Login = () => {
 
     try {
       setLoading(true);
-      
+
       const formData = new FormData();
       formData.append("new_password1", newPassword);
       formData.append("new_password2", confirmPassword);
-      const res = await BaseURL.post(
-        `/reset_password/${uidID}/${token}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(res);
+      const res = await API.resetPassword(formData);
 
       if (res.status === 200) {
-        toast.success(res.data.message);
+        toast.success("You have successfully reset your password, Please do login now!");
+        setShowResetFields(false);
+        setShowSignupFields(false);
+        setShowSigninFields(true);
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      error.response.status==400?toast.error("your link iş expired, please request a new one!"):toast.error(error.response.data.message)
+      setShowResetFields(false);
+      setShowSignupFields(false);
+      setShowSigninFields(true);
     } finally {
       setLoading(false);
     }
@@ -286,9 +271,8 @@ const Login = () => {
         </video>
 
         <div
-          className={`container sizeform ${
-            isSignUp ? "right-panel-active" : ""
-          }`}
+          className={`container sizeform ${isSignUp ? "right-panel-active" : ""
+            }`}
           id="container"
         >
           {/* signup */}
@@ -335,9 +319,8 @@ const Login = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${
-                        errors.password ? "mb-4" : "mt-3"
-                      }`}
+                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${errors.password ? "mb-4" : "mt-3"
+                        }`}
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
                     </button>
@@ -422,9 +405,8 @@ const Login = () => {
                   <input
                     type="email"
                     placeholder="Email"
-                    className={`block w-full mt-3 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:outline-none focus:ring-0 ${
-                      signInErrors.email ? "mb-0" : ""
-                    }`}
+                    className={`block w-full mt-3 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:outline-none focus:ring-0 ${signInErrors.email ? "mb-0" : ""
+                      }`}
                     value={signInEmail}
                     onChange={handleEmailChange}
                   />
@@ -436,18 +418,16 @@ const Login = () => {
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"
-                      className={`block w-full border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 pr-10 focus:outline-none focus:ring-0 ${
-                        signInErrors.password ? "mb-0" : ""
-                      }`}
+                      className={`block w-full border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 pr-10 focus:outline-none focus:ring-0 ${signInErrors.password ? "mb-0" : ""
+                        }`}
                       value={signInPassword}
                       onChange={handlePasswordChange}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${
-                        signInErrors.password ? "mb-4" : "mt-2"
-                      }`}
+                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${signInErrors.password ? "mb-4" : "mt-2"
+                        }`}
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </button>
@@ -518,7 +498,7 @@ const Login = () => {
 
                   <div className="flex justify-between mt-3">
                     <button
-                    onClick={handleResetPassword}
+                      onClick={handleResetPassword}
                       className="bg-[#000] text-[14px] text-white px-4 py-2 rounded-2xl transition-colors duration-300"
                       disabled={loading}
                     >

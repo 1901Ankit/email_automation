@@ -78,8 +78,7 @@ const Sidebar = () => {
     if (index === tabs.length - 1) {
       try {
         const authToken = localStorage.getItem("access_token");
-        const res = await axios.post(
-          "http://127.0.0.1:8000/logout/",
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
           { refresh: localStorage.getItem("refresh_token") },
           {
             headers: {

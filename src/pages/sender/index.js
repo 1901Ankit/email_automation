@@ -3,6 +3,7 @@ import "./index.css";
 import { FaPlus, FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "../modal";
 import axios from "axios";
+import * as API from "../../api/sender";
 
 
 const Sender = () => {
@@ -29,7 +30,7 @@ const Sender = () => {
   }, []);
   const fetchData = async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await API.getAllSenders();
       setTableData(response.data);
     } catch (error) {
       if (error.response) {
@@ -63,25 +64,18 @@ const Sender = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const requestMethod = editingIndex !== null ? axios.put : axios.post;
-        const url =
-          editingIndex !== null
-            ? `${API_URL}/${tableData[editingIndex].id}/`
-            : API_URL;
-
-        const response = await requestMethod(url, formData, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
+        const formData = new FormData();
+        formData.append("email", "dskjfjsdi");
+        formData.append("password", "sdkhuiewicz");
         if (editingIndex !== null) {
-          setTableData((prev) =>
-            prev.map((item, index) =>
-              index === editingIndex ? response.data : item
-            )
-          );
+          const response = await API.editSenders(formData, tableData[editingIndex].id);
+            setTableData((prev) =>
+              prev.map((item, index) =>
+                index === editingIndex ? response.data : item
+              )
+            );
         } else {
+         const  response = await API.createSenders(formData)
           setTableData((prev) => [...prev, response.data]);
         }
 
@@ -110,11 +104,11 @@ const Sender = () => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredData = tableData.filter((item) =>
-    Object.values(item).some((val) =>
-      val.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  );
+  // const filteredData = tableData.filter((item) =>
+  //   Object.values(item).some((val) =>
+  //     val.toLowerCase().includes(searchQuery.toLowerCase())
+  //   )
+  // );
 
   const handleEdit = (index) => {
     setFormData(tableData[index]);
@@ -126,7 +120,7 @@ const Sender = () => {
     try {
       await axios.delete(`${API_URL}/${id}/`);
       setTableData((prev) => prev.filter((item) => item.id !== id));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const requestSort = (key) => {
@@ -143,7 +137,7 @@ const Sender = () => {
   };
 
   const renderTableRows = () => {
-    return filteredData.map((item, index) => (
+    return tableData.map((item, index) => (
       <tr key={item.id}>
         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
           {item.YourCompany}
@@ -243,7 +237,7 @@ const Sender = () => {
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
                   onClick={() => requestSort("YourCompany")}
                 >
-          Your Company
+                  Your Company
                 </th>
                 <th
                   className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
@@ -285,7 +279,7 @@ const Sender = () => {
             </tbody>
           </table>
         </div>
- 
+
       </div>
 
 
@@ -309,9 +303,8 @@ const Sender = () => {
                   name="YourCompany"
                   value={formData.YourCompany}
                   onChange={handleChange}
-                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0 ${
-                    errors.YourCompany ? "border-red-500" : ""
-                  }`}
+                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0 ${errors.YourCompany ? "border-red-500" : ""
+                    }`}
                 />
                 {errors.YourCompany && (
                   <p className="text-red-500 text-sm mt-1">
@@ -333,9 +326,8 @@ const Sender = () => {
                   name="displayName"
                   value={formData.displayName}
                   onChange={handleChange}
-                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0${
-                    errors.displayName ? "border-red-500" : ""
-                  }`}
+                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0${errors.displayName ? "border-red-500" : ""
+                    }`}
                 />
                 {errors.displayName && (
                   <p className="text-red-500 text-sm mt-1">
@@ -359,9 +351,8 @@ const Sender = () => {
                   name="yourName"
                   value={formData.yourName}
                   onChange={handleChange}
-                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0${
-                    errors.yourName ? "border-red-500" : ""
-                  }`}
+                  className={`block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2  transition-colors duration-300 focus:outline-none focus:ring-0${errors.yourName ? "border-red-500" : ""
+                    }`}
                 />
                 {errors.yourName && (
                   <p className="text-red-500 text-sm mt-1">{errors.yourName}</p>
@@ -451,7 +442,7 @@ const Sender = () => {
       )}
 
 
-     
+
     </>
   );
 };
