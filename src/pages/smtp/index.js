@@ -29,7 +29,7 @@ const Smtp = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setIsEditing(false);
-    setEditingIndex(null);
+    setEditingIndex(null);  
   };
   useEffect(() => {
     const fetchAllSMTPs = async () => {
@@ -148,7 +148,6 @@ try {
         <div className="mb-2">
           <h1 className="text-3xl font-bold">SMTP Setup</h1>
         </div>
-
         <div className="flex items-center justify-between mb-4 mt-3">
           <button
             className="bg-[#7b2cbf] text-white border-[#7b2cbf] rounded-full p-3 text-xl"
