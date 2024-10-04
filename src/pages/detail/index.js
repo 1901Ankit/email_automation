@@ -1,23 +1,33 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import Csv from "../../component/csv/csv";
 import "react-image-crop/dist/ReactCrop.css";
 import "./index.css";
-import EmailEditor from "react-email-editor";
 import Editing from "../../component/templatedit";
-import { convertHtmlToJson } from "../../convertToJson";
-import { html2json } from "html2json";
-import dummy from "../../dummy.json";
-import Select from "react-select";
+import JoditEditor from 'jodit-react';
+import Select from "react-select"
+import * as SMTPAPI from "../../api/smtp"
+import * as SenderAPI from "../../api/sender";
+import * as templateAPI from "../../api/emailTemplate"
+import { useNavigate } from "react-router-dom";
 
-const Content = () => {
+const Content = ({ placeholder }) => {
+  const editor = useRef(null);
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
+  const [details, setDetails] = useState({ displayName: "", subject: "", timeGap: 0 })
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [options, setOptions] = useState({ senders: [], smtps: [] });
   const emailEditorRef = useRef(null);
-  const [newDummy, setNewDummy] = useState(null);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [finalTemplate, setFinalTemplate] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState({ senders: [], smtps: [] });
+  const [csvFile, setCsvFile] = useState();
 
   useEffect(() => {
+    const retriedDetails = JSON.parse(localStorage?.getItem("details")) || {}
+    const retriedOptions = JSON.parse(localStorage.getItem("options")) || { senders: [], smtps: [] }
+    setDetails(retriedDetails)
+    setSelectedOptions(retriedOptions)
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1500);
@@ -25,18 +35,39 @@ const Content = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const config = useMemo(
+    () => ({
+      readonly: false,
+      placeholder: placeholder || 'Start typing...',
+    }),
+    [placeholder]
+  );
+
+
   useEffect(() => {
     const loadData = async () => {
-      if (selectedTemplate) {
-        try {
-          console.log(selectedTemplate);
-          const template = await convertHtmlToJson(selectedTemplate);
-          console.log(template);
-          setNewDummy(template);
-        } catch (error) {
-          console.error("Error converting HTML to JSON:", error);
-        }
+      const senderResponse = await SenderAPI.getAllSenders({ user_id: localStorage.getItem('id') });
+      if (senderResponse?.data?.senders.length < 0) {
+        alert("You do not have sender information ")
+        navigate('/userselect')
+        return
       }
+      const modifiedSenderResponse = senderResponse?.data?.senders?.map((obj) => {
+        return { label: obj.email, value: obj.id };
+      });
+
+      const smtpResponse = await SMTPAPI.getAllSMTPs({ user_id: localStorage.getItem('id') });
+      if (smtpResponse?.data?.servers.length < 0) {
+        alert("You do not have smtps information ")
+        navigate('/smtp')
+        return
+      }
+      const modifiedSMTPsResponse = smtpResponse?.data?.servers?.map((obj) => {
+        return { label: obj.host, value: obj.id };
+      });
+
+
+      setOptions({ senders: modifiedSenderResponse, smtps: modifiedSMTPsResponse })
     };
     loadData();
   }, [selectedTemplate]);
@@ -298,77 +329,62 @@ const Content = () => {
   const handleModalClose = () => {
     setModalOpen(false);
   };
-  const handleModalSave = () => {
+  const handleModalSave = async () => {
     if (emailEditorRef.current?.editor) {
       emailEditorRef.current.editor.exportHtml((data) => {
         const { html } = data;
         console.log("Template saved with HTML content:", html);
       });
     }
-    setModalOpen(false);
+    try {
+      const htmlContent = finalTemplate;
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const formData = new FormData();
+      formData.append('file', blob, 'mail_format_1.html');
+      const response = await templateAPI.createHtmlTemplate(formData);
+      setModalOpen(false);
+    } catch (error) {
+      console.log(error);
+
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted!");
-    const selectedValues = selectedOptions
-      .map((option) => option.label)
-      .join(", ");
-    document.getElementById("").innerHTML = `Selected: ${selectedValues}`;
+    // check variations
+    if (details.yourName === "" || details.subject === "" || details.timeGap === "") {
+      alert("Please fill all the required fields");
+      return;
+    }
+    if (selectedOptions.senders.length < 1 || selectedOptions.smtps.length < 1) {
+      alert("Please select at least one sender and one SMTP host Info");
+      return;
+    }
+    if (!JSON.parse(localStorage.getItem("csv"))) {
+      alert("Please upload your csv file list ");
+      return;
+    }
+    if (!csvFile) {
+      alert("Please upload your csv file list ");
+      return;
+    }
+
+    localStorage.setItem("details", JSON.stringify(details));
+    localStorage.setItem("options", JSON.stringify(selectedOptions));
+    // if (csvFile) {
+    navigate('/preview', { state: { file: csvFile } });
+    // }
   };
 
-  const options = [
-    {
-      value: "Uttam@wishgeekstechserve.com",
-      label: "Uttam@wishgeekstechserve.com",
-    },
-    {
-      value: "Ankit@wishgeekstechserve.com",
-      label: "Ankit@wishgeekstechserve.com",
-    },
-    {
-      value: "Krishnam@wishgeekstechserve.com",
-      label: "Krishnam@wishgeekstechserve.com",
-    },
-    {
-      value: "Gokul@wishgeekstechserve.com",
-      label: "Gokul@wishgeekstechserve.com",
-    },
-    {
-      value: "Raju@wishgeekstechserve.com",
-      label: "Raju@wishgeekstechserve.com",
-    },
-    {
-      value: "Amit@wishgeekstechserve.com",
-      label: "Amit@wishgeekstechserve.com",
-    },
-    {
-      value: "Kapil@wishgeekstechserve.com",
-      label: "Kapil@wishgeekstechserve.com",
-    },
-    {
-      value: "Manish@wishgeekstechserve.com",
-      label: "Manish@wishgeekstechserve.com",
-    },
-    {
-      value: "Sunil@wishgeekstechserve.com",
-      label: "Sunil@wishgeekstechserve.com",
-    },
-    {
-      value: "Ravi@wishgeekstechserve.com",
-      label: "Ravi@wishgeekstechserve.com",
-    },
-    {
-      value: "Vipin@wishgeekstechserve.com",
-      label: "Vipin@wishgeekstechserve.com",
-    },
-    {
-      value: "Kunal@wishgeekstechserve.com",
-      label: "Kunal@wishgeekstechserve.com",
-    },
-  ];
-  const handleChange = (selected) => {
-    setSelectedOptions(selected);
+  const handleChange = (selectedOption, type) => {
+    const updatedSelectedOptions = { ...selectedOptions };
+    if (type === 'smtp') {
+      updatedSelectedOptions.smtps = selectedOption;
+    } else if (type === 'email') {
+      updatedSelectedOptions.senders = selectedOption;
+    }
+    localStorage.setItem("options", JSON.stringify(updatedSelectedOptions))
+    setSelectedOptions(updatedSelectedOptions);
   };
   const customStyles = {
     indicatorSeparator: () => ({ display: "none" }),
@@ -414,19 +430,32 @@ const Content = () => {
         <div className="container">
           <form onSubmit={handleSubmit}>
             <h1 className="text-3xl font-bold">Manage Campaigns</h1>
+            <div className="w-full me-6">
+              <label htmlFor="Subject">Subject</label>
+              <input
+                type="text"
+                id="Subject"
+                name="Subject"
+                value={details.subject}
+                onChange={(e) => setDetails({ ...details, subject: e.target.value })}
+                className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+              />
+            </div>
             <div className="flex mt-4">
               <div className="w-full me-6">
-                <label htmlFor="Subject">Subject</label>
+                <label htmlFor="Subject">Display Name</label>
                 <input
                   type="text"
-                  id="Subject"
-                  name="Subject"
+                  id="displayName"
+                  name="displayName"
+                  value={details.displayName}
+                  onChange={(e) => setDetails({ ...details, displayName: e.target.value })}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
               </div>
 
               <div className="w-full">
-                <label htmlFor="secondsInput">Time Stamp (Seconds)</label>
+                <label htmlFor="secondsInput">Time gap between each emails (Seconds)</label>
                 <input
                   type="number"
                   id="secondsInput"
@@ -434,6 +463,8 @@ const Content = () => {
                   min="0"
                   max="59"
                   step="1"
+                  value={details.timeGap}
+                  onChange={(e) => setDetails({ ...details, timeGap: e.target.value })}
                   placeholder="Seconds"
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
@@ -444,9 +475,10 @@ const Content = () => {
               <div className="w-full">
                 <label htmlFor="EmailUseTLS"> SMTP Host</label>
                 <Select
-                  options={options}
+                  options={options.smtps}
                   isMulti
-                  onChange={handleChange}
+                  value={selectedOptions.smtps}
+                  onChange={(selectedOption) => handleChange(selectedOption, 'smtp')}
                   className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md  pl-2
                    focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
                   id="Smtphost"
@@ -460,9 +492,10 @@ const Content = () => {
               <div className="w-full">
                 <label htmlFor="EmailUseTLS">Sender Email</label>
                 <Select
-                  options={options}
+                  options={options.senders}
+                  value={selectedOptions.senders}
                   isMulti
-                  onChange={handleChange}
+                  onChange={(selectedOption) => handleChange(selectedOption, 'email')}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md  pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
                   id="SenderEmail"
                   name="SenderEmail"
@@ -472,10 +505,10 @@ const Content = () => {
               </div>
             </div>
 
-            <Editing />
+            <Editing setSelectedTemplate={setSelectedTemplate} setModalOpen={setModalOpen} />
 
             <div className="container hsyw p-0">
-              <h1 className="text-2xl font-bold mt-2">Template</h1>
+              <h1 className="text-2xl font-bold mt-2">Default Template</h1>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
                 {templates.map((item) => (
                   <div
@@ -499,7 +532,7 @@ const Content = () => {
 
             <div className="mt-5">
               <h1 className="text-3xl font-bold">Upload list</h1>
-              <Csv />
+              <Csv csvFile={csvFile} setCsvFile={setCsvFile} />
             </div>
 
             <div className="mt-5 text-right">
@@ -512,19 +545,20 @@ const Content = () => {
       )}
 
       {modalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white mt-5 rounded-lg modal-content1">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 h-full">
+          <div className="bg-white rounded-lg modal-content1 h-full">
             <button className="modal-close1" onClick={handleModalClose}>
               <i className="fa-solid fa-xmark"></i>
             </button>
-            <EmailEditor
-              ref={emailEditorRef}
-              onLoad={() => {
-                if (newDummy) {
-                  emailEditorRef.current?.editor?.loadDesign(dummy);
-                }
-              }}
+            <JoditEditor
+              ref={editor}
+              value={selectedTemplate}
+              config={config}
+              tabIndex={1}
+              onBlur={(newContent) => setFinalTemplate(newContent)}
+              onChange={(newContent) => setFinalTemplate(newContent)}
             />
+
             <div className="flex justify-end p-4">
               <button
                 onClick={handleModalSave}

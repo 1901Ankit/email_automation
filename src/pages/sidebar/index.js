@@ -24,11 +24,11 @@ const Sidebar = () => {
       path: "/home",
       icon: <IoHomeOutline style={{ fontSize: "24px" }} />,
     },
-    {
-      name: "Template Info",
-      path: "/sender",
-      icon: <GrCircleInformation style={{ fontSize: "24px" }} />,
-    },
+    // {
+    //   name: "Template Info",
+    //   path: "/sender",
+    //   icon: <GrCircleInformation style={{ fontSize: "24px" }} />,
+    // },
     {
       name: "Sender Info",
       path: "/userselect",

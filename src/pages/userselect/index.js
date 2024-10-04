@@ -26,9 +26,7 @@ const UserSelect = () => {
   useEffect(() => {
     const fetchAllSenders = async () => {
       try {
-        const response = await API.getAllSenders({user_id:localStorage.getItem("id")});
-        console.log(response.data);
-        
+        const response = await API.getAllSenders({ user_id: localStorage.getItem("id") });
         setTableData(response.data.senders);
       } catch (error) {
         console.log(error);
@@ -41,11 +39,14 @@ const UserSelect = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newFormData = {
+      id: selectedId,
       name: selectedSender,
       email: selectedSenderEmail,
     };
 
     if (isEditing) {
+      console.log(isEditing, selectedId, newFormData);
+
       const response = await API.editSenders(newFormData, selectedId);
       console.log(response);
 
@@ -60,11 +61,11 @@ const UserSelect = () => {
     closeModal();
   };
 
-  const handleEdit = (index, id) => {
+  const handleEdit = (index, data) => {
+    setSelectedId(data.id)
     setSelectedSender(tableData[index].name);
     setSelectedSenderEmail(tableData[index].email);
     setEditingIndex(index);
-    setSelectedId(id);
     setIsEditing(true);
     openModal();
   };
@@ -81,11 +82,6 @@ const UserSelect = () => {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
-
-  const filteredData = tableData.filter((data) =>
-    data.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  
 
   return (
     <>
@@ -131,8 +127,8 @@ const UserSelect = () => {
               </tr>
             </thead>
             <tbody className="bg-gray-50 divide-y divide-gray-200">
-              {filteredData.map((data, i) => (
-                <tr key={data.id}>
+              {tableData.map((data, i) => (
+                <tr key={i}>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
                     {data.name}
                   </td>
@@ -141,7 +137,7 @@ const UserSelect = () => {
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border flex space-x-2">
                     <button
-                      onClick={() => handleEdit(i, data.id)}
+                      onClick={() => handleEdit(i, data)}
                       className="text-blue-500 hover:text-blue-700"
                     >
                       <FaEdit style={{ fontSize: "20px" }} />
@@ -154,7 +150,8 @@ const UserSelect = () => {
                     </button>
                   </td>
                 </tr>
-              ))}
+              )
+              )}
             </tbody>
           </table>
         </div>

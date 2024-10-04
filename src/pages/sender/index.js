@@ -3,11 +3,10 @@ import "./index.css";
 import { FaPlus, FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "../modal";
 import axios from "axios";
-import * as API from "../../api/sender";
+import * as SenderInfoAPI from "../../api/sender";
 
 
 const Sender = () => {
-  const API_URL = "http://127.0.0.1:8000/senders/";
   const [tableData, setTableData] = useState([]);
   const [formData, setFormData] = useState({
     YourCompany: "",
@@ -30,8 +29,9 @@ const Sender = () => {
   }, []);
   const fetchData = async () => {
     try {
-      const response = await API.getAllSenders();
-      setTableData(response.data);
+      const response = await SenderInfoAPI.getAllSenders({ user_id: localStorage.getItem('id') });
+      
+      setTableData(response.data.senders);
     } catch (error) {
       if (error.response) {
       } else if (error.request) {
@@ -65,17 +65,15 @@ const Sender = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const formData = new FormData();
-        formData.append("email", "dskjfjsdi");
-        formData.append("password", "sdkhuiewicz");
         if (editingIndex !== null) {
-          const response = await API.editSenders(formData, tableData[editingIndex].id);
+          const response = await SenderInfoAPI.editSenders(formData, tableData[editingIndex].id);
             setTableData((prev) =>
               prev.map((item, index) =>
                 index === editingIndex ? response.data : item
               )
             );
         } else {
-         const  response = await API.createSenders(formData)
+         const  response = await SenderInfoAPI.createSenders(formData)
           setTableData((prev) => [...prev, response.data]);
         }
 
@@ -117,10 +115,10 @@ const Sender = () => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${API_URL}/${id}/`);
-      setTableData((prev) => prev.filter((item) => item.id !== id));
-    } catch (error) { }
+    // try {
+    //   await axios.delete(`${API_URL}/${id}/`);
+    //   setTableData((prev) => prev.filter((item) => item.id !== id));
+    // } catch (error) { }
   };
 
   const requestSort = (key) => {
@@ -146,10 +144,10 @@ const Sender = () => {
           {item.displayName}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          {item.yourName}
+          {item.name|| item.yourName}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          {item.supportEmail}
+          { item.email|| item.supportEmail}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
           {item.contactInfo}

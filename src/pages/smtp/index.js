@@ -10,13 +10,13 @@ const Smtp = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [id, setId] = useState("")
   const [formData, setFormData] = useState({
-    serverName: "",
-    EmailHost: "",
-    EmailPort: "",
-    EmailUseTLS: "false",
-    yourName: "",
-    HostUser: "",
-    Password: "",
+    id: "",
+    name: "",
+    host: "",
+    username: "",
+    port: "",
+    use_tls: "false",
+    password: "",
   });
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,12 +29,12 @@ const Smtp = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setIsEditing(false);
-    setEditingIndex(null);  
+    setEditingIndex(null);
   };
   useEffect(() => {
     const fetchAllSMTPs = async () => {
       try {
-        const response = await API.getAllSMTPs({user_id:localStorage.getItem('id')});
+        const response = await API.getAllSMTPs({ user_id: localStorage.getItem('id') });
         setTableData(response.data.servers);
       } catch (error) {
         console.log(error);
@@ -51,16 +51,17 @@ const Smtp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newFormData = {
-      name: formData.serverName,
-      host: formData.EmailHost,
-      username: formData.HostUser || formData.EmailUsername,
-      password: formData.Password|| formData.EmailPassword,
-      port: formData.EmailPort,
-      use_tls: formData.UseTLS,
+      id: id,
+      name: formData.name,
+      host: formData.host,
+      username: formData.username,
+      password: formData.password,
+      port: formData.port,
+      use_tls: formData.use_tls,
     }
-    
+
     if (isEditing) {
-      const response = await API.editSMTPs(newFormData, id)     
+      const response = await API.editSMTPs(newFormData, id)
       const updatedData = [...tableData];
       updatedData[editingIndex] = formData;
       setTableData(updatedData);
@@ -71,17 +72,13 @@ const Smtp = () => {
       setTableData((prev) => [...prev, formData]);
     }
     setFormData({
-      serverName: "",
-      EmailHost: "",
-      EmailPort: "",
-      EmailUseTLS: "false",
-      yourName: "",
-      EmailHost: "",
-      EmailPort: "",
-      EmailUseTLS: "false",
-      yourName: "",
-      HostUser: "",
-      Password: "",
+      id: "",
+      name: "",
+      host: "",
+      username: "",
+      port: "",
+      use_tls: "false",
+      password: "",
     });
     closeModal();
   };
@@ -94,14 +91,14 @@ const Smtp = () => {
     openModal();
   };
 
-  const handleDelete =async(index,id) => {
-try {
-  const response = await API.deleteSMTPs(id)
-  setTableData((prev) => prev.filter((_, i) => i !== index));
-} catch (error) {
-  console.log(error);
-  
-}
+  const handleDelete = async (index, id) => {
+    try {
+      const response = await API.deleteSMTPs(id)
+      setTableData((prev) => prev.filter((_, i) => i !== index));
+    } catch (error) {
+      console.log(error);
+
+    }
   };
 
   const handleSearchChange = (e) => {
@@ -110,10 +107,10 @@ try {
 
   // const filteredData = tableData.filter((data) =>
   //  { console.log(data);
-   
+
   //    Object.values(data).some((value) =>
   //   { console.log(value);
-    
+
   //     value.toLowerCase().includes(searchQuery.toLowerCase())}
   //   )}
   // );
@@ -218,28 +215,28 @@ try {
             </thead>
             <tbody className="bg-gray-50 divide-y divide-gray-200">
               {tableData.map((data, i) => (
-                <tr key={data.id}>
+                <tr key={i}>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.name || data.name}
-                  </td>
-                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.host || data.EmailHost}
+                    {data.name}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                  {data.port || data.EmailPort}
+                    {data.host}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data?.use_tls|| data?.EmailUseTLS}
+                    {data.port}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.username|| data.HostUser}
+                    {data?.use_tls ? "True" : "False"}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                    {data.password|| data.Password}
+                    {data.username}
+                  </td>
+                  <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                    ***************
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border flex space-x-2">
                     <button
-                      onClick={() => handleEdit(i,data.id)}
+                      onClick={() => handleEdit(i, data.id)}
                       className="text-blue-500 hover:text-blue-700"
                     >
                       <FaEdit className="" style={{ fontSize: "20px" }} />
@@ -272,9 +269,9 @@ try {
                 </label>
                 <input
                   type="text"
-                  id="EmailHost"
-                  name="EmailHost"
-                  value={formData.EmailHost}
+                  id="host"
+                  name="host"
+                  value={formData.host}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
@@ -288,9 +285,9 @@ try {
                 </label>
                 <input
                   type="number"
-                  id="EmailPort"
-                  name="EmailPort"
-                  value={formData.EmailPort}
+                  id="port"
+                  name="port"
+                  value={formData.port}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
@@ -305,9 +302,9 @@ try {
                   Email Use TLS
                 </label>
                 <select
-                  id="EmailUseTLS"
-                  name="EmailUseTLS"
-                  value={formData.EmailUseTLS}
+                  id="use_tls"
+                  name="use_tls"
+                  value={formData.use_tls}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
                 >
@@ -317,16 +314,16 @@ try {
               </div>
               <div className="w-full">
                 <label
-                  htmlFor="HostUser"
+                  htmlFor="username"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Host Email Address
                 </label>
                 <input
                   type="text"
-                  id="HostUser"
-                  name="HostUser"
-                  value={formData.HostUser}
+                  id="username"
+                  name="username"
+                  value={formData.username}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
@@ -342,9 +339,9 @@ try {
                 </label>
                 <input
                   type="text"
-                  id="serverName"
-                  name="serverName"
-                  value={formData.serverName}
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
                 >
@@ -358,10 +355,10 @@ try {
                   Host Password
                 </label>
                 <input
-                  type="password"
-                  id="Password"
-                  name="Password"
-                  value={formData.Password}
+                  type="text"
+                  id="password"
+                  name="password"
+                  value={formData.password}
                   onChange={handleChange}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
