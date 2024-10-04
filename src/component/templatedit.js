@@ -17,7 +17,6 @@ const Editing = ({ placeholder }) => {
   const [templates, setTemplates] = useState([]);
   const dropdownRef = useRef(null);
   const editor = useRef(null);
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [selectedTemplatedDetails, setSelectedTemplatedDetails] = useState(null);
 
   const [imageURLs, setImageURLs] = useState({});
@@ -89,7 +88,7 @@ const Editing = ({ placeholder }) => {
       }
     };
     fetchUserAllSavedTemplate();
-  }, []);
+  }, [viewModalOpen]);
 
   const handleImageClick = async (src, id) => {
     try {
@@ -179,7 +178,7 @@ const Editing = ({ placeholder }) => {
       </div>
 
       {viewModalOpen && (
-        <EmailEditor selectedTemplatedDetails={selectedTemplatedDetails} setViewModalOpen={setViewModalOpen} />
+        <EmailEditor selectedTemplatedDetails={selectedTemplatedDetails} setSelectedTemplatedDetails={setSelectedTemplatedDetails} setViewModalOpen={setViewModalOpen} />
       )}
     </div>
   );

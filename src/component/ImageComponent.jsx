@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import html2canvas from 'html2canvas';
 import DOMPurify from 'dompurify';
 
-const ImageComponent = ({item}) => {
+const ImageComponent = ({ item }) => {
   const [imageURLs, setImageURLs] = useState({});
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const ImageComponent = ({item}) => {
       for (const i of item) {
         const response = await fetch(i.file_url);
         console.log(response);
-        
+
         const html = await response.text();
         const sanitizedHTML = DOMPurify.sanitize(html);
 
@@ -33,6 +33,8 @@ const ImageComponent = ({item}) => {
 
     generateImages();
   }, [item]);
+  const handleImageClick = () => {
+  }
 
   return (
     <div className="absolute left-0 w-full bg-white border border-[#93C3FD] rounded-md mt-1 z-10 overflow-y-auto h-96">

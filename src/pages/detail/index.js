@@ -345,7 +345,6 @@ const Content = ({ placeholder }) => {
       setModalOpen(false);
     } catch (error) {
       console.log(error);
-
     }
   };
 

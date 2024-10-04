@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import JoditEditor from 'jodit-react';
 import * as templateAPI from "../api/emailTemplate"
-const EmailEditor = ({ selectedTemplatedDetails, setViewModalOpen, placeholder }) => {
+const EmailEditor = ({ selectedTemplatedDetails, setViewModalOpen, setSelectedTemplatedDetails, placeholder }) => {
     const editor = useRef(null);
     const navigate = useNavigate()
     const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -38,12 +38,15 @@ const EmailEditor = ({ selectedTemplatedDetails, setViewModalOpen, placeholder }
         try {
             const htmlContent = finalTemplate;
             const blob = new Blob([htmlContent], { type: 'text/html' });
-            const fileName = `${selectedTemplatedDetails.name}(updated).html`;
+            const fileName = `${selectedTemplatedDetails.name}.html`;
             const formData = new FormData();
             formData.append('file', blob, fileName);
+            console.log(formData);
+            
             const response = await templateAPI.editHtmlTemplate(formData, selectedTemplatedDetails.id);
+            setSelectedTemplatedDetails(null)
             console.log(response);
-
+            setViewModalOpen(false)
         } catch (error) {
             console.log(error);
         }
@@ -57,7 +60,7 @@ const EmailEditor = ({ selectedTemplatedDetails, setViewModalOpen, placeholder }
     const handleEditingModalClose = () => {
         setIsEditorOpen(false);
         setViewModalOpen(false);
-        navigate("/details")
+        navigate("/detail")
     };
 
     return (
