@@ -11,12 +11,15 @@ import * as templateAPI from "../../api/emailTemplate";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-
 const Content = ({ placeholder }) => {
   const editor = useRef(null);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [details, setDetails] = useState({ displayName: "", subject: "", delay_seconds: 0 })
+  const [details, setDetails] = useState({
+    displayName: "",
+    subject: "",
+    delay_seconds: 0,
+  });
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [options, setOptions] = useState({ smtps: [] });
@@ -66,7 +69,6 @@ const Content = ({ placeholder }) => {
     loadData();
   }, [selectedTemplate]);
 
-  
   const handleTemplateClick = (template) => {
     setSelectedTemplate(template.html);
     setModalOpen(true);
@@ -89,7 +91,6 @@ const Content = ({ placeholder }) => {
       const response = await templateAPI.createHtmlTemplate(formData);
       setModalOpen(false);
       // window.location.reload();
-
     } catch (error) {
       console.log(error);
     }
@@ -107,9 +108,7 @@ const Content = ({ placeholder }) => {
       return;
     }
     localStorage.setItem("details", JSON.stringify(details));
-    if (
-      selectedOptions.smtps.length < 1
-    ) {
+    if (selectedOptions.smtps.length < 1) {
       toast.error("Please select at least one SMTP host Info");
       return;
     }
@@ -123,7 +122,6 @@ const Content = ({ placeholder }) => {
       return;
     }
 
-    
     localStorage.setItem("options", JSON.stringify(selectedOptions));
     // if (csvFile) {
     navigate("/preview", { state: { file: csvFile } });
@@ -134,7 +132,7 @@ const Content = ({ placeholder }) => {
     const updatedSelectedOptions = { ...selectedOptions };
     if (type === "smtp") {
       updatedSelectedOptions.smtps = selectedOption;
-    } 
+    }
     localStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
     setSelectedOptions(updatedSelectedOptions);
   };
@@ -192,7 +190,8 @@ const Content = ({ placeholder }) => {
                 onChange={(e) =>
                   setDetails({ ...details, subject: e.target.value })
                 }
-                className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+                className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2
+                 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
               />
             </div>
             <div className="flex mt-4">
@@ -222,7 +221,9 @@ const Content = ({ placeholder }) => {
                   max="59"
                   step="1"
                   value={details.delay_seconds}
-                  onChange={(e) => setDetails({ ...details, delay_seconds: e.target.value })}
+                  onChange={(e) =>
+                    setDetails({ ...details, delay_seconds: e.target.value })
+                  }
                   placeholder="Seconds"
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
@@ -270,8 +271,10 @@ const Content = ({ placeholder }) => {
                       />
                     </div>
                     <button
-                    type="button"
-                    className="absolute bottom-5 left-[25%] w-1/2 bg-[#7b2cbf] text-white py-2 mx-3 rounded-md text-center font-bold">
+                      type="button"
+                      className="absolute bottom-5 left-[25%] w-1/2
+                     bg-[#7b2cbf] text-white py-2 mx-3 rounded-md text-center font-bold"
+                    >
                       {item.title}
                     </button>
                   </div>
