@@ -46,14 +46,14 @@ const Preview = ({ placeholder }) => {
       setFile(null);
       navigate("/detail", { replace: true });
     }
-    setCsvData(JSON.parse(localStorage.getItem('csv')))
-    setDetails(JSON.parse(localStorage.getItem('details')))
-    setOptions(JSON.parse(localStorage.getItem('options')));
-    const fileData = JSON.parse(localStorage.getItem("csv"));
+    setCsvData(JSON.parse(sessionStorage.getItem('csv')))
+    setDetails(JSON.parse(sessionStorage.getItem('details')))
+    setOptions(JSON.parse(sessionStorage.getItem('options')));
+    const fileData = JSON.parse(sessionStorage.getItem("csv"));
 
     const selectedHTMLFile = async () => {
       try {
-        const response = await fetch(`https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(localStorage.getItem('key'))}`);
+        const response = await fetch(`https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(sessionStorage.getItem('key'))}`);
         const html = await response.text();
         console.log(html);
         
@@ -113,15 +113,15 @@ const Preview = ({ placeholder }) => {
     const formData = new FormData();
 
     // Append necessary fields
-    options?.senders?.forEach(element => {
+    options?.smtps?.forEach(element => {
       formData.append("sender_ids", Number(element.value));
     });
     options?.smtps?.forEach(element => {
       formData.append("smtp_server_ids", Number(element.value));
     });
-    formData.append("delay_seconds", details.timeGap);
+    formData.append("delay_seconds", details.delay_seconds);
     formData.append("subject", details.subject);
-    formData.append("uploaded_file_key", JSON.parse(localStorage.getItem('key')));
+    formData.append("uploaded_file_key", JSON.parse(sessionStorage.getItem('key')));
     formData.append("display_name", details.displayName);
     formData.append('email_list', file);
 
@@ -206,20 +206,28 @@ const Preview = ({ placeholder }) => {
                 </div>
               </div>
 
-              <div className="flex mt-4">
+              <div className="mt-4">
                 <div>
                 <label htmlFor="content">UPLOADED FILE</label>
                 </div>
-                <p>{file.name} </p>
+
+                <div
+            className="block text-start w-full border border-red-700 mt-1 rounded-md py-2 pl-3 text-gray-600 font-bold"
+          >{file.name} </div>
 
               </div>
               <div className="container-fluid max-h-[100vh] overflow-scroll p-0">
-                <div className="container p-0">
-                  <div>
-                    <div className="flex mt-4">
-                      <div className="w-full relative">
+                <div className="container p-0 h-full">
+                  <div className="h-full">
+                    <div className="flex mt-4 h-full">
+                      <div className="w-full min-h-[40vh] relative">
                         <label htmlFor="content">CONTENT</label>
-                        <img src={imageURL} alt="" />
+                        <iframe
+                                    src={`https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(sessionStorage.getItem('key'))}`}
+                                    // alt="Selected"
+                                    height={"100%"} width={"100%"}
+                                />
+                        {/* <img src={imageURL} alt="" /> */}
                       </div>
                     </div>
                     <div className="button-container mt-3">

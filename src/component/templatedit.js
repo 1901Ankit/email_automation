@@ -3,7 +3,6 @@ import * as templateAPI from "../api/emailTemplate";
 import img1 from "../assests/image/3d.jpg";
 import img2 from "../assests/image/3d.jpg";
 import img3 from "../assests/image/3d.jpg";
-import ImageComponent from "./ImageComponent";
 import html2canvas from 'html2canvas';
 import DOMPurify from 'dompurify';
 import { useNavigate } from "react-router-dom";
@@ -23,7 +22,7 @@ const Editing = ({ placeholder }) => {
   const [htmlContents, setHtmlContents] = useState({});
   const [selectedTemplateKey, setSelectedTemplateKey] = useState(null);
   const [selectedTemplateId, setSelectedTemplateId] = useState(null);
-  const [selectedTemplateFileName, setSelectedTemplateFileName] = useState(JSON.parse(localStorage.getItem("key")) || null);
+  const [selectedTemplateFileName, setSelectedTemplateFileName] = useState(JSON.parse(sessionStorage.getItem("key")) || null);
 
   const config = useMemo(
     () => ({

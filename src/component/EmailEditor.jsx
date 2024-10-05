@@ -53,7 +53,7 @@ const EmailEditor = ({ selectedTemplatedDetails, setViewModalOpen, setSelectedTe
     }
     const handleModalClose = () => setIsEditorOpen(false);
     const handelSelectTemplate = () => {
-        localStorage.setItem("key", JSON.stringify(selectedTemplatedDetails.name));
+        sessionStorage.setItem("key", JSON.stringify(selectedTemplatedDetails.name));
         setViewModalOpen(false);
         setIsEditorOpen(false)
     }

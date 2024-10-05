@@ -26,7 +26,7 @@ const UserSelect = () => {
   useEffect(() => {
     const fetchAllSenders = async () => {
       try {
-        const response = await API.getAllSenders({ user_id: localStorage.getItem("id") });
+        const response = await API.getAllSenders({ user_id: sessionStorage.getItem("id") });
         setTableData(response.data.senders);
       } catch (error) {
         console.log(error);

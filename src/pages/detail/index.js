@@ -14,7 +14,7 @@ const Content = ({ placeholder }) => {
   const editor = useRef(null);
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
-  const [details, setDetails] = useState({ displayName: "", subject: "", timeGap: 0 })
+  const [details, setDetails] = useState({ displayName: "", subject: "", delay_seconds: 0 })
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [options, setOptions] = useState({ senders: [], smtps: [] });
@@ -24,15 +24,10 @@ const Content = ({ placeholder }) => {
   const [csvFile, setCsvFile] = useState();
 
   useEffect(() => {
-    const retriedDetails = JSON.parse(localStorage?.getItem("details")) || {}
-    const retriedOptions = JSON.parse(localStorage.getItem("options")) || { senders: [], smtps: [] }
+    const retriedDetails = JSON.parse(sessionStorage?.getItem("details")) || {}
+    const retriedOptions = JSON.parse(sessionStorage.getItem("options")) || { senders: [], smtps: [] }
     setDetails(retriedDetails)
     setSelectedOptions(retriedOptions)
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-
-    return () => clearTimeout(timer);
   }, []);
 
   const config = useMemo(
@@ -46,7 +41,7 @@ const Content = ({ placeholder }) => {
 
   useEffect(() => {
     const loadData = async () => {
-      const senderResponse = await SenderAPI.getAllSenders({ user_id: localStorage.getItem('id') });
+      const senderResponse = await SenderAPI.getAllSenders({ user_id: sessionStorage.getItem('id') });
       if (senderResponse?.data?.senders.length < 0) {
         alert("You do not have sender information ")
         navigate('/userselect')
@@ -56,7 +51,7 @@ const Content = ({ placeholder }) => {
         return { label: obj.email, value: obj.id };
       });
 
-      const smtpResponse = await SMTPAPI.getAllSMTPs({ user_id: localStorage.getItem('id') });
+      const smtpResponse = await SMTPAPI.getAllSMTPs({ user_id: sessionStorage.getItem('id') });
       if (smtpResponse?.data?.servers.length < 0) {
         alert("You do not have smtps information ")
         navigate('/smtp')
@@ -68,6 +63,7 @@ const Content = ({ placeholder }) => {
 
 
       setOptions({ senders: modifiedSenderResponse, smtps: modifiedSMTPsResponse })
+      setLoading(false);
     };
     loadData();
   }, [selectedTemplate]);
@@ -351,7 +347,7 @@ const Content = ({ placeholder }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // check variations
-    if (details.yourName === "" || details.subject === "" || details.timeGap === "") {
+    if (details.yourName === "" || details.subject === "" || details.delay_seconds === "") {
       alert("Please fill all the required fields");
       return;
     }
@@ -359,7 +355,7 @@ const Content = ({ placeholder }) => {
       alert("Please select at least one sender and one SMTP host Info");
       return;
     }
-    if (!JSON.parse(localStorage.getItem("csv"))) {
+    if (!JSON.parse(sessionStorage.getItem("csv"))) {
       alert("Please upload your csv file list ");
       return;
     }
@@ -368,8 +364,8 @@ const Content = ({ placeholder }) => {
       return;
     }
 
-    localStorage.setItem("details", JSON.stringify(details));
-    localStorage.setItem("options", JSON.stringify(selectedOptions));
+    sessionStorage.setItem("details", JSON.stringify(details));
+    sessionStorage.setItem("options", JSON.stringify(selectedOptions));
     // if (csvFile) {
     navigate('/preview', { state: { file: csvFile } });
     // }
@@ -382,7 +378,7 @@ const Content = ({ placeholder }) => {
     } else if (type === 'email') {
       updatedSelectedOptions.senders = selectedOption;
     }
-    localStorage.setItem("options", JSON.stringify(updatedSelectedOptions))
+    sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions))
     setSelectedOptions(updatedSelectedOptions);
   };
   const customStyles = {
@@ -462,8 +458,8 @@ const Content = ({ placeholder }) => {
                   min="0"
                   max="59"
                   step="1"
-                  value={details.timeGap}
-                  onChange={(e) => setDetails({ ...details, timeGap: e.target.value })}
+                  value={details.delay_seconds}
+                  onChange={(e) => setDetails({ ...details, delay_seconds: e.target.value })}
                   placeholder="Seconds"
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />

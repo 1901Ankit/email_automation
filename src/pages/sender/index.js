@@ -29,7 +29,7 @@ const Sender = () => {
   }, []);
   const fetchData = async () => {
     try {
-      const response = await SenderInfoAPI.getAllSenders({ user_id: localStorage.getItem('id') });
+      const response = await SenderInfoAPI.getAllSenders({ user_id: sessionStorage.getItem('id') });
       
       setTableData(response.data.senders);
     } catch (error) {
