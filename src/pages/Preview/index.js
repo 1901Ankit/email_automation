@@ -7,33 +7,32 @@ import {
   ContentState,
 } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
-import JoditEditor from 'jodit-react';
+import JoditEditor from "jodit-react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import * as sendEmailAPI from "../../api/sendEmail"
-import html2canvas from 'html2canvas';
+import * as sendEmailAPI from "../../api/sendEmail";
+import html2canvas from "html2canvas";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Preview = ({ placeholder }) => {
   const editor = useRef(null);
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   const [content, setContent] = useState(``);
-  const [imageURL, setImageURL] = useState("")
+  const [imageURL, setImageURL] = useState("");
   const [csvData, setCsvData] = useState(null);
   const [details, setDetails] = useState({});
-  const [options, setOptions] = useState({ senders: [], smtps: [] })
-  const [file, setFile] = useState(null)
-
+  const [options, setOptions] = useState({ senders: [], smtps: [] });
+  const [file, setFile] = useState(null);
 
   const config = useMemo(
     () => ({
       readonly: false,
-      placeholder: placeholder || 'Start typing...',
+      placeholder: placeholder || "Start typing...",
     }),
     [placeholder]
   );
@@ -42,31 +41,35 @@ const Preview = ({ placeholder }) => {
     if (location.state && location.state.file) {
       setFile(location.state.file);
     } else {
-      alert("You must have to provide csv file list")
+      alert("You must have to provide csv file list");
       setFile(null);
       navigate("/detail", { replace: true });
     }
-    setCsvData(JSON.parse(localStorage.getItem('csv')))
-    setDetails(JSON.parse(localStorage.getItem('details')))
-    setOptions(JSON.parse(localStorage.getItem('options')));
+    setCsvData(JSON.parse(localStorage.getItem("csv")));
+    setDetails(JSON.parse(localStorage.getItem("details")));
+    setOptions(JSON.parse(localStorage.getItem("options")));
     const fileData = JSON.parse(localStorage.getItem("csv"));
 
     const selectedHTMLFile = async () => {
       try {
-        const response = await fetch(`https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(localStorage.getItem('key'))}`);
+        const response = await fetch(
+          `https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(
+            localStorage.getItem("key")
+          )}`
+        );
         const html = await response.text();
         console.log(html);
-        
-        const tempDiv = document.createElement('div');
+
+        const tempDiv = document.createElement("div");
         tempDiv.innerHTML = html;
         document.body.appendChild(tempDiv);
         // Wait for all images to load
-        const images = tempDiv.getElementsByTagName('img');
+        const images = tempDiv.getElementsByTagName("img");
         const imageLoadPromises = Array.from(images).map((img) => {
           return new Promise((resolve, reject) => {
             img.onload = resolve;
             img.onerror = () => {
-              console.error('Image failed to load:', img.src);
+              console.error("Image failed to load:", img.src);
               resolve(); // Resolve even on error to continue
             };
           });
@@ -77,13 +80,13 @@ const Preview = ({ placeholder }) => {
         await new Promise((resolve) => setTimeout(resolve, 100));
         const canvas = await html2canvas(tempDiv, { useCORS: true });
         const selectedHTMLImageURL = canvas.toDataURL();
-        setImageURL(selectedHTMLImageURL)
+        setImageURL(selectedHTMLImageURL);
         document.body.removeChild(tempDiv);
       } catch (error) {
         console.log(error);
       }
-    }
-    selectedHTMLFile()
+    };
+    selectedHTMLFile();
     const formData = new FormData();
     formData.append("file", fileData);
 
@@ -105,7 +108,7 @@ const Preview = ({ placeholder }) => {
   const handleSave = () => {
     const contentState = editorState.getCurrentContent();
     const rawContent = convertToRaw(contentState);
-    const blocks = rawContent.blocks.map(block => block.text).join('\n');
+    const blocks = rawContent.blocks.map((block) => block.text).join("\n");
     setContent(blocks);
     closeModal();
   };
@@ -113,23 +116,29 @@ const Preview = ({ placeholder }) => {
     const formData = new FormData();
 
     // Append necessary fields
-    options?.senders?.forEach(element => {
+    options?.senders?.forEach((element) => {
       formData.append("sender_ids", Number(element.value));
     });
-    options?.smtps?.forEach(element => {
+    options?.smtps?.forEach((element) => {
       formData.append("smtp_server_ids", Number(element.value));
     });
     formData.append("delay_seconds", details.timeGap);
     formData.append("subject", details.subject);
-    formData.append("uploaded_file_key", JSON.parse(localStorage.getItem('key')));
+    formData.append(
+      "uploaded_file_key",
+      JSON.parse(localStorage.getItem("key"))
+    );
     formData.append("display_name", details.displayName);
-    formData.append('email_list', file);
+    formData.append("email_list", file);
 
     try {
       const response = await sendEmailAPI.sendEmail(formData);
       console.log("Emails sent successfully:", response.data);
     } catch (error) {
-      console.error("Error sending emails:", error.response?.data || error.message);
+      console.error(
+        "Error sending emails:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -137,7 +146,7 @@ const Preview = ({ placeholder }) => {
     setEditorState(state);
     const contentState = state.getCurrentContent();
     const rawContent = convertToRaw(contentState);
-    const blocks = rawContent.blocks.map(block => block.text).join('\n');
+    const blocks = rawContent.blocks.map((block) => block.text).join("\n");
     setContent(blocks);
   };
   console.log(file);
@@ -185,7 +194,9 @@ const Preview = ({ placeholder }) => {
                     type="email"
                     id="senderEmail"
                     name="senderEmail"
-                    value={options?.senders?.map(sender => sender.label).join(", ")}
+                    value={options?.senders
+                      ?.map((sender) => sender.label)
+                      .join(", ")}
                     className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
                     readOnly
                   />
@@ -199,20 +210,32 @@ const Preview = ({ placeholder }) => {
                     type="text"
                     id="SMTPS"
                     name="SMTPS"
-                    value={options?.smtps?.map(sender => sender.label).join(", ")}
+                    value={options?.smtps
+                      ?.map((sender) => sender.label)
+                      .join(", ")}
                     className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
                     readOnly
                   />
                 </div>
               </div>
 
-              <div className="flex mt-4">
+              {/* <div className="flex mt-4">
                 <div>
                 <label htmlFor="content">UPLOADED FILE</label>
                 </div>
                 <p>{file.name} </p>
 
+              </div> */}
+
+              <div className="w-full mt-4">
+                <label htmlFor="content">UPLOADED FILE </label>
+                <input
+                  value={file.name}
+                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
+                  readOnly
+                />
               </div>
+
               <div className="container-fluid max-h-[100vh] overflow-scroll p-0">
                 <div className="container p-0">
                   <div>
@@ -223,7 +246,11 @@ const Preview = ({ placeholder }) => {
                       </div>
                     </div>
                     <div className="button-container mt-3">
-                      <button onClick={handleSendEmail} type="button" className="preview-button">
+                      <button
+                        onClick={handleSendEmail}
+                        type="button"
+                        className="preview-button"
+                      >
                         SEND MESSAGE NOW
                       </button>
                     </div>

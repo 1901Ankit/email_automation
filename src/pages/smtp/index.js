@@ -105,31 +105,7 @@ const Smtp = () => {
     setSearchQuery(e.target.value);
   };
 
-  // const filteredData = tableData.filter((data) =>
-  //  { console.log(data);
 
-  //    Object.values(data).some((value) =>
-  //   { console.log(value);
-
-  //     value.toLowerCase().includes(searchQuery.toLowerCase())}
-  //   )}
-  // );
-
-  // const sortedData = React.useMemo(() => {
-  //   let sortableData = [...filteredData];
-  //   if (sortConfig.key !== null) {
-  //     sortableData.sort((a, b) => {
-  //       if (a[sortConfig.key] < b[sortConfig.key]) {
-  //         return sortConfig.direction === "ascending" ? -1 : 1;
-  //       }
-  //       if (a[sortConfig.key] > b[sortConfig.key]) {
-  //         return sortConfig.direction === "ascending" ? 1 : -1;
-  //       }
-  //       return 0;
-  //     });
-  //   }
-  //   return sortableData;
-  // }, [filteredData, sortConfig]);
 
   const requestSort = (key) => {
     let direction = "ascending";
@@ -255,11 +231,11 @@ const Smtp = () => {
         </div>
 
         <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <h3 className="font-bold text-lg mb-4 text-center">
+          <h3 className="font-bold text-lg  text-center">
             {isEditing ? "Edit SMTP Entry" : "Add New SMTP Entry"}
           </h3>
           <form onSubmit={handleSubmit}>
-            <div className="flex mt-3">
+            <div className="flex">
               <div className="w-full me-6">
                 <label
                   htmlFor="EmailHost"
