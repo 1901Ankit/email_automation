@@ -29,11 +29,11 @@ const Sidebar = () => {
     //   path: "/sender",
     //   icon: <GrCircleInformation style={{ fontSize: "24px" }} />,
     // },
-    {
-      name: "Sender Info",
-      path: "/userselect",
-      icon: <LuSend  style={{ fontSize: "24px" }} />,
-    },
+    // {
+    //   name: "Sender Info",
+    //   path: "/userselect",
+    //   icon: <LuSend  style={{ fontSize: "24px" }} />,
+    // },
     {
       name: "SMTP Setup",
       path: "/smtp",
@@ -71,15 +71,15 @@ const Sidebar = () => {
   }, []);
 
   function checkAuthentication() {
-    return !!localStorage.getItem("authToken");
+    return !!sessionStorage.getItem("authToken");
   }
 
   const handleTabChange = async (index) => {
     if (index === tabs.length - 1) {
       try {
-        const authToken = localStorage.getItem("access_token");
+        const authToken = sessionStorage.getItem("access_token");
         const res = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
-          { refresh: localStorage.getItem("refresh_token") },
+          { refresh: sessionStorage.getItem("refresh_token") },
           {
             headers: {
               "Content-Type": "application/json",
@@ -88,8 +88,8 @@ const Sidebar = () => {
           }
         );
 
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("refresh_token");
         toast.success(res.data.message);
         setIsAuthenticated(false);
         navigate("/ ");
