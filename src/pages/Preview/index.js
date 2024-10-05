@@ -12,6 +12,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import * as sendEmailAPI from "../../api/sendEmail";
 import html2canvas from "html2canvas";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Preview = ({ placeholder }) => {
   const editor = useRef(null);
@@ -41,7 +42,8 @@ const Preview = ({ placeholder }) => {
     if (location.state && location.state.file) {
       setFile(location.state.file);
     } else {
-      alert("You must have to provide csv file list");
+      
+      toast.error("You must have to provide csv file list");
       setFile(null);
       navigate("/detail", { replace: true });
     }

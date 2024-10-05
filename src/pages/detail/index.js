@@ -11,7 +11,6 @@ import * as templateAPI from "../../api/emailTemplate";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-
 const Content = ({ placeholder }) => {
   const editor = useRef(null);
   const navigate = useNavigate();
@@ -362,8 +361,6 @@ const Content = ({ placeholder }) => {
       formData.append("file", blob, "mail_format_1.html");
       const response = await templateAPI.createHtmlTemplate(formData);
       setModalOpen(false);
-      window.location.reload();
-
     } catch (error) {
       console.log(error);
     }
@@ -544,7 +541,10 @@ const Content = ({ placeholder }) => {
               </div>
             </div>
 
-            <Editing setSelectedTemplate={setSelectedTemplate} setModalOpen={setModalOpen} />
+            <Editing
+              setSelectedTemplate={setSelectedTemplate}
+              setModalOpen={setModalOpen}
+            />
 
             <div className="container hsyw p-0">
               <h1 className="text-2xl font-bold mt-2">Default Template</h1>
@@ -562,8 +562,9 @@ const Content = ({ placeholder }) => {
                       />
                     </div>
                     <button
-                    type="button"
-                    className="absolute bottom-4 left-0 w-1/2 bg-[#7b2cbf] text-white py-2 mx-3 rounded-md text-center font-bold">
+                      type="button"
+                      className="absolute bottom-4 left-0 w-1/2 bg-[#7b2cbf] text-white py-2 mx-3 rounded-md text-center font-bold"
+                    >
                       {item.title}
                     </button>
                   </div>
