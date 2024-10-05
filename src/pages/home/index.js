@@ -3,7 +3,8 @@ import { data } from "../../assests/data";
 import Linechart from "../../component/linechart";
 import Barchart from "../../component/chart";
 import "./index.css";
-// import Rightside from "../../component/rightsidebar";
+// import Rightsidebar from "../../component/rightsidebar/index";
+
 
 const Home = () => {
   return (
@@ -20,9 +21,8 @@ const Home = () => {
             <Linechart data={data.lineChart} data1={data.lineChart2022} />
           </div>
         </div>
-        {/* <Rightside /> */}
+        {/* <Rightsidebar /> */}
       </div>
-
     </div>
   );
 };

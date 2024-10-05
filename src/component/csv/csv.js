@@ -72,11 +72,15 @@ const Csv = ({csvFile, setCsvFile}) => {
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
-
   const handleFileRemove = () => {
     setFileData(null);
-    document.querySelector('.file-input').value = '';
+    setCsvFile(null);  // Reset csvFile state as well
+    const fileInput = document.querySelector('.file-input');
+    if (fileInput) {
+      fileInput.value = '';  // Clear the input field
+    }
   };
+  
 
   const handlePreviewClick = () => {
     if (fileData || csvFile) {

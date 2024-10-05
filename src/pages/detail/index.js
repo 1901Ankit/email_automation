@@ -3,16 +3,18 @@ import Csv from "../../component/csv/csv";
 import "react-image-crop/dist/ReactCrop.css";
 import "./index.css";
 import Editing from "../../component/templatedit";
-import JoditEditor from 'jodit-react';
-import Select from "react-select"
-import * as SMTPAPI from "../../api/smtp"
+import JoditEditor from "jodit-react";
+import Select from "react-select";
+import * as SMTPAPI from "../../api/smtp";
 import * as SenderAPI from "../../api/sender";
-import * as templateAPI from "../../api/emailTemplate"
+import * as templateAPI from "../../api/emailTemplate";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 const Content = ({ placeholder }) => {
   const editor = useRef(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState({ displayName: "", subject: "", delay_seconds: 0 })
   const [modalOpen, setModalOpen] = useState(false);
@@ -20,49 +22,62 @@ const Content = ({ placeholder }) => {
   const [options, setOptions] = useState({ senders: [], smtps: [] });
   const emailEditorRef = useRef(null);
   const [finalTemplate, setFinalTemplate] = useState(null);
-  const [selectedOptions, setSelectedOptions] = useState({ senders: [], smtps: [] });
+  const [selectedOptions, setSelectedOptions] = useState({
+    senders: [],
+    smtps: [],
+  });
   const [csvFile, setCsvFile] = useState();
 
   useEffect(() => {
-    const retriedDetails = JSON.parse(sessionStorage?.getItem("details")) || {}
-    const retriedOptions = JSON.parse(sessionStorage.getItem("options")) || { senders: [], smtps: [] }
-    setDetails(retriedDetails)
-    setSelectedOptions(retriedOptions)
+    const retriedDetails = JSON.parse(sessionStorage?.getItem("details")) || {};
+    const retriedOptions = JSON.parse(sessionStorage.getItem("options")) || {
+      senders: [],
+      smtps: [],
+    };
+    setDetails(retriedDetails);
+    setSelectedOptions(retriedOptions);
   }, []);
 
   const config = useMemo(
     () => ({
       readonly: false,
-      placeholder: placeholder || 'Start typing...',
+      placeholder: placeholder || "Start typing...",
     }),
     [placeholder]
   );
 
-
   useEffect(() => {
     const loadData = async () => {
-      const senderResponse = await SenderAPI.getAllSenders({ user_id: sessionStorage.getItem('id') });
-      if (senderResponse?.data?.senders.length < 0) {
-        alert("You do not have sender information ")
-        navigate('/userselect')
-        return
-      }
-      const modifiedSenderResponse = senderResponse?.data?.senders?.map((obj) => {
-        return { label: obj.email, value: obj.id };
+      const senderResponse = await SenderAPI.getAllSenders({
+        user_id: localStorage.getItem("id"),
       });
+      if (senderResponse?.data?.senders.length < 0) {
+        alert("You do not have sender information ");
+        navigate("/userselect");
+        return;
+      }
+      const modifiedSenderResponse = senderResponse?.data?.senders?.map(
+        (obj) => {
+          return { label: obj.email, value: obj.id };
+        }
+      );
 
-      const smtpResponse = await SMTPAPI.getAllSMTPs({ user_id: sessionStorage.getItem('id') });
+      const smtpResponse = await SMTPAPI.getAllSMTPs({
+        user_id: localStorage.getItem("id"),
+      });
       if (smtpResponse?.data?.servers.length < 0) {
-        alert("You do not have smtps information ")
-        navigate('/smtp')
-        return
+        alert("You do not have smtps information ");
+        navigate("/smtp");
+        return;
       }
       const modifiedSMTPsResponse = smtpResponse?.data?.servers?.map((obj) => {
         return { label: obj.host, value: obj.id };
       });
 
-
-      setOptions({ senders: modifiedSenderResponse, smtps: modifiedSMTPsResponse })
+      setOptions({
+        senders: modifiedSenderResponse,
+        smtps: modifiedSMTPsResponse,
+      });
       setLoading(false);
     };
     loadData();
@@ -334,11 +349,13 @@ const Content = ({ placeholder }) => {
     }
     try {
       const htmlContent = finalTemplate;
-      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const blob = new Blob([htmlContent], { type: "text/html" });
       const formData = new FormData();
-      formData.append('file', blob, 'mail_format_1.html');
+      formData.append("file", blob, "mail_format_1.html");
       const response = await templateAPI.createHtmlTemplate(formData);
       setModalOpen(false);
+      window.location.reload();
+
     } catch (error) {
       console.log(error);
     }
@@ -347,38 +364,45 @@ const Content = ({ placeholder }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // check variations
-    if (details.yourName === "" || details.subject === "" || details.delay_seconds === "") {
-      alert("Please fill all the required fields");
+    if (
+      details.yourName === "" ||
+      details.subject === "" ||
+      details.timeGap === ""
+    ) {
+      toast.error("Please fill all the required fields");
       return;
     }
-    if (selectedOptions.senders.length < 1 || selectedOptions.smtps.length < 1) {
-      alert("Please select at least one sender and one SMTP host Info");
+    if (
+      selectedOptions.senders.length < 1 ||
+      selectedOptions.smtps.length < 1
+    ) {
+      toast.error("Please select at least one sender and one SMTP host Info");
       return;
     }
-    if (!JSON.parse(sessionStorage.getItem("csv"))) {
-      alert("Please upload your csv file list ");
+    if (!JSON.parse(localStorage.getItem("csv"))) {
+      toast.error("Please upload your CSV file list");
       return;
     }
     if (!csvFile) {
-      alert("Please upload your csv file list ");
+      toast.error("Please upload your CSV file list");
       return;
     }
 
     sessionStorage.setItem("details", JSON.stringify(details));
     sessionStorage.setItem("options", JSON.stringify(selectedOptions));
     // if (csvFile) {
-    navigate('/preview', { state: { file: csvFile } });
+    navigate("/preview", { state: { file: csvFile } });
     // }
   };
 
   const handleChange = (selectedOption, type) => {
     const updatedSelectedOptions = { ...selectedOptions };
-    if (type === 'smtp') {
+    if (type === "smtp") {
       updatedSelectedOptions.smtps = selectedOption;
-    } else if (type === 'email') {
+    } else if (type === "email") {
       updatedSelectedOptions.senders = selectedOption;
     }
-    sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions))
+    localStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
     setSelectedOptions(updatedSelectedOptions);
   };
   const customStyles = {
@@ -432,7 +456,9 @@ const Content = ({ placeholder }) => {
                 id="Subject"
                 name="Subject"
                 value={details.subject}
-                onChange={(e) => setDetails({ ...details, subject: e.target.value })}
+                onChange={(e) =>
+                  setDetails({ ...details, subject: e.target.value })
+                }
                 className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
               />
             </div>
@@ -444,13 +470,17 @@ const Content = ({ placeholder }) => {
                   id="displayName"
                   name="displayName"
                   value={details.displayName}
-                  onChange={(e) => setDetails({ ...details, displayName: e.target.value })}
+                  onChange={(e) =>
+                    setDetails({ ...details, displayName: e.target.value })
+                  }
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
               </div>
 
               <div className="w-full">
-                <label htmlFor="secondsInput">Time gap between each emails (Seconds)</label>
+                <label htmlFor="secondsInput">
+                  Time gap between each emails (Seconds)
+                </label>
                 <input
                   type="number"
                   id="secondsInput"
@@ -473,7 +503,9 @@ const Content = ({ placeholder }) => {
                   options={options.smtps}
                   isMulti
                   value={selectedOptions.smtps}
-                  onChange={(selectedOption) => handleChange(selectedOption, 'smtp')}
+                  onChange={(selectedOption) =>
+                    handleChange(selectedOption, "smtp")
+                  }
                   className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md  pl-2
                    focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
                   id="Smtphost"
@@ -490,7 +522,9 @@ const Content = ({ placeholder }) => {
                   options={options.senders}
                   value={selectedOptions.senders}
                   isMulti
-                  onChange={(selectedOption) => handleChange(selectedOption, 'email')}
+                  onChange={(selectedOption) =>
+                    handleChange(selectedOption, "email")
+                  }
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md  pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
                   id="SenderEmail"
                   name="SenderEmail"
@@ -517,7 +551,9 @@ const Content = ({ placeholder }) => {
                         className="w-full h-full"
                       />
                     </div>
-                    <button className="absolute bottom-4 left-0 w-1/2 bg-[#7b2cbf] text-white py-2 mx-3 rounded-md text-center font-bold">
+                    <button
+                    type="button"
+                    className="absolute bottom-4 left-0 w-1/2 bg-[#7b2cbf] text-white py-2 mx-3 rounded-md text-center font-bold">
                       {item.title}
                     </button>
                   </div>
@@ -540,19 +576,18 @@ const Content = ({ placeholder }) => {
       )}
 
       {modalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 h-full">
-          <div className="bg-white rounded-lg modal-content1 h-full">
-            <button className="modal-close1" onClick={handleModalClose}>
-              <i className="fa-solid fa-xmark"></i>
-            </button>
-            <JoditEditor
-              ref={editor}
-              value={selectedTemplate}
-              config={config}
-              tabIndex={1}
-              onBlur={(newContent) => setFinalTemplate(newContent)}
-              onChange={(newContent) => setFinalTemplate(newContent)}
-            />
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg w-full max-w-[60%] max-h-[100vh] overflow-hidden">
+            <div className="h-[70vh] overflow-y-auto scroll-smooth">
+              <JoditEditor
+                ref={editor}
+                value={selectedTemplate}
+                config={config}
+                tabIndex={1}
+                onBlur={(newContent) => setFinalTemplate(newContent)}
+                onChange={(newContent) => setFinalTemplate(newContent)}
+              />
+            </div>
 
             <div className="flex justify-end p-4">
               <button
