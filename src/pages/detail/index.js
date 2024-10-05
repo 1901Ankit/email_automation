@@ -50,7 +50,7 @@ const Content = ({ placeholder }) => {
         user_id: localStorage.getItem("id"),
       });
       if (smtpResponse?.data?.servers.length < 0) {
-        alert("You do not have smtps information ");
+        toast.error("You do not have smtps information ");
         navigate("/smtp");
         return;
       }
@@ -101,7 +101,7 @@ const Content = ({ placeholder }) => {
     if (
       details.yourName === "" ||
       details.subject === "" ||
-      details.timeGap === ""
+      details.delay_seconds === ""
     ) {
       toast.error("Please fill all the required fields");
       return;
@@ -249,7 +249,10 @@ const Content = ({ placeholder }) => {
               </div>
             </div>
 
-            <Editing setSelectedTemplate={setSelectedTemplate} setModalOpen={setModalOpen} />
+            <Editing
+              setSelectedTemplate={setSelectedTemplate}
+              setModalOpen={setModalOpen}
+            />
 
             <div className="container hsyw p-0">
               <h1 className="text-2xl font-bold mt-2">Default Template</h1>
@@ -268,7 +271,7 @@ const Content = ({ placeholder }) => {
                     </div>
                     <button
                     type="button"
-                    className="absolute bottom-5 left-[25%] w-1/2 bg-[#7b2cbf] text-white py-2 rounded-md text-center font-bold">
+                    className="absolute bottom-5 left-[25%] w-1/2 bg-[#7b2cbf] text-white py-2 mx-3 rounded-md text-center font-bold">
                       {item.title}
                     </button>
                   </div>
