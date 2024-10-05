@@ -16,7 +16,7 @@ const Router = () => {
   const is404 =
     location.pathname === "/404" ||
     !location.pathname.match(
-      /^\/(home|sender|detail|preview|smtp|userselect|reset_password).*$/
+      /^\/(home|detail|preview|smtp|reset_password).*$/
     );
   const isSidebarVisible =
     !hideSidebarPaths.includes(location.pathname) && !is404;
@@ -30,11 +30,11 @@ const Router = () => {
           <Route exact path="/" element={<Login />} />
           <Route path="/reset_password/*" element={<Login />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/sender" element={<Sender />} />
+          {/* <Route path="/sender" element={<Sender />} /> */}
           <Route path="/detail" element={<Content />} />
           <Route path="/preview" element={<Preview />} />
           <Route path="/smtp" element={<Smtp />} />
-          <Route path="/userselect" element={<UserSelect />} />
+          {/* <Route path="/userselect" element={<UserSelect />} /> */}
           <Route path="/404" element={<Errorpage />} />
           <Route path="*" element={<Errorpage />} />
         </Routes>

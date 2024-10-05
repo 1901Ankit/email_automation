@@ -30,11 +30,20 @@ const Smtp = () => {
     setIsModalOpen(false);
     setIsEditing(false);
     setEditingIndex(null);
+    setFormData({
+      id: "",
+      name: "",
+      host: "",
+      username: "",
+      port: "",
+      use_tls: "false",
+      password: "",
+    })
   };
   useEffect(() => {
     const fetchAllSMTPs = async () => {
       try {
-        const response = await API.getAllSMTPs({ user_id: localStorage.getItem('id') });
+        const response = await API.getAllSMTPs({ user_id: sessionStorage.getItem('id') });
         setTableData(response.data.servers);
       } catch (error) {
         console.log(error);
