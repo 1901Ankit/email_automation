@@ -3,7 +3,7 @@ import "./index.css";
 import { FaPlus, FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "../modal";
 import axios from "axios";
-import * as SenderInfoAPI from "../../api/sender";
+
 
 
 const Sender = () => {
@@ -29,9 +29,9 @@ const Sender = () => {
   }, []);
   const fetchData = async () => {
     try {
-      const response = await SenderInfoAPI.getAllSenders({ user_id: sessionStorage.getItem('id') });
+      // const response = await SenderInfoAPI.getAllSenders({ user_id: sessionStorage.getItem('id') });
       
-      setTableData(response.data.senders);
+      // setTableData(response.data.senders);
     } catch (error) {
       if (error.response) {
       } else if (error.request) {
@@ -66,15 +66,15 @@ const Sender = () => {
       try {
         const formData = new FormData();
         if (editingIndex !== null) {
-          const response = await SenderInfoAPI.editSenders(formData, tableData[editingIndex].id);
-            setTableData((prev) =>
-              prev.map((item, index) =>
-                index === editingIndex ? response.data : item
-              )
-            );
+          // const response = await SenderInfoAPI.editSenders(formData, tableData[editingIndex].id);
+            // setTableData((prev) =>
+            //   prev.map((item, index) =>
+            //     index === editingIndex ? response.data : item
+            //   )
+            // );
         } else {
-         const  response = await SenderInfoAPI.createSenders(formData)
-          setTableData((prev) => [...prev, response.data]);
+        //  const  response = await SenderInfoAPI.createSenders(formData)
+          // setTableData((prev) => [...prev, response.data]);
         }
 
         setFormData({

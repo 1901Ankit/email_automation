@@ -29,11 +29,11 @@ const Sidebar = () => {
     //   path: "/sender",
     //   icon: <GrCircleInformation style={{ fontSize: "24px" }} />,
     // },
-    {
-      name: "Sender Info",
-      path: "/userselect",
-      icon: <LuSend  style={{ fontSize: "24px" }} />,
-    },
+    // {
+    //   name: "Sender Info",
+    //   path: "/userselect",
+    //   icon: <LuSend  style={{ fontSize: "24px" }} />,
+    // },
     {
       name: "SMTP Setup",
       path: "/smtp",

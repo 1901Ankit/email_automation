@@ -46,7 +46,7 @@ const Csv = ({csvFile, setCsvFile}) => {
             csvData: csvData,
           };
           
-          sessionStorage.setItem('csv', JSON.stringify(csvData));
+          localStorage.setItem('csv', JSON.stringify(csvData));
         
           setFileData({
             name: file.name,

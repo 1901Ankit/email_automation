@@ -12,6 +12,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import * as sendEmailAPI from "../../api/sendEmail";
 import html2canvas from "html2canvas";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Preview = ({ placeholder }) => {
   const editor = useRef(null);
@@ -25,8 +26,9 @@ const Preview = ({ placeholder }) => {
   const [content, setContent] = useState(``);
   const [imageURL, setImageURL] = useState("");
   const [csvData, setCsvData] = useState(null);
+  const [HTMLtemplate, setHTMLtemplate] = useState(null)
   const [details, setDetails] = useState({});
-  const [options, setOptions] = useState({ senders: [], smtps: [] });
+  const [options, setOptions] = useState({ smtps: [] });
   const [file, setFile] = useState(null);
 
   const config = useMemo(
@@ -41,7 +43,7 @@ const Preview = ({ placeholder }) => {
     if (location.state && location.state.file) {
       setFile(location.state.file);
     } else {
-      alert("You must have to provide csv file list");
+      toast.error("You must have to provide csv file list");
       setFile(null);
       navigate("/detail", { replace: true });
     }
@@ -58,6 +60,7 @@ const Preview = ({ placeholder }) => {
           )}`
         );
         const html = await response.text();
+        setHTMLtemplate(html)
         console.log(html);
 
         const tempDiv = document.createElement("div");
@@ -114,11 +117,7 @@ const Preview = ({ placeholder }) => {
   };
   const handleSendEmail = async () => {
     const formData = new FormData();
-
-    // Append necessary fields
-    options?.senders?.forEach((element) => {
-      formData.append("sender_ids", Number(element.value));
-    });
+  
     options?.smtps?.forEach((element) => {
       formData.append("smtp_server_ids", Number(element.value));
     });
@@ -133,7 +132,9 @@ const Preview = ({ placeholder }) => {
 
     try {
       const response = await sendEmailAPI.sendEmail(formData);
+      toast.success("Email sent successfully")
       console.log("Emails sent successfully:", response.data);
+
     } catch (error) {
       console.error(
         "Error sending emails:",
@@ -149,7 +150,6 @@ const Preview = ({ placeholder }) => {
     const blocks = rawContent.blocks.map((block) => block.text).join("\n");
     setContent(blocks);
   };
-  console.log(file);
 
   return (
     <>
@@ -189,22 +189,6 @@ const Preview = ({ placeholder }) => {
 
               <div className="flex mt-4">
                 <div className="w-full">
-                  <label htmlFor="displayName">SENDER EMAIL</label>
-                  <input
-                    type="email"
-                    id="senderEmail"
-                    name="senderEmail"
-                    value={options?.senders
-                      ?.map((sender) => sender.label)
-                      .join(", ")}
-                    className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
-                    readOnly
-                  />
-                </div>
-              </div>
-
-              <div className="flex mt-4">
-                <div className="w-full">
                   <label htmlFor="fromEmail">SMTPS LIST </label>
                   <input
                     type="text"
@@ -221,15 +205,14 @@ const Preview = ({ placeholder }) => {
 
               <div className="mt-4">
                 <div>
-                <label htmlFor="content">UPLOADED FILE</label>
+                  <label htmlFor="content">UPLOADED FILE</label>
                 </div>
 
                 <div
-            className="block text-start w-full border border-red-700 mt-1 rounded-md py-2 pl-3 text-gray-600 font-bold"
-          >{file.name} </div>
+                  className="block text-start w-full border border-red-700 mt-1 rounded-md py-2 pl-3 text-gray-600 font-bold"
+                >{file.name} </div>
 
-              </div> */}
-
+              </div>
               <div className="w-full mt-4">
                 <label htmlFor="content">UPLOADED FILE </label>
                 <input
@@ -243,13 +226,20 @@ const Preview = ({ placeholder }) => {
                 <div className="container p-0 h-full">
                   <div className="h-full">
                     <div className="flex mt-4 h-full">
-                      <div className="w-full min-h-[40vh] relative">
+                      <div className="w-full min-h-[55vh] relative">
                         <label htmlFor="content">CONTENT</label>
-                        <iframe
-                                    src={`https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(sessionStorage.getItem('key'))}`}
-                                    // alt="Selected"
-                                    height={"100%"} width={"100%"}
-                                />
+
+                        <div className="absolute h-full w-full overflow-y-auto">
+                          <div
+                            dangerouslySetInnerHTML={{ __html: HTMLtemplate }}
+                            className="w-full h-full"
+                          />
+                        </div>
+                        {/* <iframe
+                          src={`https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(sessionStorage.getItem('key'))}`}
+                          // alt="Selected"
+                          height={"100%"} width={"100%"}
+                        /> */}
                         {/* <img src={imageURL} alt="" /> */}
                       </div>
                     </div>
