@@ -48,16 +48,16 @@ const Preview = ({ placeholder }) => {
       setFile(null);
       navigate("/detail", { replace: true });
     }
-    setCsvData(JSON.parse(localStorage.getItem("csv")));
-    setDetails(JSON.parse(localStorage.getItem("details")));
-    setOptions(JSON.parse(localStorage.getItem("options")));
-    const fileData = JSON.parse(localStorage.getItem("csv"));
+    setCsvData(JSON.parse(sessionStorage.getItem("csv")));
+    setDetails(JSON.parse(sessionStorage.getItem("details")));
+    setOptions(JSON.parse(sessionStorage.getItem("options")));
+    const fileData = JSON.parse(sessionStorage.getItem("csv"));
 
     const selectedHTMLFile = async () => {
       try {
         const response = await fetch(
           `https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(
-            localStorage.getItem("key")
+            sessionStorage.getItem("key")
           )}`
         );
         const html = await response.text();
@@ -126,7 +126,7 @@ const Preview = ({ placeholder }) => {
     formData.append("subject", details.subject);
     formData.append(
       "uploaded_file_key",
-      JSON.parse(localStorage.getItem("key"))
+      JSON.parse(sessionStorage.getItem("key"))
     );
     formData.append("display_name", details.displayName);
     formData.append("email_list", file);
