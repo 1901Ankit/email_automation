@@ -13,6 +13,7 @@ import * as sendEmailAPI from "../../api/sendEmail";
 import html2canvas from "html2canvas";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Rightside from "../../component/rightsidebar";
 
 const Preview = ({ placeholder }) => {
   const editor = useRef(null);
@@ -117,7 +118,7 @@ const Preview = ({ placeholder }) => {
   };
   const handleSendEmail = async () => {
     const formData = new FormData();
-  
+
     options?.smtps?.forEach((element) => {
       formData.append("smtp_server_ids", Number(element.value));
     });
@@ -159,8 +160,8 @@ const Preview = ({ placeholder }) => {
             <div id="loader"></div>
           </div>
         ) : (
-          <div className="container">
-            <form>
+          <div className="container flex">
+            <form className="w-[70%]">
               <h1 className="text-3xl font-bold">Preview Campaigns</h1>
               <div className="flex mt-4">
                 <div className="w-full me-6">
@@ -279,6 +280,9 @@ const Preview = ({ placeholder }) => {
                 </div>
               )} */}
             </form>
+            <div className="w-[30%]">
+              <Rightside />
+            </div>
           </div>
         )}
       </div>
