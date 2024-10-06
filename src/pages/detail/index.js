@@ -50,7 +50,7 @@ const Content = ({ placeholder }) => {
   useEffect(() => {
     const loadData = async () => {
       const smtpResponse = await SMTPAPI.getAllSMTPs({
-        user_id: localStorage.getItem("id"),
+        user_id: sessionStorage.getItem("id"),
       });
       if (smtpResponse?.data?.servers.length < 0) {
         toast.error("You do not have smtps information ");
@@ -107,13 +107,13 @@ const Content = ({ placeholder }) => {
       toast.error("Please fill all the required fields");
       return;
     }
-    localStorage.setItem("details", JSON.stringify(details));
+    sessionStorage.setItem("details", JSON.stringify(details));
     if (selectedOptions.smtps.length < 1) {
       toast.error("Please select at least one SMTP host Info");
       return;
     }
-    localStorage.setItem("options", JSON.stringify(selectedOptions));
-    if (!JSON.parse(localStorage.getItem("csv"))) {
+    sessionStorage.setItem("options", JSON.stringify(selectedOptions));
+    if (!JSON.parse(sessionStorage.getItem("csv"))) {
       toast.error("Please upload your CSV file list");
       return;
     }
@@ -122,7 +122,7 @@ const Content = ({ placeholder }) => {
       return;
     }
 
-    localStorage.setItem("options", JSON.stringify(selectedOptions));
+    sessionStorage.setItem("options", JSON.stringify(selectedOptions));
     // if (csvFile) {
     navigate("/preview", { state: { file: csvFile } });
     // }
@@ -133,7 +133,7 @@ const Content = ({ placeholder }) => {
     if (type === "smtp") {
       updatedSelectedOptions.smtps = selectedOption;
     }
-    localStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
+    sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
     setSelectedOptions(updatedSelectedOptions);
   };
   const customStyles = {
