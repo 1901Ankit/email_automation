@@ -21,18 +21,20 @@ const EmailEditor = ({
     [placeholder]
   );
 
-  useEffect(() => {
-    const getHTMLtemplate = async () => {
-      try {
-        const response = await fetch(selectedTemplatedDetails.file_url);
-        const html = await response.text();
-        setSelectedTemplate(html);
-      } catch (error) {
-        alert("Sorry Please Try Again!");
-      }
-    };
-    getHTMLtemplate();
-  }, [selectedTemplatedDetails]);
+    useEffect(() => {
+        const getHTMLtemplate = async () => {
+            if (!selectedTemplatedDetails) return;
+            try {
+                const response = await fetch(selectedTemplatedDetails.file_url);
+                const html = await response.text();
+                setSelectedTemplate(html);
+            } catch (error) {
+                alert("Sorry Please Try Again!")
+            }
+        }
+        getHTMLtemplate();
+    }, [selectedTemplatedDetails])
+
 
   const handleImageClickEditorOpen = () => {
     setIsEditorOpen(true);
