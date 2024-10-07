@@ -35,7 +35,7 @@ const Content = ({ placeholder }) => {
     const retriedOptions = JSON.parse(sessionStorage.getItem("options")) || {
       smtps: [],
     };
-    
+
     setDetails(retriedDetails);
     setSelectedOptions(retriedOptions);
   }, []);
@@ -77,6 +77,22 @@ const Content = ({ placeholder }) => {
   const handleModalClose = () => {
     setModalOpen(false);
   };
+  const saveEnteredDetails = async () => {
+    if (
+      details.yourName === "" ||
+      details.subject === "" ||
+      details.delay_seconds === ""
+    ) {
+      toast.error("Please fill all the required fields");
+      return;
+    }
+    sessionStorage.setItem("details", JSON.stringify(details));
+    if (selectedOptions.smtps.length < 1) {
+      toast.error("Please select at least one SMTP host Info");
+      return;
+    }
+    sessionStorage.setItem("options", JSON.stringify(selectedOptions));
+  }
   const handleModalSave = async () => {
     if (emailEditorRef.current?.editor) {
       emailEditorRef.current.editor.exportHtml((data) => {
@@ -103,20 +119,7 @@ const Content = ({ placeholder }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // check variations
-    if (
-      details.yourName === "" ||
-      details.subject === "" ||
-      details.delay_seconds === ""
-    ) {
-      toast.error("Please fill all the required fields");
-      return;
-    }
-    sessionStorage.setItem("details", JSON.stringify(details));
-    if (selectedOptions.smtps.length < 1) {
-      toast.error("Please select at least one SMTP host Info");
-      return;
-    }
-    sessionStorage.setItem("options", JSON.stringify(selectedOptions));
+    saveEnteredDetails()
     if (!JSON.parse(sessionStorage.getItem("csv"))) {
       toast.error("Please upload your CSV file list");
       return;
@@ -126,7 +129,6 @@ const Content = ({ placeholder }) => {
       return;
     }
 
-    sessionStorage.setItem("options", JSON.stringify(selectedOptions));
     // if (csvFile) {
     navigate("/preview", { state: { file: csvFile } });
     // }
@@ -256,11 +258,12 @@ const Content = ({ placeholder }) => {
                 />
               </div>
             </div>
-
-            <Editing
-              setSelectedTemplate={setSelectedTemplate}
-              setModalOpen={setModalOpen}
-            />
+            <div className="" onClick={saveEnteredDetails}>
+              <Editing
+                setSelectedTemplate={setSelectedTemplate}
+                setModalOpen={setModalOpen}
+              />
+            </div>
 
             <div className="container hsyw p-0">
               <h1 className="text-2xl font-bold mt-2">Default Template</h1>
