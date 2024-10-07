@@ -26,7 +26,6 @@ const Preview = ({ placeholder }) => {
   );
   const [content, setContent] = useState(``);
   const [imageURL, setImageURL] = useState("");
-  const [csvData, setCsvData] = useState(null);
   const [HTMLtemplate, setHTMLtemplate] = useState(null)
   const [details, setDetails] = useState({});
   const [options, setOptions] = useState({ smtps: [] });
@@ -48,7 +47,6 @@ const Preview = ({ placeholder }) => {
       setFile(null);
       navigate("/detail", { replace: true });
     }
-    setCsvData(JSON.parse(sessionStorage.getItem("csv")));
     setDetails(JSON.parse(sessionStorage.getItem("details")));
     setOptions(JSON.parse(sessionStorage.getItem("options")));
     const fileData = JSON.parse(sessionStorage.getItem("csv"));
@@ -62,30 +60,29 @@ const Preview = ({ placeholder }) => {
         );
         const html = await response.text();
         setHTMLtemplate(html)
-        console.log(html);
 
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = html;
-        document.body.appendChild(tempDiv);
-        // Wait for all images to load
-        const images = tempDiv.getElementsByTagName("img");
-        const imageLoadPromises = Array.from(images).map((img) => {
-          return new Promise((resolve, reject) => {
-            img.onload = resolve;
-            img.onerror = () => {
-              console.error("Image failed to load:", img.src);
-              resolve(); // Resolve even on error to continue
-            };
-          });
-        });
+        // const tempDiv = document.createElement("div");
+        // tempDiv.innerHTML = html;
+        // document.body.appendChild(tempDiv);
+        // // Wait for all images to load
+        // const images = tempDiv.getElementsByTagName("img");
+        // const imageLoadPromises = Array.from(images).map((img) => {
+        //   return new Promise((resolve, reject) => {
+        //     img.onload = resolve;
+        //     img.onerror = () => {
+        //       console.error("Image failed to load:", img.src);
+        //       resolve(); // Resolve even on error to continue
+        //     };
+        //   });
+        // });
 
-        // Wait for all images to load
-        await Promise.all(imageLoadPromises);
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        const canvas = await html2canvas(tempDiv, { useCORS: true });
-        const selectedHTMLImageURL = canvas.toDataURL();
-        setImageURL(selectedHTMLImageURL);
-        document.body.removeChild(tempDiv);
+        // // Wait for all images to load
+        // await Promise.all(imageLoadPromises);
+        // await new Promise((resolve) => setTimeout(resolve, 100));
+        // const canvas = await html2canvas(tempDiv, { useCORS: true });
+        // const selectedHTMLImageURL = canvas.toDataURL();
+        // setImageURL(selectedHTMLImageURL);
+        // document.body.removeChild(tempDiv);
       } catch (error) {
         console.log(error);
       }

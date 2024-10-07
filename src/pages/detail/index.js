@@ -35,6 +35,7 @@ const Content = ({ placeholder }) => {
     const retriedOptions = JSON.parse(sessionStorage.getItem("options")) || {
       smtps: [],
     };
+    
     setDetails(retriedDetails);
     setSelectedOptions(retriedOptions);
   }, []);
@@ -50,7 +51,7 @@ const Content = ({ placeholder }) => {
   useEffect(() => {
     const loadData = async () => {
       const smtpResponse = await SMTPAPI.getAllSMTPs({
-        user_id: sessionStorage.getItem("id"),
+        user_id: localStorage.getItem("id"),
       });
       if (smtpResponse?.data?.servers.length < 0) {
         toast.error("You do not have smtps information ");
@@ -90,7 +91,7 @@ const Content = ({ placeholder }) => {
       formData.append("file", blob, "mail_format_1.html");
       const response = await templateAPI.createHtmlTemplate(formData);
       setModalOpen(false);
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }

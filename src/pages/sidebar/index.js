@@ -71,15 +71,15 @@ const Sidebar = () => {
   }, []);
 
   function checkAuthentication() {
-    return !!sessionStorage.getItem("authToken");
+    return !!localStorage.getItem("access_token");
   }
 
   const handleTabChange = async (index) => {
     if (index === tabs.length - 1) {
       try {
-        const authToken = sessionStorage.getItem("access_token");
+        const authToken =localStorage.getItem("access_token");
         const res = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
-          { refresh: sessionStorage.getItem("refresh_token") },
+        { refresh:  localStorage.getItem("refresh_token") },
           {
             headers: {
               "Content-Type": "application/json",
@@ -87,9 +87,9 @@ const Sidebar = () => {
             },
           }
         );
-
-        sessionStorage.removeItem("access_token");
-        sessionStorage.removeItem("refresh_token");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("id");
         toast.success(res.data.message);
         setIsAuthenticated(false);
         navigate("/ ");
