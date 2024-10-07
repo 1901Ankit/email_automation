@@ -120,9 +120,9 @@ const Login = () => {
         formData.append("email", signInEmail);
         formData.append("password", signInPassword);
         const res = await API.login(formData);
-        sessionStorage.setItem("id", res.data.user_id);
-        sessionStorage.setItem("access_token", res.data.access);
-        sessionStorage.setItem("refresh_token", res.data.refresh);
+          localStorage.setItem("id", res.data.user_id);
+          localStorage.setItem("access_token", res.data.access);
+          localStorage.setItem("refresh_token", res.data.refresh);
         toast.success(res.data.message);
         setShow(true);
         navigate("/home");
@@ -206,6 +206,8 @@ const Login = () => {
     formData.append("otp", Number(otpValue));
     try {
       const response = await API.verifyOtp(formData);
+      console.log(response.data);
+      
       toast.success(response.data.message);
       handleSignInClick();
     } catch (error) {

@@ -18,6 +18,7 @@ const EmailEditor = ({ selectedTemplatedDetails, setViewModalOpen, setSelectedTe
 
     useEffect(() => {
         const getHTMLtemplate = async () => {
+            if (!selectedTemplatedDetails) return;
             try {
                 const response = await fetch(selectedTemplatedDetails.file_url);
                 const html = await response.text();
@@ -37,12 +38,12 @@ const EmailEditor = ({ selectedTemplatedDetails, setViewModalOpen, setSelectedTe
     const handleUpdateTemplate = async () => {
         try {
             const htmlContent = finalTemplate;
+
             const blob = new Blob([htmlContent], { type: 'text/html' });
             const fileName = `${selectedTemplatedDetails.name}.html`;
             const formData = new FormData();
             formData.append('file', blob, fileName);
-            console.log(formData);
-            
+
             const response = await templateAPI.editHtmlTemplate(formData, selectedTemplatedDetails.id);
             setSelectedTemplatedDetails(null)
             console.log(response);
