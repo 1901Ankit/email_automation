@@ -91,7 +91,10 @@ const Content = ({ placeholder }) => {
       formData.append("file", blob, "mail_format_1.html");
       const response = await templateAPI.createHtmlTemplate(formData);
       setModalOpen(false);
-      window.location.reload();
+      // window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } catch (error) {
       console.log(error);
     }
@@ -206,7 +209,8 @@ const Content = ({ placeholder }) => {
                   onChange={(e) =>
                     setDetails({ ...details, displayName: e.target.value })
                   }
-                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+                  className="block w-full mt-1 border-[1px] border-[#93C3FD] 
+                  rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
               </div>
 
@@ -226,7 +230,9 @@ const Content = ({ placeholder }) => {
                     setDetails({ ...details, delay_seconds: e.target.value })
                   }
                   placeholder="Seconds"
-                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+                  className="block w-full mt-1 border-[1px]
+                   border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors 
+                   duration-300 focus:outline-none focus:ring-0"
                 />
               </div>
             </div>
