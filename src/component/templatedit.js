@@ -11,6 +11,7 @@ import EmailEditor from "./EmailEditor";
 const Editing = ({ placeholder }) => {
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState("");
+  const [loading, setLoading] = useState(true);
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [templates, setTemplates] = useState([]);
@@ -147,14 +148,11 @@ const Editing = ({ placeholder }) => {
                           setSelectedTemplatedDetails(item);
                         }}
                       >
-                        {/* Display the generated image */}
                         {imageURLs[item.id] ? (
                           <iframe
                             src={imageURLs[item.id]}
                             height={"100%"}
                             width={"100%"}
-                            // alt={item.name}
-                            // style={{ width: "70%", height: '70%', margin: '0 auto' }}
                             className="mr-2"
                           />
                         ) : (

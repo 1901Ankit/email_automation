@@ -40,8 +40,8 @@
     border: none;
     color: #000;
     /* float: right; */
-    font-size: 30px;
-    font-weight: bold;
+    font-size: 25px;
+    font-weight:500;
   }
   .modal-close:hover,
   .modal-close:focus {

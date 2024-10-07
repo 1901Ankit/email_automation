@@ -41,12 +41,14 @@ const Smtp = () => {
       port: "",
       use_tls: "false",
       password: "",
-    })
+    });
   };
   useEffect(() => {
     const fetchAllSMTPs = async () => {
       try {
-        const response = await API.getAllSMTPs({ user_id: sessionStorage.getItem('id') });
+        const response = await API.getAllSMTPs({
+          user_id: sessionStorage.getItem("id"),
+        });
         setTableData(response.data.servers);
       } catch (error) {
         console.log(error);
@@ -176,7 +178,8 @@ const Smtp = () => {
               <div className="relative w-full max-w-xs">
                 <input
                   type="text"
-                  className="block w-full pl-10 pr-4 py-2 border rounded-md text-gray-700 placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                  className="block w-full pl-10 pr-4 py-2 border 
+                  rounded-md text-gray-700 placeholder-gray-400 focus:outline-none focus:border-blue-500"
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={handleSearchChange}
@@ -278,7 +281,7 @@ const Smtp = () => {
               </div>
             </div>
 
-            <Modal isOpen={isModalOpen} onClose={closeModal} className="" >
+            <Modal isOpen={isModalOpen} onClose={closeModal} className="">
               <h3 className="font-bold text-lg  text-center">
                 {isEditing ? "Edit SMTP Entry" : "Add New SMTP Entry"}
               </h3>
