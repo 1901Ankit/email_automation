@@ -56,7 +56,7 @@ const Editing = ({ placeholder }) => {
             return new Promise((resolve) => {
               img.onload = resolve;
               img.onerror = () => {
-                console.error("Image failed to load:", img.src);
+      
                 resolve(); // Resolve even on error to continue
               };
             });
@@ -71,7 +71,7 @@ const Editing = ({ placeholder }) => {
 
           document.body.removeChild(tempDiv);
         } catch (error) {
-          console.log(error);
+
         }
       }
       setHtmlContents(htmlContents);
@@ -87,7 +87,7 @@ const Editing = ({ placeholder }) => {
         const response = await templateAPI.getSavedEmailTemplates();
         setTemplates(response.data);
       } catch (error) {
-        console.log(error);
+
       }
     };
     fetchUserAllSavedTemplate();
@@ -100,7 +100,7 @@ const Editing = ({ placeholder }) => {
       setViewModalOpen(true);
       setDropdownOpen(false);
     } catch (error) {
-      console.log(error);
+ 
     }
   };
 
@@ -130,7 +130,10 @@ const Editing = ({ placeholder }) => {
               See your saved template and choose one
             </div>
             {dropdownOpen && (
-              <div className="absolute left-0 w-full bg-white border border-[#93C3FD] rounded-md mt-1 z-10 overflow-y-auto h-96">
+              <div
+                className="absolute left-0 w-full bg-gray-100 border border-[#93C3FD] 
+              shadow-2xl rounded-md mt-1 z-10 overflow-y-auto h-fit	"
+              >
                 {templates.length < 1 ? (
                   <p className=" mt-5 text-center">
                     {" "}
@@ -141,33 +144,35 @@ const Editing = ({ placeholder }) => {
                     {templates.map((item) => (
                       <div
                         key={item.id}
-                        className="p-2 cursor-pointer hover:bg-gray-100 my-1"
-                        onClick={() => {
-                          handleImageClick(imageURLs[item.id], item.id);
-                          setSelectedTemplateKey(item.name);
-                          setSelectedTemplatedDetails(item);
+                        className="p-2 cursor-pointer hover:bg-gray-100 my-1 flex justify-between"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          sessionStorage.setItem(
+                            "key",
+                            JSON.stringify(item.name)
+                          );
+                          setSelectedTemplateFileName(item.name);
                         }}
                       >
-                        {imageURLs[item.id] ? (
-                          <iframe
-                            src={imageURLs[item.id]}
-                            height={"100%"}
-                            width={"100%"}
-                            className="mr-2"
-                          />
-                        ) : (
-                          <div
-                            style={{
-                              width: "100px",
-                              height: "200px",
-                              backgroundColor: "#f0f0f0",
-                            }}
-                            className="mr-2"
-                          />
-                        )}
-                        <hr />
-                        <p>{item.name}</p>
-                        <hr />
+                        <p
+                          className={
+                            selectedTemplateFileName == item.name
+                              ? "font-bold"
+                              : ""
+                          }
+                        >
+                          {item.name}
+                        </p>
+                        <p
+                          className="preview-buttoon "
+                          onClick={() => {
+                            handleImageClick(imageURLs[item.id], item.id);
+                            setSelectedTemplateKey(item.name);
+                            setSelectedTemplatedDetails(item);
+                          }}
+                        >
+                          View
+                        </p>
                       </div>
                     ))}
                   </>

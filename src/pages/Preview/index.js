@@ -62,7 +62,7 @@ const Preview = ({ placeholder }) => {
         const html = await response.text();
         setHTMLtemplate(html)
       } catch (error) {
-        console.log(error);
+   
       }
     };
     selectedHTMLFile();
@@ -111,13 +111,10 @@ const Preview = ({ placeholder }) => {
       const response = await sendEmailAPI.sendEmail(formData);
       setEmailStatus(response.data)
       toast.success("Email sent successfully")
-      console.log("Emails sent successfully:", response.data);
+
 
     } catch (error) {
-      console.error(
-        "Error sending emails:",
-        error.response?.data || error.message
-      );
+     
     }
     setIsLoading(false)
   };
@@ -132,7 +129,7 @@ const Preview = ({ placeholder }) => {
 
   return (
     <>
-      <div className="container-fluid max-h-[100vh] overflow-scroll">
+    <div className="container-fluid  pt-24  max-h-[100vh] overflow-auto">
         {loading ? (
           <div className="loders">
             <div id="loader"></div>
@@ -182,7 +179,7 @@ const Preview = ({ placeholder }) => {
                 </div>
               </div>
 
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 <div>
                   <label htmlFor="content">UPLOADED FILE</label>
                 </div>
@@ -191,7 +188,7 @@ const Preview = ({ placeholder }) => {
                   className="block text-start w-full border border-red-700 mt-1 rounded-md py-2 pl-3 text-gray-600 font-bold"
                 >{file.name} </div>
 
-              </div>
+              </div> */}
               <div className="w-full mt-4">
                 <label htmlFor="content">UPLOADED FILE </label>
                 <input
@@ -201,7 +198,7 @@ const Preview = ({ placeholder }) => {
                 />
               </div>
 
-              <div className="container-fluid max-h-[100vh] overflow-scroll p-0">
+              <div className="container-fluid p-0">
                 <div className="container p-0 h-full">
                   <div className="h-full">
                     <div className="flex mt-4 h-full">
@@ -216,7 +213,7 @@ const Preview = ({ placeholder }) => {
                         </div>
                       </div>
                     </div>
-                    <div className="button-container mt-3">
+                    <div className="button-container mt-3 pb-6">
                       <button
                         disabled={isLoading}
                         onClick={handleSendEmail}
