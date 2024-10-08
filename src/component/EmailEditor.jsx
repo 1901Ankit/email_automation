@@ -47,17 +47,17 @@ const EmailEditor = ({
       //   const templateName =
       const formData = new FormData();
       formData.append("file", blob, fileName);
-      console.log(formData);
+      
 
       const response = await templateAPI.editHtmlTemplate(
         formData,
         selectedTemplatedDetails.id
       );
       setSelectedTemplatedDetails(null);
-      console.log(response);
+   
       setViewModalOpen(false);
     } catch (error) {
-      console.log(error);
+
     }
   };
   const handleModalClose = () => setIsEditorOpen(false);

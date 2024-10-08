@@ -92,12 +92,11 @@ const Content = ({ placeholder }) => {
       return;
     }
     sessionStorage.setItem("options", JSON.stringify(selectedOptions));
-  }
+  };
   const handleModalSave = async () => {
     if (emailEditorRef.current?.editor) {
       emailEditorRef.current.editor.exportHtml((data) => {
         const { html } = data;
-        console.log("Template saved with HTML content:", html);
       });
     }
     try {
@@ -111,15 +110,13 @@ const Content = ({ placeholder }) => {
       setTimeout(() => {
         window.location.reload();
       }, 1500);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // check variations
-    saveEnteredDetails()
+    saveEnteredDetails();
     if (!JSON.parse(sessionStorage.getItem("csv"))) {
       toast.error("Please upload your CSV file list");
       return;
@@ -177,13 +174,13 @@ const Content = ({ placeholder }) => {
   };
 
   return (
-    <div className="container-fluid max-h-[100vh] overflow-scroll mt-2">
+    <div className="container-fluid pt-24  max-h-[100vh] overflow-auto">
       {loading ? (
         <div className="loders">
           <div id="loader"></div>
         </div>
       ) : (
-        <div className="container">
+        <div className="container-fluid p-0">
           <form onSubmit={handleSubmit}>
             <h1 className="text-3xl font-bold">Manage Campaigns</h1>
             <div className="w-full me-6">
@@ -258,7 +255,16 @@ const Content = ({ placeholder }) => {
                 />
               </div>
             </div>
-            <div className="" onClick={saveEnteredDetails}>
+            <div
+              onClick={() =>
+                sessionStorage.setItem("details", JSON.stringify(details))
+              }
+              className="mt-5"
+            >
+              <h1 className="text-3xl font-bold">Upload list</h1>
+              <Csv csvFile={csvFile} setCsvFile={setCsvFile} />
+            </div>
+            <div className="mt-5" onClick={saveEnteredDetails}>
               <Editing
                 setSelectedTemplate={setSelectedTemplate}
                 setModalOpen={setModalOpen}
@@ -290,11 +296,6 @@ const Content = ({ placeholder }) => {
                   </div>
                 ))}
               </div>
-            </div>
-
-            <div className="mt-5">
-              <h1 className="text-3xl font-bold">Upload list</h1>
-              <Csv csvFile={csvFile} setCsvFile={setCsvFile} />
             </div>
 
             <div className="mt-5 text-right">

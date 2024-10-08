@@ -44,6 +44,7 @@ const Sidebar = () => {
       path: "/detail",
       icon: <BiMessageAltDetail style={{ fontSize: "24px" }} />,
     },
+
     {
       name: "Preview",
       path: "/preview",
@@ -104,10 +105,10 @@ const Sidebar = () => {
 
   return (
     <div className="layout">
-      <div className="sidebar">
-        <div className="logo-wrapper">
+    <div className="flex flex-col sidebar shadow-lg">
+    {/* <div className="logo-wrapper">
           <img src={logo} alt="Logo" />
-        </div>
+        </div> */}
         <ul className="sidebar-menu">
           {tabs.map((tab, index) => (
             <li key={index}>

@@ -13,6 +13,7 @@ import Preview from "../pages/Preview";
 import Sidebar from "../pages/sidebar";
 import Smtp from "../pages/smtp";
 import Errorpage from "../pages/404";
+import Header from "../component/header/header";
 
 const Router = () => {
   const location = useLocation();
@@ -21,7 +22,7 @@ const Router = () => {
 
   useEffect(() => {
     if (!token) {
-      if ((location.pathname = "/reset_password/*")) {
+      if ((location.pathname === "/reset_password/*")) {
         sessionStorage.clear();
         localStorage.clear();
       } else {
@@ -30,9 +31,8 @@ const Router = () => {
         navigate("/");
       }
     }
-  }, [token, navigate]);
+  }, [token, navigate, location.pathname]);
 
-  // Redirect to home if already logged in
   useEffect(() => {
     if (
       token &&
@@ -49,8 +49,14 @@ const Router = () => {
     );
   };
 
+  // Update the condition to exclude reset password routes from displaying the header
+  const shouldShowHeader =
+    !["/", "/reset_password/:uidID/:token"].includes(location.pathname) &&
+    !location.pathname.startsWith("/reset_password");
+
   return (
     <div className="d-flex">
+      {shouldShowHeader && <Header />}
       {isProtectedRoute(location.pathname) && <Sidebar />}
       <Routes>
         <Route path="/" element={<Login />} />

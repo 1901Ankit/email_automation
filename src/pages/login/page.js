@@ -143,15 +143,16 @@ const Login = () => {
         const formData = new FormData();
         formData.append("email", signInEmail);
         formData.append("password", signInPassword);
-        const res = await API.login(formData);
+        const res = await API.login(formData);      
         localStorage.setItem("id", res.data.user_id);
+        localStorage.setItem("user", signInEmail);
         localStorage.setItem("access_token", res.data.access);
         localStorage.setItem("refresh_token", res.data.refresh);
         toast.success(res.data.message);
         setShow(true);
         navigate("/home");
       } catch (error) {
-        console.log(error);
+ 
 
         toast.error(error.response.data.message);
 
@@ -233,15 +234,10 @@ const Login = () => {
     formData.append("otp", Number(otpValue));
     try {
       const response = await API.verifyOtp(formData);
-      console.log(response.data);
-
       toast.success(response.data.message);
       handleSignInClick();
     } catch (error) {
-      console.error(
-        "Verification Error:",
-        error.response ? error.response.data : error.message
-      );
+
       toast.error(error.response.data.message);
     }
   };
@@ -258,9 +254,7 @@ const Login = () => {
         : toast.error(error.message);
     }
 
-    // setShowResetFields(true);
-    // setShowSignupFields(false);
-    // setShowSigninFields(false);
+ 
   };
 
   // Resertpassword
@@ -268,10 +262,7 @@ const Login = () => {
     setLoadingStates({ ...loadingStates, reset: true });
 
     e.preventDefault();
-    // if (newPassword !== confirmPassword) {
-    //   toast.error("Passwords do not match!");
-    //   return;
-    // }
+  
 
     try {
       setLoading(true);
@@ -537,7 +528,7 @@ const Login = () => {
                         <div role="status">
                           <svg
                             aria-hidden="true"
-                            className="inline w-5 h-5 text-gray-200 animate-spin dark:text-gray-600 fill-white"
+                            class="inline w-5 h-5 text-gray-200 animate-spin dark:text-gray-600 fill-white"
                             viewBox="0 0 100 101"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -551,7 +542,7 @@ const Login = () => {
                               fill="currentFill"
                             />
                           </svg>
-                          <span className="sr-only">Loading...</span>
+                          <span class="sr-only">Loading...</span>
                         </div>
                       ) : (
                         " Sign In"

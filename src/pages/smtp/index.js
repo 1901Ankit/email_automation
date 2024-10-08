@@ -49,7 +49,7 @@ const Smtp = () => {
         const response = await API.getAllSMTPs({ user_id: localStorage.getItem('id') });
         setTableData(response.data.servers);
       } catch (error) {
-        console.log(error);
+
         setTableData([]);
       } finally {
         setLoading(false);
@@ -95,7 +95,7 @@ const Smtp = () => {
         toast.success("SMTP updated successfully!");
       } else {
         const response = await API.createSMTPs(newFormData);
-        console.log(response.data);
+   
         setTableData((prev) => [...prev, newFormData]);
         toast.success("SMTP added successfully!");
       }
@@ -114,7 +114,7 @@ const Smtp = () => {
         window.location.reload();
       }, 1500);
     } catch (error) {
-      console.error("Error while submitting SMTP data:", error);
+ 
       toast.error(
         "There was an error processing your request. Please try again."
       );
@@ -138,7 +138,7 @@ const Smtp = () => {
         window.location.reload();
       }, 1500);
     } catch (error) {
-      console.error("Error deleting entry:", error);
+
       toast.error("Error deleting SMTP entry!");
     }
   };
@@ -157,8 +157,8 @@ const Smtp = () => {
 
   return (
     <>
-      <div className="container mx-auto mt-5 px-3 min-h-screen overflow-y-auto">
-        {loading ? (
+    <div className="container-fluid  pt-32  max-h-[100vh] overflow-auto">
+    {loading ? (
           <div className="loders">
             <div id="loader"></div>
           </div>

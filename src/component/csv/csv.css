@@ -111,4 +111,16 @@
     align-items: center;
     background-color: #7b2cbf;
   }
+  .preview-buttoon {
+    font-family: "Montserrat";
+    color: #f7fff7;
+    border: none;
+    border-radius: 20px;
+    padding: 2px 20px;
+    cursor: pointer;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    background-color: #7b2cbf;
+  }
   
