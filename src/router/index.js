@@ -22,7 +22,7 @@ const Router = () => {
 
   useEffect(() => {
     if (!token) {
-      if ((location.pathname === "/reset_password/*")) {
+      if (location.pathname.startsWith("/reset_password")) {
         sessionStorage.clear();
         localStorage.clear();
       } else {
@@ -49,7 +49,7 @@ const Router = () => {
     );
   };
 
-  // Update the condition to exclude reset password routes from displaying the header
+
   const shouldShowHeader =
     !["/", "/reset_password/:uidID/:token"].includes(location.pathname) &&
     !location.pathname.startsWith("/reset_password");
