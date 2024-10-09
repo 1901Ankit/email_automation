@@ -134,9 +134,9 @@ const Login = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    setLoadingStates({ ...loadingStates, signIn: true });
     const newErrors = validateSignInForm();
     if (Object.keys(newErrors).length === 0) {
+      setLoadingStates({ ...loadingStates, signIn: true });
       setLoading(true); // Start loading
 
       try {
@@ -181,7 +181,7 @@ const Login = () => {
     }
     if (!signInPassword.match(passwordPattern)) {
       newErrors.password =
-        "Password must be at least 8 characters long and contain at least one letter and one number";
+        "Password must be at least 8 characters long and contain at least one letter, one special character and one number";
     }
 
     return newErrors;

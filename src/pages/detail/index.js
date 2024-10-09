@@ -308,9 +308,9 @@ const Content = ({ placeholder }) => {
       )}
 
       {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg w-full max-w-[60%] max-h-[100vh] overflow-hidden">
-            <div className="h-[70vh] overflow-y-auto scroll-smooth">
+            <div className="h-[70vh] overflow-y-auto scroll-smooth ">
               <JoditEditor
                 ref={editor}
                 value={selectedTemplate}
