@@ -25,18 +25,23 @@ const Header = () => {
               <FaPhoneAlt className="text-xl" />
               <span className="ml-2">+1 (800) 210-2858</span>
             </div>
-            <div className="flex items-center cursor-pointer group">
-              {user ? (
-                <div
-                  className="bg-gradient-to-r from-[#7b2cbf] to-[#7b2cbf]
-                   text-white px-3.5 py-2 rounded-full shadow-md font-semibold"
-                >
-                  {user.charAt(0).toUpperCase() || "W"}
-                </div>
-              ) : null}
-              {/* <div className=" hidden group-hover:flex absolute top-20 right-0 border shadow-lg rounded px-4 py-1 items-center "> */}
-                <pre className="hidden group-hover:flex absolute top-[3.75rem] right-0.5">{user}</pre>
-              {/* </div> */}
+
+            <div className="relative group">
+              <div className="flex items-center cursor-pointer">
+                {user ? (
+                  <div
+                    className="bg-gradient-to-r from-[#7b2cbf] to-[#7b2cbf]
+             text-white px-3.5 py-2 rounded-full shadow-md font-semibold"
+                  >
+                    {user.charAt(0).toUpperCase() || "W"}
+                  </div>
+                ) : null}
+              </div>
+
+             
+              <div className="hidden group-hover:block absolute top-[4.5rem] right-0.5 bg-white shadow-md rounded-lg p-2">
+                <pre>{user}</pre>
+              </div>
             </div>
           </div>
         </div>
