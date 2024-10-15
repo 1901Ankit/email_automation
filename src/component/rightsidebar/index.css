@@ -30,6 +30,7 @@
   .Email-status1 {
     display: flex;
     align-items: center;
+    flex-direction: column;
     /* padding: 2px; */
     border-radius: 8px;
     /* width: 90%; */
