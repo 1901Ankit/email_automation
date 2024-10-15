@@ -24,7 +24,12 @@ const Preview = ({ placeholder }) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-  const [emailStatus, setEmailStatus] = useState(null);
+  const [emailStatus, setEmailStatus] = useState({
+    total_emails: 0,
+    successful_sends: 0,
+    failed_sends: 0,
+    email_statuses: [],
+  });
   const [content, setContent] = useState(``);
   const [isLoading, setIsLoading] = useState(false)
   const [HTMLtemplate, setHTMLtemplate] = useState(null)
@@ -39,6 +44,57 @@ const Preview = ({ placeholder }) => {
     }),
     [placeholder]
   );
+
+  useEffect(() => {
+    // Establish the WebSocket connection
+    const socket = new WebSocket(`${process.env.REACT_APP_BACKEND_BASE_URL.replace('https', 'wss')}/ws/email-status/`);
+
+    // Event listener for when the WebSocket connection is open
+    socket.onopen = () => {
+      console.log('WebSocket connection established');
+    };
+
+    // Event listener for receiving messages from the WebSocket
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log(data, emailStatus);
+      setEmailStatus((prevStatus) => {
+        // Create a new updated email status object based on the previous status
+        const updatedEmailStatus = {
+          total_emails: (prevStatus?.total_emails || 0) + 1, // Increment total emails
+          successful_sends: prevStatus?.successful_sends || 0, // Preserve successful sends
+          failed_sends: prevStatus?.failed_sends || 0, // Preserve failed sends
+          email_statuses: [
+            ...prevStatus?.email_statuses || [], // Preserve previous email statuses
+            {
+              email: data.email,
+              status: data.status,
+              timestamp: data.timestamp,
+            },
+          ],
+        };
+
+        // Update counts based on the status
+        if (data.status === "Sent successfully") {
+          updatedEmailStatus.successful_sends += 1; // Increment successful sends
+        } else if (data.status === "Failed to send") {
+          updatedEmailStatus.failed_sends += 1; // Increment failed sends
+        }
+
+        return updatedEmailStatus; // Return the new state object
+      });
+
+    };
+
+    // socket.onclose = () => {
+    //   console.log('WebSocket connection closed');
+    // };
+
+    return () => {
+      socket.close();
+    };
+  }, []);
+
 
   useEffect(() => {
     if (location.state && location.state.file) {
@@ -62,7 +118,7 @@ const Preview = ({ placeholder }) => {
         const html = await response.text();
         setHTMLtemplate(html)
       } catch (error) {
-   
+
       }
     };
     selectedHTMLFile();
@@ -109,12 +165,12 @@ const Preview = ({ placeholder }) => {
 
     try {
       const response = await sendEmailAPI.sendEmail(formData);
-      setEmailStatus(response.data)
+      // setEmailStatus(response.data)
       toast.success("Email sent successfully")
 
 
     } catch (error) {
-     
+
     }
     setIsLoading(false)
   };
@@ -129,7 +185,7 @@ const Preview = ({ placeholder }) => {
 
   return (
     <>
-    <div className="container-fluid  pt-24  max-h-[100vh] overflow-auto">
+      <div className="container-fluid  pt-24  max-h-[100vh] overflow-auto">
         {loading ? (
           <div className="loders">
             <div id="loader"></div>
