@@ -47,7 +47,7 @@ const Preview = ({ placeholder }) => {
 
   useEffect(() => {
     // Establish the WebSocket connection
-    const socket = new WebSocket(`${process.env.REACT_APP_BACKEND_BASE_URL.replace('https', 'wss')}/ws/email-status/`);
+    const socket = new WebSocket(`${process.env.REACT_APP_BACKEND_BASE_URL.replace('https', 'wss')}/ws/email-status/${localStorage.getItem('id')}/`);
 
     // Event listener for when the WebSocket connection is open
     socket.onopen = () => {
