@@ -1,46 +1,52 @@
-import React from "react";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import React, { useEffect, useState } from "react";
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { getEmailList } from "../api/emailTemplate";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-const LineChart = () => {
-  const data = {
-    labels: ["M", "T", "W", "T", "F", "S", "S"],
-    datasets: [
-      {
-        label: "Earning",
-        data: [12, 19, 3, 17, 6, 3, 7],
-        backgroundColor: "#000",
-        borderColor: "#000",
-        borderWidth: 1,
-      },
-      {
-        label: "Profit",
-        data: [2, 29, 5, 5, 2, 3, 10],
-        backgroundColor: "#000",
-        borderColor: "#000",
-        borderWidth: 1,
-      },
-    ],
-  };
+const Linechart = (props) => {
+  const [chartData, setChartData] = useState({
+    labels: ["Failed Sends", "Successful Sends"],
+    datasets: [],
+  });
+
+  const [totalSends, setTotalSends] = useState({
+    successful_sends: 0,
+    failed_sends: 0,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getEmailList(props.total_emails);
+        const apiData = response.data;
+        setTotalSends({
+          successful_sends: apiData.successful_sends,
+          failed_sends: apiData.failed_sends,
+        });
+        const updatedChartData = {
+          labels: ["Failed Sends", "Successful Sends"],
+          datasets: [
+            {
+              label: "Email Sends",
+              data: [apiData.failed_sends, apiData.successful_sends],
+              backgroundColor: ["#C46100", "#4CB140"],
+              borderColor: ["#C46100", "#4CB140"],
+              borderWidth: 1,
+            },
+          ],
+        };
+
+        setChartData(updatedChartData);
+      } catch (error) {
+        console.error("Error fetching data from API", error);
+      }
+    };
+
+    fetchData();
+  }, [props.total_emails]);
 
   const options = {
     responsive: true,
@@ -48,24 +54,35 @@ const LineChart = () => {
     plugins: {
       legend: {
         position: "top",
-      },
-      tooltip: {
-        callbacks: {
-          label: function (tooltipItem) {
-            return tooltipItem.dataset.label + ": " + tooltipItem.raw;
+        labels: {
+          font: {
+            size: 14,
+            family: "Arial",
           },
+        },
+      },
+      datalabels: {
+        color: "#fff",
+        font: {
+          size: 12,
+          weight: "bold",
+        },
+        formatter: (value, context) => {
+          const label = context.chart.data.labels[context.dataIndex];
+          return `${label}: ${value}`;
         },
       },
     },
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
+    <div className="w-full max-w-lg mx-auto p-4">
+      {/* Pie Chart */}
       <div className="relative w-full h-80">
-        <Line data={data} options={options} />
+        <Pie data={chartData} options={options} />
       </div>
     </div>
   );
 };
 
-export default LineChart;
+export default Linechart;
