@@ -12,7 +12,7 @@ const Home = () => {
       <div className="p-2">
         <h1 className="text-3xl font-bold">Analytics</h1>
       </div>
-      <div className="mt-5">
+      <div className="mt-2">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="w-full">
             <Barchart data={data.labels} />

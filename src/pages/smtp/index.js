@@ -22,7 +22,6 @@ const Smtp = () => {
     password: "",
   });
   const [tableData, setTableData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: "ascending",
@@ -46,10 +45,11 @@ const Smtp = () => {
   useEffect(() => {
     const fetchAllSMTPs = async () => {
       try {
-        const response = await API.getAllSMTPs({ user_id: localStorage.getItem('id') });
+        const response = await API.getAllSMTPs({
+          user_id: localStorage.getItem("id"),
+        });
         setTableData(response.data.servers);
       } catch (error) {
-
         setTableData([]);
       } finally {
         setLoading(false);
@@ -95,7 +95,7 @@ const Smtp = () => {
         toast.success("SMTP updated successfully!");
       } else {
         const response = await API.createSMTPs(newFormData);
-   
+
         setTableData((prev) => [...prev, newFormData]);
         toast.success("SMTP added successfully!");
       }
@@ -114,7 +114,6 @@ const Smtp = () => {
         window.location.reload();
       }, 1500);
     } catch (error) {
- 
       toast.error(
         "There was an error processing your request. Please try again."
       );
@@ -138,13 +137,8 @@ const Smtp = () => {
         window.location.reload();
       }, 1500);
     } catch (error) {
-
       toast.error("Error deleting SMTP entry!");
     }
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
   };
 
   const requestSort = (key) => {
@@ -157,8 +151,8 @@ const Smtp = () => {
 
   return (
     <>
-    <div className="container-fluid  pt-32  max-h-[100vh] overflow-auto">
-    {loading ? (
+      <div className="container-fluid  pt-32  max-h-[100vh] overflow-auto">
+        {loading ? (
           <div className="loders">
             <div id="loader"></div>
           </div>
@@ -173,19 +167,6 @@ const Smtp = () => {
               >
                 <FaPlus />
               </button>
-              <div className="relative w-full max-w-xs">
-                <input
-                  type="text"
-                  className="block w-full pl-10 pr-4 py-2 border 
-                  rounded-md text-gray-700 placeholder-gray-400 focus:outline-none focus:border-blue-500"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                />
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaSearch className="text-gray-400" />
-                </div>
-              </div>
             </div>
 
             <div className="overflow-x-auto">

@@ -1,21 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels"; // Import the data labels plugin
+import { getEmailList } from "../api/emailTemplate";
 
 const Barchart = (props) => {
-  Chart.register(...registerables);
-  const chartData = {
-    labels: props.data.map((val) => val.year),
-    datasets: [
-      {
-        backgroundColor: props.data.map((val) => val.bg),
-        barPercentage: 0.5,
-        data: props.data.map((val) => val.range),
-        label: "Earnings by Year",
-      },
-    ],
-  };
+  Chart.register(...registerables, ChartDataLabels); // Register the plugin
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: [],
+  });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getEmailList(props.total_emails);
+        const apiData = response.data;
+        console.log(response);
+        const updatedChartData = {
+          labels: [""],
+          datasets: [
+            {
+              backgroundColor: ["#C46100"],
+              barPercentage: 0.1,
+              data: [apiData.total_emails],
+              label: "Total Emails", 
+            },
+          ],
+        };
+
+        setChartData(updatedChartData);
+      } catch (error) {
+        console.error("Error fetching data from API", error);
+      }
+    };
+
+    fetchData();
+  }, [props.total_emails]);
 
   const options = {
     responsive: true,
@@ -24,6 +45,18 @@ const Barchart = (props) => {
       legend: {
         position: "top",
       },
+      datalabels: {
+        anchor: "end",
+        align: "end",
+        formatter: (value) => {
+          return `Total Emails : ${value}`;
+        },
+        font: {
+          size: 14,
+          weight: "bold",
+        },
+        color: "#000",
+      },
     },
     scales: {
       x: {
@@ -31,6 +64,11 @@ const Barchart = (props) => {
       },
       y: {
         beginAtZero: true,
+        ticks: {
+          stepSize: 5,
+        },
+        min: 0,
+        max: 40,
       },
     },
   };

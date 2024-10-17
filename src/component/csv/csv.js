@@ -3,20 +3,20 @@ import Modal from "../../pages/modal";
 import Papa from "papaparse";
 import "./csv.css";
 
-const Csv = ({csvFile, setCsvFile}) => {
+const Csv = ({ csvFile, setCsvFile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [fileData, setFileData] = useState(null);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setCsvFile(file)
+    setCsvFile(file);
     if (file) {
       const fileURL = URL.createObjectURL(file);
       let previewElement = null;
       if (file.type === "text/csv") {
         const reader = new FileReader();
-       
+
         reader.onload = () => {
           const csvData = Papa.parse(reader.result, { header: true }).data;
           previewElement = (
@@ -45,9 +45,9 @@ const Csv = ({csvFile, setCsvFile}) => {
             fileType: file.type,
             csvData: csvData,
           };
-          
-          sessionStorage.setItem('csv', JSON.stringify(csvData));
-        
+
+          sessionStorage.setItem("csv", JSON.stringify(csvData));
+
           setFileData({
             name: file.name,
             size: (file.size / 1024).toFixed(2) + " KB",
@@ -74,13 +74,12 @@ const Csv = ({csvFile, setCsvFile}) => {
   };
   const handleFileRemove = () => {
     setFileData(null);
-    setCsvFile(null);  // Reset csvFile state as well
-    const fileInput = document.querySelector('.file-input');
+    setCsvFile(null); // Reset csvFile state as well
+    const fileInput = document.querySelector(".file-input");
     if (fileInput) {
-      fileInput.value = '';  // Clear the input field
+      fileInput.value = ""; // Clear the input field
     }
   };
-  
 
   const handlePreviewClick = () => {
     if (fileData || csvFile) {
@@ -89,7 +88,6 @@ const Csv = ({csvFile, setCsvFile}) => {
     }
   };
 
-
   return (
     <>
       <div className="container-fluid ">
@@ -97,16 +95,15 @@ const Csv = ({csvFile, setCsvFile}) => {
           <span className="material-icons-outlined upload-icon">
             file_upload
           </span>
-          <h3 className="dynamic-message">Drag & drop any file here</h3>
+          <h3 className="dynamic-message">Drag & Drop any file here</h3>
           <label className="label">
-            or
             <span className="browse-files">
               <input
                 type="file"
                 className="default-file-input file-input"
                 onChange={handleFileChange}
               />
-              <span className="browse-files-text">browse file</span>
+              <span className="browse-files-text text-center">Browse file</span>
               <span className="mx-2">from device</span>
             </span>
           </label>
@@ -119,8 +116,7 @@ const Csv = ({csvFile, setCsvFile}) => {
               <span className="material-icons-outlined file-icon">
                 description
               </span>
-              <span className="file-name">{csvFile.name}</span>{" "}
-              |{" "}
+              <span className="file-name">{csvFile.name}</span> |{" "}
               <span className="file-size">{csvFile.size}</span>kb
             </div>
             <span

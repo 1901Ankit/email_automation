@@ -16,18 +16,18 @@
   .drag-file-area {
     border: 2px dashed #7b2cbf;
     border-radius: 40px;
-    padding: 30px 50px;
+    padding: 10px 10px;
     width: 350px;
     text-align: center;
-    margin: 0 auto; /* Center horizontally */
+    margin: 0 auto; 
   }
   
   .drag-file-area .upload-icon {
-    font-size: 50px;
+    font-size: 30px;
   }
   
   .drag-file-area h3 {
-    font-size: 18px;
+    font-size: 15px;
   }
   
   .drag-file-area label .browse-files-text {
