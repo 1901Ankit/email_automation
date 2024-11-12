@@ -36,6 +36,9 @@ const Login = () => {
   const [signInErrors, setSignInErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
+
+  
+
   const navigate = useNavigate();
   const { uidID, token } = useParams();
   const location = useLocation();
@@ -137,13 +140,16 @@ const Login = () => {
     const newErrors = validateSignInForm();
     if (Object.keys(newErrors).length === 0) {
       setLoadingStates({ ...loadingStates, signIn: true });
-      setLoading(true); // Start loading
+      setLoading(true); 
 
       try {
         const formData = new FormData();
         formData.append("email", signInEmail);
         formData.append("password", signInPassword);
-        const res = await API.login(formData);      
+        const res = await API.login(formData);
+        console.log("Login response data:", res.data);
+
+        // localStorage.setItem("system_info", res.system_info.IdentifyingNumber);
         localStorage.setItem("id", res.data.user_id);
         localStorage.setItem("user", signInEmail);
         localStorage.setItem("access_token", res.data.access);
@@ -152,8 +158,6 @@ const Login = () => {
         setShow(true);
         navigate("/home");
       } catch (error) {
- 
-
         toast.error(error.response.data.message);
 
         setSignInErrors({
@@ -237,7 +241,6 @@ const Login = () => {
       toast.success(response.data.message);
       handleSignInClick();
     } catch (error) {
-
       toast.error(error.response.data.message);
     }
   };
@@ -253,8 +256,6 @@ const Login = () => {
         ? toast.error(error.response.data.errors.email[0])
         : toast.error(error.message);
     }
-
- 
   };
 
   // Resertpassword
@@ -262,7 +263,6 @@ const Login = () => {
     setLoadingStates({ ...loadingStates, reset: true });
 
     e.preventDefault();
-  
 
     try {
       setLoading(true);

@@ -51,13 +51,11 @@ const Preview = ({ placeholder }) => {
 
     // Event listener for when the WebSocket connection is open
     socket.onopen = () => {
-      console.log('WebSocket connection established');
     };
 
     // Event listener for receiving messages from the WebSocket
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data, emailStatus);
       setEmailStatus((prevStatus) => {
         // Create a new updated email status object based on the previous status
         const updatedEmailStatus = {
@@ -87,7 +85,6 @@ const Preview = ({ placeholder }) => {
     };
 
     // socket.onclose = () => {
-    //   console.log('WebSocket connection closed');
     // };
 
     return () => {

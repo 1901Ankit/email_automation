@@ -16,7 +16,7 @@ const Barchart = (props) => {
       try {
         const response = await getEmailList(props.total_emails);
         const apiData = response.data;
-        console.log(response);
+
         const updatedChartData = {
           labels: [""],
           datasets: [

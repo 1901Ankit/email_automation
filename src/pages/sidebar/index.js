@@ -2,16 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./index.css";
-import { GrCircleInformation } from "react-icons/gr";
 import { BiMessageAltDetail } from "react-icons/bi";
 import { VscPreview } from "react-icons/vsc";
 import { VscServerEnvironment } from "react-icons/vsc";
 import { IoHomeOutline } from "react-icons/io5";
-import logo from "../../assests/image/wishi.png";
 import { AiOutlineLogin } from "react-icons/ai";
 import { toast } from "react-toastify";
-import { LuSend } from "react-icons/lu";
-
+import { RiSendPlaneFill } from "react-icons/ri";
 
 const Sidebar = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -23,6 +20,11 @@ const Sidebar = () => {
       name: "Analytics",
       path: "/home",
       icon: <IoHomeOutline style={{ fontSize: "24px" }} />,
+    },
+    {
+      name: "Plan",
+      path: "/subscribe-plan",
+      icon: <RiSendPlaneFill style={{ fontSize: "24px" }} />,
     },
     // {
     //   name: "Template Info",
@@ -78,9 +80,10 @@ const Sidebar = () => {
   const handleTabChange = async (index) => {
     if (index === tabs.length - 1) {
       try {
-        const authToken =localStorage.getItem("access_token");
-        const res = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
-        { refresh:  localStorage.getItem("refresh_token") },
+        const authToken = localStorage.getItem("access_token");
+        const res = await axios.post(
+          `${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
+          { refresh: localStorage.getItem("refresh_token") },
           {
             headers: {
               "Content-Type": "application/json",
@@ -105,8 +108,8 @@ const Sidebar = () => {
 
   return (
     <div className="layout">
-    <div className="flex flex-col sidebar shadow-lg">
-    {/* <div className="logo-wrapper">
+      <div className="flex flex-col sidebar shadow-lg">
+        {/* <div className="logo-wrapper">
           <img src={logo} alt="Logo" />
         </div> */}
         <ul className="sidebar-menu">

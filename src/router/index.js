@@ -14,6 +14,9 @@ import Sidebar from "../pages/sidebar";
 import Smtp from "../pages/smtp";
 import Errorpage from "../pages/404";
 import Header from "../component/header/header";
+import Subscribe from "../pages/subscribe-plan";
+import User_profile from "../component/user-profile";
+import Manage from "../component/manage";
 
 const Router = () => {
   const location = useLocation();
@@ -49,7 +52,6 @@ const Router = () => {
     );
   };
 
-
   const shouldShowHeader =
     !["/", "/reset_password/:uidID/:token"].includes(location.pathname) &&
     !location.pathname.startsWith("/reset_password");
@@ -76,6 +78,18 @@ const Router = () => {
         <Route
           path="/smtp"
           element={token ? <Smtp /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/subscribe-plan"
+          element={token ? <Subscribe /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/user-profile"
+          element={token ? <User_profile /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/manage"
+          element={token ? <Manage /> : <Navigate to="/" replace />}
         />
         <Route path="/404" element={<Errorpage />} />
         <Route path="*" element={<Errorpage />} />

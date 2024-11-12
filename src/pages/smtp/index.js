@@ -18,7 +18,7 @@ const Smtp = () => {
     host: "",
     username: "",
     port: "",
-    use_tls: "false",
+    use_tls: "True",
     password: "",
   });
   const [tableData, setTableData] = useState([]);
@@ -38,7 +38,7 @@ const Smtp = () => {
       host: "",
       username: "",
       port: "",
-      use_tls: "false",
+      use_tls: "True",
       password: "",
     });
   };
@@ -228,8 +228,9 @@ const Smtp = () => {
                           {data.port}
                         </td>
                         <td className="px-6 py-4 text-xs text-gray-500 border truncate">
-                          {data?.use_tls ? "True" : "False"}
+                          {data?.use_tls && "True"}
                         </td>
+
                         <td className="px-6 py-4 text-xs text-gray-500 border truncate">
                           {data.username}
                         </td>
@@ -307,16 +308,14 @@ const Smtp = () => {
                     >
                       Email Use TLS
                     </label>
-                    <select
+                    <input
+                      type="text"
                       id="use_tls"
                       name="use_tls"
-                      value={formData.use_tls}
-                      onChange={handleChange}
-                      className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
-                    >
-                      <option value="true">True</option>
-                      <option value="false">False</option>
-                    </select>
+                      value="True"
+                      readOnly
+                      className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0 bg-gray-100"
+                    />
                   </div>
                   <div className="w-full">
                     <label

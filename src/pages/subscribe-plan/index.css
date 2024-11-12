@@ -1,0 +1,17 @@
+.pricing h3 {
+    padding: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: #7b2cbf;
+    margin: 20px -20px 0;
+}
+.pricing .box {
+    padding: 20px;
+    background: #fff;
+    text-align: center;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .25);
+}
