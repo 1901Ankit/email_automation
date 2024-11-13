@@ -10,8 +10,11 @@ html {
   overflow: hidden;
 }
 .hidden {
-display: none;
-}
-::-webkit-scrollbar{
   display: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+ol {
+  padding: 0 !important;
 }
