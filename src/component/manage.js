@@ -7,11 +7,8 @@ import {
   deviceType,
 } from "react-device-detect";
 
-const getUserEmail = () => "user@example.com";
-
 const Manage = () => {
   const [loginTime, setLoginTime] = useState("");
-  const [userEmail, setUserEmail] = useState(getUserEmail());
   const [deviceInfo, setDeviceInfo] = useState(null);
 
   useEffect(() => {
@@ -70,9 +67,10 @@ const Manage = () => {
         <div className="mt-auto">
           <button
             type="button"
-            className="font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer inline-flex items-center bg-[#7b2cbf]"
+            className="font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer
+             inline-flex items-center bg-[#7b2cbf]"
           >
-            BUY
+            Logout
           </button>
         </div>
       </div>
@@ -80,9 +78,9 @@ const Manage = () => {
   );
   const renderPlans = () => {
     const plans = [
-      { title: "Basic", price: "₹4990 / onwards" },
-      { title: "Standard", price: "₹5990 / onwards" },
-      { title: "Premium", price: "₹6990 / onwards" },
+      { title: "Device 1" },
+      { title: "Device 2" },
+      { title: "Device 3" },
     ];
     return plans.map((plan, index) => {
       return renderInfoBox(plan.title, plan.price, index === 0);

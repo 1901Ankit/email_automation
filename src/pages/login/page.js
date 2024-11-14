@@ -9,6 +9,13 @@ import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons from react-icons
 import { toast } from "react-toastify";
 import * as API from "../../api/user";
+import {
+  browserName,
+  browserVersion,
+  osName,
+  osVersion,
+  deviceType,
+} from "react-device-detect";
 
 const Login = () => {
   const [Username, SetUsername] = useState("");
@@ -35,13 +42,35 @@ const Login = () => {
   const [signInPassword, setSignInPassword] = useState("");
   const [signInErrors, setSignInErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-
-
-  
+  const [deviceInfo, setDeviceInfo] = useState(null);
+  const [loginTime, setLoginTime] = useState("");
 
   const navigate = useNavigate();
   const { uidID, token } = useParams();
   const location = useLocation();
+
+  useEffect(() => {
+    const time = new Date().toLocaleString();
+    setLoginTime(time);
+
+    const storedDeviceInfo = localStorage.getItem("deviceInfo");
+
+    if (storedDeviceInfo) {
+      setDeviceInfo(JSON.parse(storedDeviceInfo));
+    } else {
+      const currentDeviceInfo = {
+        browserName: browserName,
+        browserVersion: browserVersion,
+        operatingSystem: osName,
+        osVersion: osVersion,
+        deviceType: deviceType,
+        loginTime: time,
+      };
+      setDeviceInfo(currentDeviceInfo);
+
+      localStorage.setItem("deviceInfo", JSON.stringify(currentDeviceInfo));
+    }
+  }, []);
 
   useEffect(() => {
     if (location.pathname.includes("/reset_password")) {
@@ -140,16 +169,18 @@ const Login = () => {
     const newErrors = validateSignInForm();
     if (Object.keys(newErrors).length === 0) {
       setLoadingStates({ ...loadingStates, signIn: true });
-      setLoading(true); 
+      setLoading(true);
 
       try {
         const formData = new FormData();
         formData.append("email", signInEmail);
         formData.append("password", signInPassword);
+
+        // Perform login request
         const res = await API.login(formData);
         console.log("Login response data:", res.data);
 
-        // localStorage.setItem("system_info", res.system_info.IdentifyingNumber);
+        // Save user details to localStorage
         localStorage.setItem("id", res.data.user_id);
         localStorage.setItem("user", signInEmail);
         localStorage.setItem("access_token", res.data.access);
@@ -159,13 +190,13 @@ const Login = () => {
         navigate("/home");
       } catch (error) {
         toast.error(error.response.data.message);
-
         setSignInErrors({
           api:
             error.response?.data?.message ||
             "Sign-in failed. Please check your credentials.",
         });
       }
+
       setTimeout(() => {
         setLoadingStates({ ...loadingStates, signIn: false });
       }, 2000);
@@ -179,7 +210,6 @@ const Login = () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordPattern =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-
     if (!signInEmail.match(emailPattern)) {
       newErrors.email = "Email is not valid";
     }
@@ -187,7 +217,6 @@ const Login = () => {
       newErrors.password =
         "Password must be at least 8 characters long and contain at least one letter, one special character and one number";
     }
-
     return newErrors;
   };
 
