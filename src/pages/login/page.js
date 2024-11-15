@@ -45,33 +45,11 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [deviceInfo, setDeviceInfo] = useState(null);
   const [loginTime, setLoginTime] = useState("");
+  const [loggedInDevices, setLoggedInDevices] = useState();
 
   const navigate = useNavigate();
   const { uidID, token } = useParams();
   const location = useLocation();
-
-  useEffect(() => {
-    const time = new Date().toLocaleString();
-    setLoginTime(time);
-
-    const storedDeviceInfo = localStorage.getItem("deviceInfo");
-
-    if (storedDeviceInfo) {
-      setDeviceInfo(JSON.parse(storedDeviceInfo));
-    } else {
-      const currentDeviceInfo = {
-        browserName: browserName,
-        browserVersion: browserVersion,
-        operatingSystem: osName,
-        osVersion: osVersion,
-        deviceType: deviceType,
-        loginTime: time,
-      };
-      setDeviceInfo(currentDeviceInfo);
-
-      localStorage.setItem("deviceInfo", JSON.stringify(currentDeviceInfo));
-    }
-  }, []);
 
   useEffect(() => {
     if (location.pathname.includes("/reset_password")) {
@@ -172,17 +150,23 @@ const Login = () => {
         const formData = new FormData();
         formData.append("email", signInEmail);
         formData.append("password", signInPassword);
+        const systemInfo = `${browserName}, ${osName}, ${new Date().toLocaleString()}`
+        formData.append("system_info", systemInfo);
         // Perform login request
         const res = await API.login(formData);
-        console.log("Login response data:", res.data);
-        // Save user details to localStorage
-        localStorage.setItem("id", res.data.user_id);
-        localStorage.setItem("user", signInEmail);
-        localStorage.setItem("access_token", res.data.access);
-        localStorage.setItem("refresh_token", res.data.refresh);
-        toast.success(res.data.message);
-        setShow(true);
-        navigate("/home");
+        if (res.data.user_id) {
+          localStorage.setItem("id", res.data.user_id);
+          localStorage.setItem("user", signInEmail);
+          localStorage.setItem("access_token", res.data.access);
+          localStorage.setItem("refresh_token", res.data.refresh);
+          toast.success(res.data.message);
+          setShow(true);
+          navigate("/home");
+        } else {
+          toast.warning("Device limit exceeded!");
+          setLoggedInDevices(res.data.logged_in_devices)
+          setIsModalOpen(true)
+        }
       } catch (error) {
         toast.error(error.response.data.message);
         setSignInErrors({
@@ -323,9 +307,8 @@ const Login = () => {
         </video>
 
         <div
-          className={`container sizeform ${
-            isSignUp ? "right-panel-active" : ""
-          }`}
+          className={`container sizeform ${isSignUp ? "right-panel-active" : ""
+            }`}
           id="container"
         >
           {/* signup */}
@@ -372,9 +355,8 @@ const Login = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${
-                        errors.password ? "mb-4" : "mt-3"
-                      }`}
+                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${errors.password ? "mb-4" : "mt-3"
+                        }`}
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
                     </button>
@@ -503,9 +485,8 @@ const Login = () => {
                   <input
                     type="email"
                     placeholder="Email"
-                    className={`block w-full mt-3 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:outline-none focus:ring-0 ${
-                      signInErrors.email ? "mb-0" : ""
-                    }`}
+                    className={`block w-full mt-3 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:outline-none focus:ring-0 ${signInErrors.email ? "mb-0" : ""
+                      }`}
                     value={signInEmail}
                     onChange={handleEmailChange}
                   />
@@ -517,18 +498,16 @@ const Login = () => {
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"
-                      className={`block w-full border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 pr-10 focus:outline-none focus:ring-0 ${
-                        signInErrors.password ? "mb-0" : ""
-                      }`}
+                      className={`block w-full border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 pr-10 focus:outline-none focus:ring-0 ${signInErrors.password ? "mb-0" : ""
+                        }`}
                       value={signInPassword}
                       onChange={handlePasswordChange}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${
-                        signInErrors.password ? "mb-4" : "mt-2"
-                      }`}
+                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${signInErrors.password ? "mb-4" : "mt-2"
+                        }`}
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </button>
@@ -578,13 +557,6 @@ const Login = () => {
                       onClick={handleResetPasswordClick}
                     >
                       Reset Password
-                    </button>
-                    <button
-                      type="button"
-                      onClick={openModal}
-                      className="bg-[#fff] text-[14px] text-black px-4 py-2 transition-colors duration-300"
-                    >
-                      Open Modal
                     </button>
                   </div>
                 </>
@@ -666,10 +638,10 @@ const Login = () => {
           </div>
         </div>
         {/* Modal Component */}
-        {isModalOpen && (
+        {isModalOpen && loggedInDevices.length > 0 && (
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg shadow-lg p-8 w-[67%] ">
-              <Manage />
+            <div className="bg-white rounded-lg shadow-lg p-8 w-[60%] ">
+              <Manage signInEmail={signInEmail} newDeviceInfo={deviceInfo} loggedInDevices={loggedInDevices} />
             </div>
           </div>
         )}

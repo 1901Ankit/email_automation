@@ -26,16 +26,6 @@ const Sidebar = () => {
       path: "/subscribe-plan",
       icon: <RiSendPlaneFill style={{ fontSize: "24px" }} />,
     },
-    // {
-    //   name: "Template Info",
-    //   path: "/sender",
-    //   icon: <GrCircleInformation style={{ fontSize: "24px" }} />,
-    // },
-    // {
-    //   name: "Sender Info",
-    //   path: "/userselect",
-    //   icon: <LuSend  style={{ fontSize: "24px" }} />,
-    // },
     {
       name: "SMTP Setup",
       path: "/smtp",
@@ -91,12 +81,15 @@ const Sidebar = () => {
             },
           }
         );
+        
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("id");
+        localStorage.clear();
+        sessionStorage.clear();
         toast.success(res.data.message);
         setIsAuthenticated(false);
-        navigate("/ ");
+        navigate("/");
       } catch (error) {
         toast.error(error.response.data.message);
       }
