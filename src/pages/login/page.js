@@ -16,6 +16,7 @@ import {
   osVersion,
   deviceType,
 } from "react-device-detect";
+import Manage from "../../component/manage";
 
 const Login = () => {
   const [Username, SetUsername] = useState("");
@@ -155,31 +156,25 @@ const Login = () => {
     }
     return newErrors;
   };
-
   const handleSignUpClick = () => {
     setIsSignUp(true);
   };
-
   const handleSignInClick = () => {
     setIsSignUp(false);
   };
-
   const handleSignIn = async (e) => {
     e.preventDefault();
     const newErrors = validateSignInForm();
     if (Object.keys(newErrors).length === 0) {
       setLoadingStates({ ...loadingStates, signIn: true });
       setLoading(true);
-
       try {
         const formData = new FormData();
         formData.append("email", signInEmail);
         formData.append("password", signInPassword);
-
         // Perform login request
         const res = await API.login(formData);
         console.log("Login response data:", res.data);
-
         // Save user details to localStorage
         localStorage.setItem("id", res.data.user_id);
         localStorage.setItem("user", signInEmail);
@@ -196,7 +191,6 @@ const Login = () => {
             "Sign-in failed. Please check your credentials.",
         });
       }
-
       setTimeout(() => {
         setLoadingStates({ ...loadingStates, signIn: false });
       }, 2000);
@@ -204,7 +198,6 @@ const Login = () => {
       setSignInErrors(newErrors);
     }
   };
-
   const validateSignInForm = () => {
     const newErrors = {};
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -219,7 +212,6 @@ const Login = () => {
     }
     return newErrors;
   };
-
   const handleEmailChange = (e) => {
     setSignInEmail(e.target.value);
     if (signInErrors.email) {
@@ -233,7 +225,6 @@ const Login = () => {
       setSignInErrors((prevErrors) => ({ ...prevErrors, password: "" }));
     }
   };
-
   // otp
   const handleOtpChange = (e, index) => {
     const { value } = e.target;
@@ -321,6 +312,9 @@ const Login = () => {
     }, 2000);
   };
 
+  // modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
   return (
     <>
       <div className="container-fluid head">
@@ -571,7 +565,7 @@ const Login = () => {
                               fill="currentFill"
                             />
                           </svg>
-                          <span class="sr-only">Loading...</span>
+                          <span className="sr-only">Loading...</span>
                         </div>
                       ) : (
                         " Sign In"
@@ -584,6 +578,13 @@ const Login = () => {
                       onClick={handleResetPasswordClick}
                     >
                       Reset Password
+                    </button>
+                    <button
+                      type="button"
+                      onClick={openModal}
+                      className="bg-[#fff] text-[14px] text-black px-4 py-2 transition-colors duration-300"
+                    >
+                      Open Modal
                     </button>
                   </div>
                 </>
@@ -664,6 +665,14 @@ const Login = () => {
             </div>
           </div>
         </div>
+        {/* Modal Component */}
+        {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg shadow-lg p-8 w-[67%] ">
+              <Manage />
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

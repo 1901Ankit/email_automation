@@ -22,10 +22,10 @@ const Manage = () => {
     } else {
       const currentDeviceInfo = {
         browserName: browserName,
-        browserVersion: browserVersion,
+        // browserVersion: browserVersion,
         operatingSystem: osName,
-        osVersion: osVersion,
-        deviceType: deviceType,
+        // osVersion: osVersion,
+        // deviceType: deviceType,
         loginTime: time,
       };
       setDeviceInfo(currentDeviceInfo);
@@ -36,26 +36,28 @@ const Manage = () => {
 
   const deviceData = [
     { label: "Browser Name", value: deviceInfo?.browserName },
-    { label: "Browser Version", value: deviceInfo?.browserVersion },
+    // { label: "Browser Version", value: deviceInfo?.browserVersion },
     { label: "Operating System", value: deviceInfo?.operatingSystem },
-    { label: "OS Version", value: deviceInfo?.osVersion },
-    { label: "Device Type", value: deviceInfo?.deviceType },
+    // { label: "OS Version", value: deviceInfo?.osVersion },
+    // { label: "Device Type", value: deviceInfo?.deviceType },
     { label: "Login Time", value: deviceInfo?.loginTime },
   ];
 
   const renderInfoBox = (title, price, showDeviceInfo = false) => (
-    <div className="w-full sm:w-1/3 flex-shrink-0 min-w-[330px] py-3 px-3">
+    <div className="w-full sm:w-1/3 flex-shrink-0 min-w-[250px] py-2 px-2">
       <div
         className="box relative flex flex-col h-full justify-start bg-white p-2 shadow-custom
-       rounded-md border-t-8 border-b-8 border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/90"
+         rounded-md border-t-4 border-b-4 border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/70"
       >
         <div className="text-center">
-          <span className="text-[#7b2cbf] font-bold text-[28px]">{title}</span>
-          <div className="h-[2px] bg-[#7b2cbf] mt-2 mx-auto w-16"></div>
-          <h3 className="text-center mt-3 font-bold text-[24px]">{price}</h3>
+          <span className="text-[#7b2cbf] font-bold text-[20px]">{title}</span>
+          <div className="h-[2px] bg-[#7b2cbf] mt-1 mx-auto w-12"></div>
+          <h3 className="text-center mt-2 font-semibold text-[18px]">
+            {price}
+          </h3>
         </div>
         {showDeviceInfo && deviceInfo && (
-          <ol className="mt-4 text-gray-700 space-y-2">
+          <ol className="mt-3 text-gray-700 space-y-1 text-sm">
             {deviceData.map((item, index) => (
               <li key={index} className="text-start">
                 {item.label}: {item.value}
@@ -64,11 +66,10 @@ const Manage = () => {
           </ol>
         )}
         <div className="flex-grow"></div>
-        <div className="mt-auto">
+        <div className="mt-2 flex justify-end">
           <button
             type="button"
-            className="font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer
-             inline-flex items-center bg-[#7b2cbf]"
+            className="font-montserrat text-[#f7fff7] border-none rounded-lg py-1 px-3 cursor-pointer inline-flex items-center bg-[#7b2cbf]"
           >
             Logout
           </button>
@@ -76,6 +77,7 @@ const Manage = () => {
       </div>
     </div>
   );
+
   const renderPlans = () => {
     const plans = [
       { title: "Device 1" },
@@ -88,10 +90,7 @@ const Manage = () => {
   };
 
   return (
-    <div className="container mx-auto pt-24 px-4 max-h-[100vh] overflow-auto">
-      <div className="p-2">
-        <h1 className="text-3xl font-bold">Manage Device</h1>
-      </div>
+    <div className="container mx-auto  px-4 max-h-[100vh] overflow-auto">
       <div className="flex flex-nowrap w-full overflow-x-auto pricing">
         {renderPlans()}
       </div>
