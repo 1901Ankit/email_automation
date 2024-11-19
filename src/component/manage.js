@@ -70,7 +70,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
 
         toast.success("device removed successfully")
 
-        if (id == localStorage.getItem("device_id"){
+        if (id == localStorage.getItem("device_id")){
           localStorage.clear()
           sessionStorage.clear();
           navigate("/");
