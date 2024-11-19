@@ -69,7 +69,13 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
         );
 
         toast.success("device removed successfully")
-        isTokenBlackListed()
+
+        if (id == localStorage.getItem("device_id"){
+          localStorage.clear()
+          sessionStorage.clear();
+          navigate("/");
+          return;
+        }
         getAllDevices()
 
       } else {
@@ -102,10 +108,12 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
 
       return (
         <div key={index} className={`w-full sm:w-1/3 flex-shrink-0 min-w-[230px] py-2 px-2 ${location.pathname == "/manage" && "mt-20"}`}>
+
           <div
             className="box relative flex flex-col h-full justify-start bg-white p-2 shadow-custom
              rounded-md border-t-4 border-b-4 border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/70"
           >
+            {localStorage.getItem("device_id") == item.device_id && (<span className=" absolute text-sm text-green-500 font-semibold">Current</span>)}
             <div className="text-center">
               <span className="text-[#7b2cbf] font-bold text-[20px]">Device{index + 1}</span>
               <div className="h-[2px] bg-[#7b2cbf] mt-1 mx-auto w-[4.30rem]"></div>
