@@ -23,24 +23,7 @@ const Router = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const token = localStorage.getItem("access_token");
-  const isTokenBlackListed = async (user) => {
-    const formData = new FormData();
-    formData.append("refresh_token",localStorage.getItem("refresh_token") );
-    try {
-      const response = await TokenAPI.isTokenBlackListed(formData);
-      console.log(response);
-      if (response.data.success) {
-
-      } else {
-        throw new Error("Token is not blacklisted")
-      }
-    } catch (error) {
-      console.error(error);
-      localStorage.clear();
-      sessionStorage.clear();
-      navigate("/");
-    }
-  }
+ 
 
   useEffect(() => {
     if (!token) {
@@ -56,9 +39,6 @@ const Router = () => {
     }
   }, [token, navigate, location.pathname]);
 
-  useEffect(()=>{
-    isTokenBlackListed()
-  },[])
   useEffect(() => {
     if (
       token &&
