@@ -69,7 +69,13 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
         );
 
         toast.success("device removed successfully")
-        isTokenBlackListed()
+
+        if (id == localStorage.getItem("device_id"){
+          localStorage.clear()
+          sessionStorage.clear();
+          navigate("/");
+          return;
+        }
         getAllDevices()
 
       } else {
