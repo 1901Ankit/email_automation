@@ -147,6 +147,7 @@ const Login = () => {
       setLoadingStates({ ...loadingStates, signIn: true });
       setLoading(true);
       try {
+        setSignInErrors({ api: "" });
         const formData = new FormData();
         formData.append("email", signInEmail);
         formData.append("password", signInPassword);
@@ -156,6 +157,7 @@ const Login = () => {
         const res = await API.login(formData);
         if (res.data.user_id) {
           localStorage.setItem("id", res.data.user_id);
+          localStorage.setItem("device_id", res.data.device_id);
           localStorage.setItem("user", signInEmail);
           localStorage.setItem("access_token", res.data.access);
           localStorage.setItem("refresh_token", res.data.refresh);
@@ -169,15 +171,14 @@ const Login = () => {
         }
       } catch (error) {
         toast.error(error.response.data.message);
+        setLoadingStates({ ...loadingStates, signIn: false });
+        setLoading(false);
         setSignInErrors({
           api:
             error.response?.data?.message ||
             "Sign-in failed. Please check your credentials.",
         });
       }
-      setTimeout(() => {
-        setLoadingStates({ ...loadingStates, signIn: false });
-      }, 2000);
     } else {
       setSignInErrors(newErrors);
     }

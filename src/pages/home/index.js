@@ -7,6 +7,7 @@ import "./index.css";
 
 
 const Home = () => {
+
   return (
     <div className="container mx-auto pt-32 px-4 max-h-[100vh] overflow-auto">
       <div className="p-2">

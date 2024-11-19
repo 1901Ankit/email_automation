@@ -59,7 +59,11 @@ const Sidebar = () => {
     }
   }, [location.pathname, tabs]);
 
+ 
+
+
   useEffect(() => {
+    
     setIsAuthenticated(checkAuthentication());
   }, []);
 
@@ -73,7 +77,7 @@ const Sidebar = () => {
         const authToken = localStorage.getItem("access_token");
         const res = await axios.post(
           `${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
-          { refresh: localStorage.getItem("refresh_token") },
+          { refresh: localStorage.getItem("refresh_token"), device_id: localStorage.getItem("device_id")},
           {
             headers: {
               "Content-Type": "application/json",
@@ -87,7 +91,7 @@ const Sidebar = () => {
         localStorage.removeItem("id");
         localStorage.clear();
         sessionStorage.clear();
-        toast.success(res.data.message);
+        toast.success("Logout successfully");
         setIsAuthenticated(false);
         navigate("/");
       } catch (error) {
