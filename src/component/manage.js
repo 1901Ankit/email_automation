@@ -11,7 +11,7 @@ import * as DeviceAPI from "../api/user_profile";
 import * as UserAPI from "../api/user";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import * as TokenAPI from "../api/user_profile"
+
 
 const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   const [devices, setDevice] = useState(null);
@@ -34,25 +34,6 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
     }
   }, [])
 
-  const isTokenBlackListed = async (user) => {
-    const formData = new FormData();
-    formData.append("refresh_token", localStorage.getItem("refresh_token"));
-    try {
-      const response = await TokenAPI.isTokenBlackListed(formData);
-      console.log(response);
-      if (response.data.success) {
-
-      } else {
-        throw new Error("Token is not blacklisted")
-      }
-    } catch (error) {
-      console.error(error);
-      localStorage.clear();
-      sessionStorage.clear();
-      navigate("/");
-    }
-  }
-
   const handleLogoutDevice = async (id, device_name) => {
 
     try {
@@ -70,7 +51,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
 
         toast.success("device removed successfully")
 
-        if (id == localStorage.getItem("device_id")){
+        if (id == localStorage.getItem("device_id")) {
           localStorage.clear()
           sessionStorage.clear();
           navigate("/");
