@@ -14,6 +14,7 @@ import html2canvas from "html2canvas";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Rightside from "../../component/rightsidebar";
+import * as TokenAPI from "../../api/user_profile"
 
 const Preview = ({ placeholder }) => {
   const editor = useRef(null);
@@ -45,6 +46,27 @@ const Preview = ({ placeholder }) => {
     [placeholder]
   );
 
+  const isTokenBlackListed = async (user) => {
+    const formData = new FormData();
+    formData.append("refresh_token", localStorage.getItem("refresh_token"));
+    try {
+      const response = await TokenAPI.isTokenBlackListed(formData);
+      if (response.status===200) {
+      } else {
+        throw new Error("Token is not blacklisted")
+      }
+    } catch (error) {
+      localStorage.clear();
+      sessionStorage.clear();
+      navigate("/");
+    }
+  }
+  useEffect(() => {
+    const refreshToken=localStorage.getItem("refresh_token");
+    if (refreshToken !== "") {
+      isTokenBlackListed();
+    }
+  }, [location.pathname]);
   useEffect(() => {
     // Establish the WebSocket connection
     const socket = new WebSocket(`${process.env.REACT_APP_BACKEND_BASE_URL.replace('https', 'wss')}/ws/email-status/${localStorage.getItem('id')}/`);
@@ -162,12 +184,9 @@ const Preview = ({ placeholder }) => {
 
     try {
       const response = await sendEmailAPI.sendEmail(formData);
-      // setEmailStatus(response.data)
       toast.success("Email sent successfully")
-
-
     } catch (error) {
-
+      toast.error(error.response.data.message || "Error in sending email")
     }
     setIsLoading(false)
   };

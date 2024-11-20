@@ -23,11 +23,32 @@ const Router = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const token = localStorage.getItem("access_token");
+  
+  const isTokenBlackListed = async (user) => {
+    const formData = new FormData();
+    formData.append("refresh_token", localStorage.getItem("refresh_token"));
+    try {
+      const response = await TokenAPI.isTokenBlackListed(formData);
+      if (response.status===200) {
+      } else {
+        throw new Error("Token is not blacklisted")
+      }
+    } catch (error) {
+      localStorage.clear();
+      sessionStorage.clear();
+      navigate("/");
+    }
+  }
+  useEffect(() => {
+    const refreshToken=localStorage.getItem("refresh_token");
+    if (refreshToken !== "") {
+      isTokenBlackListed();
+    }
+  }, [location.pathname]);
  
 
   useEffect(() => {
     if (!token) {
-      
       if (location.pathname.startsWith("/reset_password")) {
         sessionStorage.clear();
         localStorage.clear();
@@ -38,7 +59,6 @@ const Router = () => {
       }
     }
   }, [token, navigate, location.pathname]);
-
   useEffect(() => {
     if (
       token &&

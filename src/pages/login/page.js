@@ -72,25 +72,16 @@ const Login = () => {
           formData.append("email", email);
           formData.append("password", password);
           const res = await API.register(formData);
-          if (res.data?.message) {
             toast.success(res.data.message);
             setShowNumberField(true);
-          } else if (res.data?.error === "User already exists") {
+          
+        } catch (error) {
+          if (error.response.data?.error === "User already exists") {
             toast.error("User already exists. Please sign in.");
           } else {
             toast.error("Something went wrong. Please try again.");
           }
-        } catch (error) {
-          if (
-            error.response &&
-            error.response.data?.errors.username.length > 0
-          ) {
-            toast.error(error.response.data?.errors.username[0]);
-          } else {
-            toast.error(
-              "An error occurred during registration. Please try again."
-            );
-          }
+          
         } finally {
           setLoading(false);
         }

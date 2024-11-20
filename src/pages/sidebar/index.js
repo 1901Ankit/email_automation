@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./index.css";
@@ -9,12 +9,14 @@ import { IoHomeOutline } from "react-icons/io5";
 import { AiOutlineLogin } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { RiSendPlaneFill } from "react-icons/ri";
+import * as TokenAPI from "../../api/user_profile"
 
 const Sidebar = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(checkAuthentication());
   const navigate = useNavigate();
   const location = useLocation();
+  const initialRef = useRef(true)
   const tabs = [
     {
       name: "Analytics",
@@ -59,11 +61,9 @@ const Sidebar = () => {
     }
   }, [location.pathname, tabs]);
 
- 
-
 
   useEffect(() => {
-    
+
     setIsAuthenticated(checkAuthentication());
   }, []);
 
@@ -77,7 +77,7 @@ const Sidebar = () => {
         const authToken = localStorage.getItem("access_token");
         const res = await axios.post(
           `${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
-          { refresh: localStorage.getItem("refresh_token"), device_id: localStorage.getItem("device_id")},
+          { refresh: localStorage.getItem("refresh_token"), device_id: localStorage.getItem("device_id") },
           {
             headers: {
               "Content-Type": "application/json",
@@ -85,7 +85,7 @@ const Sidebar = () => {
             },
           }
         );
-        
+
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("id");
@@ -113,9 +113,8 @@ const Sidebar = () => {
           {tabs.map((tab, index) => (
             <li key={index}>
               <div
-                className={`nav-link ${
-                  activeTabIndex === index ? "active" : ""
-                }`}
+                className={`nav-link ${activeTabIndex === index ? "active" : ""
+                  }`}
                 onClick={() => handleTabChange(index)}
               >
                 <span className="icon">{tab.icon}</span>

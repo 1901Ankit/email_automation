@@ -25,7 +25,7 @@ const User_profile = () => {
           user: localStorage.getItem("id"),
         });
 
-        if (response.data) {
+        if (response.data) {          
           setUserData(response.data);
         } else {
           setUserData(null);
@@ -40,7 +40,6 @@ const User_profile = () => {
 
     fetchUserProfile();
   }, []);
-
   
 
   return (
@@ -79,7 +78,7 @@ const User_profile = () => {
                 <label className="text-lg font-semibold">Plan Name:</label>
                 <input
                   type="text"
-                  value={userData.plan_name?userData.plan:"Trial"}
+                  value={userData.plan_name?userData.plan_name:"Trial"}
                   readOnly
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
