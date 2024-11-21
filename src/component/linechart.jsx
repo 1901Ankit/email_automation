@@ -27,13 +27,13 @@ const Linechart = (props) => {
           failed_sends: apiData.failed_sends,
         });
         const updatedChartData = {
-          labels: ["Failed Sends", "Successful Sends"],
+          labels: ["Failed ", "Successful "],
           datasets: [
             {
               label: "Email Sends",
               data: [apiData.failed_sends, apiData.successful_sends],
-              backgroundColor: ["#C46100", "#4CB140"],
-              borderColor: ["#C46100", "#4CB140"],
+              backgroundColor: ["#ff0000", "#4CB140"],
+              borderColor: ["#ff0000", "#4CB140"],
               borderWidth: 1,
             },
           ],

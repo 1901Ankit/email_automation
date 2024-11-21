@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels"; // Import the data labels plugin
+import ChartDataLabels from "chartjs-plugin-datalabels"; 
 import { getEmailList } from "../api/emailTemplate";
 
 const Barchart = (props) => {
-  Chart.register(...registerables, ChartDataLabels); // Register the plugin
+  Chart.register(...registerables, ChartDataLabels); 
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [],

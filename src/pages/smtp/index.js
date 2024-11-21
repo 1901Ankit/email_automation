@@ -158,7 +158,7 @@ const Smtp = () => {
           </div>
         ) : (
           <div className="mb-2">
-            <h1 className="text-3xl font-bold">SMTP Setup</h1>
+            <h1 className="text-3xl font-bold uppercase">SMTP Setup</h1>
             <div className="flex items-center justify-between mb-4 mt-3">
               <button
                 className="bg-[#7b2cbf] text-white border-[#7b2cbf] rounded-full p-3 text-xl"

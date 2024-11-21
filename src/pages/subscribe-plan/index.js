@@ -63,14 +63,14 @@ const Subscribe = () => {
     <>
       <div className="container mx-auto pt-32 px-4 max-h-[100vh] overflow-auto">
         <div className="p-2">
-          <h1 className="text-3xl font-bold">Subscribe Plan</h1>
+          <h1 className="text-3xl font-bold uppercase">Subscription Plan</h1>
         </div>
 
         <div className="flex flex-wrap w-full pricing">
-          <div className="w-full sm:w-1/2 flex-1 min-w-[360px] py-2 px-12">
+          <div className="w-full sm:w-1/2 flex-1 min-w-[360px] px-12">
             <div
-              className="box relative flex flex-col h-full justify-start bg-white
-             p-10 shadow-custom rounded-md border-t-8 border-b-8 border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/90"
+              className="box relative flex flex-col justify-start bg-white
+             p-6 shadow-custom rounded-md border-t-8 border-b-8 border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/90"
             >
               <div className="text-center">
                 <span className="text-[#7b2cbf] font-bold text-[28px]">
@@ -78,17 +78,20 @@ const Subscribe = () => {
                 </span>
                 <div className="h-[2px] bg-[#7b2cbf] mt-2 mx-auto w-16"></div>
                 <h3 className="text-center mt-3 font-bold text-[24px] pricing">
-                  ₹4990 / onwards
+                  ₹1800 / onwards
                 </h3>
+                <ul className="list-none mt-4 font-semibold text-[15px] leading-8 pricing">
+                  <li>Unlimited Emails</li>
+                  <li>Validity 30 Days</li>
+                  <li>1 Device</li>
+                </ul>
               </div>
 
-              <div className="flex-grow mt-5"></div>
-
-              <div className="button-container pb-6">
+              <div className="button-contain ">
                 <button
                   type="button"
                   onClick={() => handlePayment("basic")}
-                  className="font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer inline-flex items-center bg-[#7b2cbf]"
+                  className="font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer inline-flex items-center bg-[#7b2cbf]  "
                 >
                   BUY
                 </button>
@@ -96,9 +99,9 @@ const Subscribe = () => {
             </div>
           </div>
 
-          <div className="w-full sm:w-1/2 flex-1 min-w-[360px] py-2 px-12">
+          <div className="w-full sm:w-1/2 flex-1 min-w-[360px] px-12">
             <div
-              className="box relative flex flex-col h-full justify-start bg-white p-10 
+              className="box relative flex flex-col justify-start bg-white p-6 
             shadow-custom rounded-md border-t-8 border-b-8 border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/90"
             >
               <div className="text-center">
@@ -107,17 +110,20 @@ const Subscribe = () => {
                 </span>
                 <div className="h-[2px] bg-[#7b2cbf] mt-2 mx-auto w-16"></div>
                 <h3 className="text-center mt-3 font-bold text-[24px] pricing">
-                  ₹4990 / onwards
+                  ₹3500 / onwards
                 </h3>
+                <ul className="list-none mt-4 font-semibold text-[15px] leading-8 pricing">
+                  <li>Unlimited Emails</li>
+                  <li>Validity 30 Days</li>
+                  <li>3 Device</li>
+                </ul>
               </div>
 
-              <div className="flex-grow mt-5"></div>
-
-              <div className="button-container pb-6">
+              <div className="button-contain ">
                 <button
                   type="button"
                   onClick={() => handlePayment("premium")}
-                  className="font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer inline-flex items-center bg-[#7b2cbf]"
+                  className="font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer inline-flex items-center bg-[#7b2cbf]  "
                 >
                   BUY
                 </button>
