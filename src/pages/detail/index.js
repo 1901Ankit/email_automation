@@ -182,7 +182,7 @@ const Content = ({ placeholder }) => {
       ) : (
         <div className="container-fluid p-0">
           <form onSubmit={handleSubmit}>
-            <h1 className="text-3xl font-bold">Manage Campaigns</h1>
+            <h1 className="text-3xl font-bold uppercase">Manage Campaigns</h1>
             <div className="w-full me-6">
               <label htmlFor="Subject">Subject</label>
               <input

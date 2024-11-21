@@ -209,7 +209,7 @@ const Preview = ({ placeholder }) => {
         ) : (
           <div className="container flex">
             <form className="w-[70%]">
-              <h1 className="text-3xl font-bold">Preview Campaigns</h1>
+              <h1 className="text-3xl font-bold ">Preview Campaigns</h1>
               <div className="flex mt-4">
                 <div className="w-full me-6">
                   <label htmlFor="fromEmail">DISPLAY NAME</label>
