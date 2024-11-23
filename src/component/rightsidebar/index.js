@@ -24,8 +24,8 @@ const Rightside = ({ emailStatus }) => {
         <ul className="Email-status justify-center text-center ">
           {emailStatus?.email_statuses?.map((item, i) => (
             <li key={i} className="Email-status1">
-              <div className="flex items-center justify-between">
-                <p className="ab">{item.email}</p>
+              <div className="flex w-full items-center justify-center">
+                <p className="ab w-full  ">{item.email}</p>
                 <p
                   className={`${
                     item.status === "Sent successfully"
@@ -33,7 +33,7 @@ const Rightside = ({ emailStatus }) => {
                       : item.status.includes("Failed to send")
                       ? "status"
                       : null
-                  } ml-auto`}
+                  }   self-end`}
                 >
                   {item.status === "Sent successfully"
                     ? "Success"

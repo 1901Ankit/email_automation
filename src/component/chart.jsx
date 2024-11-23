@@ -65,10 +65,10 @@ const Barchart = (props) => {
       y: {
         beginAtZero: true,
         ticks: {
-          stepSize: 5,
+          stepSize: 10,
         },
         min: 0,
-        max: 40,
+        max: 200,
       },
     },
   };
