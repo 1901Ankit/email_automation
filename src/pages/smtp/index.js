@@ -175,42 +175,42 @@ const Smtp = () => {
                   <thead className="bg-[#7b2cbf] text-white">
                     <tr>
                       <th
-                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
+                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer"
                         onClick={() => requestSort("EmailHost")}
                       >
                         Name of the server
                       </th>
                       <th
-                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
+                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer"
                         onClick={() => requestSort("EmailHost")}
                       >
-                        Email Host
+                        Host
                       </th>
                       <th
-                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
+                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer"
                         onClick={() => requestSort("EmailPort")}
                       >
-                        Email Port
+                        Port
                       </th>
                       <th
-                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
+                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer"
                         onClick={() => requestSort("EmailUseTLS")}
                       >
-                        Email Use TLS
+                        TLS
                       </th>
                       <th
-                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
+                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer"
                         onClick={() => requestSort("HostUser")}
                       >
-                        Host Email Address
+                        Email
                       </th>
                       <th
-                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border cursor-pointer"
+                        className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer"
                         onClick={() => requestSort("Password")}
                       >
                         Password
                       </th>
-                      <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-left border">
+                      <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
                         Actions
                       </th>
                     </tr>
@@ -272,7 +272,7 @@ const Smtp = () => {
                       htmlFor="EmailHost"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Email Host
+                      Host
                     </label>
                     <input
                       type="text"
@@ -288,7 +288,7 @@ const Smtp = () => {
                       htmlFor="EmailPort"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Email Port
+                      Port
                     </label>
                     <input
                       type="number"
@@ -306,7 +306,7 @@ const Smtp = () => {
                       htmlFor="EmailUseTLS"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Email Use TLS
+                      TLS
                     </label>
                     <input
                       type="text"
@@ -322,7 +322,7 @@ const Smtp = () => {
                       htmlFor="username"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Host Email Address
+                      Email
                     </label>
                     <input
                       type="text"
@@ -356,7 +356,7 @@ const Smtp = () => {
                       htmlFor="Password"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Host Password
+                      Password
                     </label>
                     <input
                       type="text"
