@@ -14,7 +14,7 @@ import html2canvas from "html2canvas";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Rightside from "../../component/rightsidebar";
-import * as TokenAPI from "../../api/user_profile"
+import * as TokenAPI from "../../api/user_profile";
 
 const Preview = ({ placeholder }) => {
   const editor = useRef(null);
@@ -32,8 +32,8 @@ const Preview = ({ placeholder }) => {
     email_statuses: [],
   });
   const [content, setContent] = useState(``);
-  const [isLoading, setIsLoading] = useState(false)
-  const [HTMLtemplate, setHTMLtemplate] = useState(null)
+  const [isLoading, setIsLoading] = useState(false);
+  const [HTMLtemplate, setHTMLtemplate] = useState(null);
   const [details, setDetails] = useState({});
   const [options, setOptions] = useState({ smtps: [] });
   const [file, setFile] = useState(null);
@@ -51,29 +51,33 @@ const Preview = ({ placeholder }) => {
     formData.append("refresh_token", localStorage.getItem("refresh_token"));
     try {
       const response = await TokenAPI.isTokenBlackListed(formData);
-      if (response.status===200) {
+      if (response.status === 200) {
       } else {
-        throw new Error("Token is not blacklisted")
+        throw new Error("Token is not blacklisted");
       }
     } catch (error) {
       localStorage.clear();
       sessionStorage.clear();
       navigate("/");
     }
-  }
+  };
   useEffect(() => {
-    const refreshToken=localStorage.getItem("refresh_token");
+    const refreshToken = localStorage.getItem("refresh_token");
     if (refreshToken !== "") {
       isTokenBlackListed();
     }
   }, [location.pathname]);
   useEffect(() => {
     // Establish the WebSocket connection
-    const socket = new WebSocket(`${process.env.REACT_APP_BACKEND_BASE_URL.replace('https', 'wss')}/ws/email-status/${localStorage.getItem('id')}/`);
+    const socket = new WebSocket(
+      `${process.env.REACT_APP_BACKEND_BASE_URL.replace(
+        "https",
+        "wss"
+      )}/ws/email-status/${localStorage.getItem("id")}/`
+    );
 
     // Event listener for when the WebSocket connection is open
-    socket.onopen = () => {
-    };
+    socket.onopen = () => {};
 
     // Event listener for receiving messages from the WebSocket
     socket.onmessage = (event) => {
@@ -85,7 +89,7 @@ const Preview = ({ placeholder }) => {
           successful_sends: prevStatus?.successful_sends || 0, // Preserve successful sends
           failed_sends: prevStatus?.failed_sends || 0, // Preserve failed sends
           email_statuses: [
-            ...prevStatus?.email_statuses || [], // Preserve previous email statuses
+            ...(prevStatus?.email_statuses || []), // Preserve previous email statuses
             {
               email: data.email,
               status: data.status,
@@ -103,7 +107,6 @@ const Preview = ({ placeholder }) => {
 
         return updatedEmailStatus; // Return the new state object
       });
-
     };
 
     // socket.onclose = () => {
@@ -113,7 +116,6 @@ const Preview = ({ placeholder }) => {
       socket.close();
     };
   }, []);
-
 
   useEffect(() => {
     if (location.state && location.state.file) {
@@ -135,10 +137,8 @@ const Preview = ({ placeholder }) => {
           )}`
         );
         const html = await response.text();
-        setHTMLtemplate(html)
-      } catch (error) {
-
-      }
+        setHTMLtemplate(html);
+      } catch (error) {}
     };
     selectedHTMLFile();
     const formData = new FormData();
@@ -167,7 +167,7 @@ const Preview = ({ placeholder }) => {
     closeModal();
   };
   const handleSendEmail = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     const formData = new FormData();
 
     options?.smtps?.forEach((element) => {
@@ -184,11 +184,13 @@ const Preview = ({ placeholder }) => {
 
     try {
       const response = await sendEmailAPI.sendEmail(formData);
-      toast.success("Email sent successfully")
+      toast.success("Email sent successfully");
     } catch (error) {
-      toast.error(error.response.data.message || "Error in sending email")
+      toast.error(
+        error.response.data.message || "Upgrade now for enhanced features"
+      );
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const handleEditorChange = (state) => {
@@ -294,13 +296,27 @@ const Preview = ({ placeholder }) => {
                       >
                         {isLoading ? (
                           <div role="status">
-                            <svg aria-hidden="true" class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                              <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                            <svg
+                              aria-hidden="true"
+                              class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
+                              viewBox="0 0 100 101"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor"
+                              />
+                              <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill"
+                              />
                             </svg>
                             <span class="sr-only">Loading...</span>
                           </div>
-                        ) : "SEND MESSAGE NOW"}
+                        ) : (
+                          "SEND MESSAGE NOW"
+                        )}
                       </button>
                     </div>
                   </div>

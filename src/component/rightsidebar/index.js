@@ -20,28 +20,29 @@ const Rightside = ({ emailStatus }) => {
           <span className="mx-1">{emailStatus?.failed_sends}</span>
         </p>
       </div>
-      <div className="Email-status h-[80vh] overflow-y-auto"> 
+      <div className="Email-status h-[80vh] overflow-y-auto">
         <ul className="Email-status justify-center text-center ">
           {emailStatus?.email_statuses?.map((item, i) => (
             <li key={i} className="Email-status1">
               <div className="flex items-center justify-between">
                 <p className="ab">{item.email}</p>
                 <p
-                  className={
-                    item.status == "Sent successfully"
+                  className={`${
+                    item.status === "Sent successfully"
                       ? "status1"
                       : item.status.includes("Failed to send")
                       ? "status"
                       : null
-                  }
+                  } ml-auto`}
                 >
-                  {item.status == "Sent successfully"
+                  {item.status === "Sent successfully"
                     ? "Success"
                     : item.status.includes("Failed to send")
                     ? "Failed"
-                    : "try again"}
+                    : "Try again"}
                 </p>
               </div>
+
               <p className="text-gray-500 text-sm">
                 {new Date(item.timestamp).toLocaleString()}
               </p>

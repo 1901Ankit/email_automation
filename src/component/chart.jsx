@@ -21,7 +21,7 @@ const Barchart = (props) => {
           labels: [""],
           datasets: [
             {
-              backgroundColor: ["#C46100"],
+              backgroundColor: ["#338dfb"],
               barPercentage: 0.1,
               data: [apiData.total_emails],
               label: "Total Emails", 
