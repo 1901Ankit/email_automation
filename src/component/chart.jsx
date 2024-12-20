@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels"; 
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getEmailList } from "../api/emailTemplate";
 
 const Barchart = (props) => {
-  Chart.register(...registerables, ChartDataLabels); 
+  Chart.register(...registerables, ChartDataLabels);
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [],
@@ -14,7 +14,7 @@ const Barchart = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getEmailList(props.total_emails);
+        const response = await getEmailList(props.total_emails,);
         const apiData = response.data;
 
         const updatedChartData = {
@@ -24,7 +24,7 @@ const Barchart = (props) => {
               backgroundColor: ["#338dfb"],
               barPercentage: 0.1,
               data: [apiData.total_emails],
-              label: "Total Emails", 
+              label: "Total Emails",
             },
           ],
         };

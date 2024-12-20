@@ -16,6 +16,9 @@ export const templates = [
       
       <body>
        <div class="container">
+         <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/dummy+email+template.jpg" width="500"
+             style="margin-right: 0px" alt="logo" loading="lazy" />
+             <h3 style="">Sample Email Template</h3>
         </div>
       </body>
       </html>
