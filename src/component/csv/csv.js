@@ -91,24 +91,36 @@ const Csv = ({ csvFile, setCsvFile }) => {
   return (
     <>
       <div className="container-fluid ">
-        <div className="drag-file-area">
-          <span className="material-icons-outlined upload-icon">
-            file_upload
-          </span>
-          <h3 className="dynamic-message">Drag & Drop any file here</h3>
-          <label className="label">
-            <span className="browse-files">
-              <input
-                type="file"
-                className="default-file-input file-input"
-                onChange={handleFileChange}
-              />
-              <span className="browse-files-text text-center">Browse file</span>
-              <span className="mx-2">from device</span>
-            </span>
-          </label>
+        <div className="row items-center justify-center mt-3">
+          <div className="col-sm-6">
+            {" "}
+            <div className="drag-file-area">
+              <span className="material-icons-outlined upload-icon">
+                file_upload
+              </span>
+              <h3 className="dynamic-message">Drag & Drop any file here (only csv)</h3>
+              <label className="label">
+                <span className="browse-files">
+                  <input
+                    type="file"
+                    className="default-file-input file-input"
+                    onChange={handleFileChange}
+                  />
+                  <span className="browse-files-text text-center">
+                    Browse file
+                  </span>
+                  <span className="mx-2">from device</span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <div className="col-sm-6">
+            {" "}
+            <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/dummy+csv+file.png" />
+          </div>
         </div>
       </div>
+
       {csvFile && (
         <div className="container align-items-center justify-center d-flex mt-4">
           <div className="file-block">

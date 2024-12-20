@@ -59,7 +59,7 @@ const Content = ({ placeholder }) => {
         return;
       }
       const modifiedSMTPsResponse = smtpResponse?.data?.servers?.map((obj) => {
-        return { label: obj.host, value: obj.id };
+        return { label: obj.username, value: obj.id };
       });
 
       setOptions({
@@ -238,7 +238,7 @@ const Content = ({ placeholder }) => {
 
             <div className="flex mt-4">
               <div className="w-full">
-                <label htmlFor="EmailUseTLS"> SMTP Host</label>
+                <label htmlFor="EmailUseTLS"> SMTP User</label>
                 <Select
                   options={options.smtps}
                   isMulti
@@ -251,7 +251,7 @@ const Content = ({ placeholder }) => {
                   id="Smtphost"
                   name="Smtphost"
                   styles={customStyles}
-                  placeholder="SMTP Host"
+                  placeholder="SMTP User"
                 />
               </div>
             </div>
@@ -261,7 +261,10 @@ const Content = ({ placeholder }) => {
               }
               className="mt-5"
             >
-              <h1 className="text-3xl font-bold">Upload list</h1>
+              <div className=" flex items-center justify-around">
+                <h1 className="text-3xl font-bold">Upload list</h1>
+                <h1 className="text-3xl font-bold">Sample csv</h1>
+              </div>
               <Csv csvFile={csvFile} setCsvFile={setCsvFile} />
             </div>
             <div className="mt-5" onClick={saveEnteredDetails}>

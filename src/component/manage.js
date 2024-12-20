@@ -138,7 +138,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   };
 
   return (
-    <div className="container mx-auto px-4 max-h-[100vh] overflow-auto">
+    <div className="container mx-auto px-1 max-h-[100vh] overflow-auto">
     <h1 className="text-3xl font-bold uppercase mt-28">
     logged-in devices
       </h1>
