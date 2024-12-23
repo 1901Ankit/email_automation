@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "../../pages/modal";
 import Papa from "papaparse";
 import "./csv.css";
+import csvfile from "../../assests/image/csvfile.png";
 
 const Csv = ({ csvFile, setCsvFile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,7 +99,9 @@ const Csv = ({ csvFile, setCsvFile }) => {
               <span className="material-icons-outlined upload-icon">
                 file_upload
               </span>
-              <h3 className="dynamic-message">Drag & Drop any file here (only csv)</h3>
+              <h3 className="dynamic-message">
+                Drag & Drop any file here (only csv)
+              </h3>
               <label className="label">
                 <span className="browse-files">
                   <input
@@ -116,7 +119,7 @@ const Csv = ({ csvFile, setCsvFile }) => {
           </div>
           <div className="col-sm-6">
             {" "}
-            <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/dummy+csv+file.png" />
+            <img src={csvfile} className="w-full h-full object-contain" />
           </div>
         </div>
       </div>
