@@ -1,13 +1,12 @@
 // modal.js
 import React from 'react';
-import './index.css'; // Import the modal CSS
 
-const Modal = ({ isOpen, onClose, children }) => {
+const Modalcontact = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content  pt-5" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-contact  pt-5" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>×</button>
         
         {children}
@@ -16,4 +15,4 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-export default Modal;
+export default Modalcontact;

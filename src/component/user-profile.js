@@ -5,7 +5,6 @@ const User_profile = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
- 
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -25,8 +24,9 @@ const User_profile = () => {
           user: localStorage.getItem("id"),
         });
 
-        if (response.data) {          
+        if (response.data) {
           setUserData(response.data);
+          console.log(response);
         } else {
           setUserData(null);
         }
@@ -40,7 +40,6 @@ const User_profile = () => {
 
     fetchUserProfile();
   }, []);
-  
 
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
@@ -78,7 +77,7 @@ const User_profile = () => {
                 <label className="text-lg font-semibold">Plan Name:</label>
                 <input
                   type="text"
-                  value={userData.plan_name?userData.plan_name:"Trial"}
+                  value={userData.plan_name ? userData.plan_name : "Trial"}
                   readOnly
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
@@ -87,7 +86,9 @@ const User_profile = () => {
                 <label className="text-lg font-semibold">Plan Status:</label>
                 <input
                   type="text"
-                  value={userData.plan_status ?userData.plan_status:"Expired"  }
+                  value={
+                    userData.plan_status ? userData.plan_status : "Expired"
+                  }
                   readOnly
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
@@ -96,13 +97,13 @@ const User_profile = () => {
               <div>
                 <label className="text-lg font-semibold">
                   {" "}
-                  Plan Expiry Date:
+                  Plan Start Date:
                 </label>
                 <input
                   type="text"
                   value={
-                    userData.plan_expiry_date
-                      ? new Date(userData.plan_expiry_date).toLocaleDateString()
+                    userData.plan_start_date
+                      ? new Date(userData.plan_start_date).toLocaleDateString()
                       : "N/A"
                   }
                   readOnly
@@ -111,13 +112,17 @@ const User_profile = () => {
               </div>
               <div>
                 <label className="text-lg font-semibold">
-                  Plan Expiry Time:
+                  Plan Expiry Date & Time:
                 </label>
                 <input
                   type="text"
                   value={
                     userData.plan_expiry_date
-                      ? new Date(userData.plan_expiry_date).toLocaleTimeString()
+                      ? `${new Date(
+                          userData.plan_expiry_date
+                        ).toLocaleDateString()} (${new Date(
+                          userData.plan_expiry_date
+                        ).toLocaleTimeString()})`
                       : "N/A"
                   }
                   readOnly

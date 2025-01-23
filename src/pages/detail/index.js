@@ -183,20 +183,41 @@ const Content = ({ placeholder }) => {
         <div className="container-fluid p-0">
           <form onSubmit={handleSubmit}>
             <h1 className="text-3xl font-bold uppercase">Manage Campaigns</h1>
-            <div className="w-full me-6">
-              <label htmlFor="Subject">Subject</label>
-              <input
-                type="text"
-                id="Subject"
-                name="Subject"
-                value={details.subject}
-                onChange={(e) =>
-                  setDetails({ ...details, subject: e.target.value })
-                }
-                className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2
-                 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
-              />
+
+            <div className="flex mt-4">
+              <div className="w-full me-6">
+                <label htmlFor="EmailUseTLS"> Sender</label>
+                <Select
+                  options={options.smtps}
+                  isMulti
+                  value={selectedOptions.smtps}
+                  onChange={(selectedOption) =>
+                    handleChange(selectedOption, "smtp")
+                  }
+                  className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md  pl-2
+                   focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
+                  id="Smtphost"
+                  name="Smtphost"
+                  styles={customStyles}
+                  placeholder="Sender"
+                />
+              </div>
+              <div className="w-full">
+                <label htmlFor="EmailUseTLS"> Recipient</label>
+                <Select
+                  options={options.smtps}
+                
+                  className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md  pl-2
+                   focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
+                  id="Smtphost"
+                  name="Smtphost"
+                  styles={customStyles}
+                  placeholder="Recipient"
+                />
+              </div>
             </div>
+
+          
             <div className="flex mt-4">
               <div className="w-full me-6">
                 <label htmlFor="Subject">Display Name</label>
@@ -236,38 +257,22 @@ const Content = ({ placeholder }) => {
               </div>
             </div>
 
-            <div className="flex mt-4">
-              <div className="w-full">
-                <label htmlFor="EmailUseTLS"> SMTP User</label>
-                <Select
-                  options={options.smtps}
-                  isMulti
-                  value={selectedOptions.smtps}
-                  onChange={(selectedOption) =>
-                    handleChange(selectedOption, "smtp")
-                  }
-                  className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md  pl-2
-                   focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
-                  id="Smtphost"
-                  name="Smtphost"
-                  styles={customStyles}
-                  placeholder="SMTP User"
-                />
-              </div>
+            <div className="w-full mt-4  me-6">
+              <label htmlFor="Subject">Subject</label>
+              <input
+                type="text"
+                id="Subject"
+                name="Subject"
+                value={details.subject}
+                onChange={(e) =>
+                  setDetails({ ...details, subject: e.target.value })
+                }
+                className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2
+                 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+              />
             </div>
-            <div
-              onClick={() =>
-                sessionStorage.setItem("details", JSON.stringify(details))
-              }
-              className="mt-5"
-            >
-              <div className=" flex items-center justify-around">
-                <h1 className="text-3xl font-bold">Upload list</h1>
-                <h1 className="text-3xl font-bold">Sample csv</h1>
-              </div>
-              <Csv csvFile={csvFile} setCsvFile={setCsvFile} />
-            </div>
-            <div className="mt-5" onClick={saveEnteredDetails}>
+
+            <div className="" onClick={saveEnteredDetails}>
               <Editing
                 setSelectedTemplate={setSelectedTemplate}
                 setModalOpen={setModalOpen}

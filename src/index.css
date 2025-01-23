@@ -22,3 +22,13 @@ ul{
   padding: 0 !important;
 
 }
+
+.modal-contact {
+  background: #fff !important;
+  border-radius: 8px;
+  padding: 20px;
+  width: 50% !important;
+  overflow: auto; 
+  position: relative;
+
+}
