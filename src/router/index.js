@@ -18,6 +18,7 @@ import Subscribe from "../pages/subscribe-plan";
 import User_profile from "../component/user-profile";
 import Manage from "../component/manage";
 import * as TokenAPI from "../api/user_profile"
+import Contact from "../pages/contact";
 
 const Router = () => {
   const location = useLocation();
@@ -98,6 +99,10 @@ const Router = () => {
         <Route
           path="/preview"
           element={token ? <Preview /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/contact"
+          element={token ? <Contact /> : <Navigate to="/" replace />}
         />
         <Route
           path="/smtp"

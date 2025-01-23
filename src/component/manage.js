@@ -126,7 +126,8 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
                 onClick={() =>
                   handleLogoutDevice(item.device_id, item.device_name)
                 }
-                className="font-montserrat text-[#f7fff7] border-none rounded-lg py-1 px-3 cursor-pointer inline-flex items-center bg-[#7b2cbf]"
+                className="font-montserrat text-[#f7fff7] border-none rounded-lg py-1 px-3 cursor-pointer inline-flex 
+                items-center bg-[#7b2cbf]"
               >
                 Logout
               </button>
@@ -139,7 +140,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
 
   return (
     <div className="container mx-auto px-1 max-h-[100vh] overflow-auto">
-    <h1 className="text-3xl font-bold uppercase mt-28">
+    <h1 className="text-3xl font-bold uppercase mt-28 p-3">
     logged-in devices
       </h1>
 

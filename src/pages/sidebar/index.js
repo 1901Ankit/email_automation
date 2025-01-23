@@ -9,14 +9,15 @@ import { IoHomeOutline } from "react-icons/io5";
 import { AiOutlineLogin } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { RiSendPlaneFill } from "react-icons/ri";
-import * as TokenAPI from "../../api/user_profile"
+import * as TokenAPI from "../../api/user_profile";
+import { IoMdContacts } from "react-icons/io";
 
 const Sidebar = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(checkAuthentication());
   const navigate = useNavigate();
   const location = useLocation();
-  const initialRef = useRef(true)
+  const initialRef = useRef(true);
   const tabs = [
     {
       name: "Analytics",
@@ -29,12 +30,17 @@ const Sidebar = () => {
       icon: <RiSendPlaneFill style={{ fontSize: "24px" }} />,
     },
     {
+      name: "Contact",
+      path: "/contact",
+      icon: <IoMdContacts style={{ fontSize: "24px" }} />,
+    },
+    {
       name: "SMTP Setup",
       path: "/smtp",
       icon: <VscServerEnvironment style={{ fontSize: "24px" }} />,
     },
     {
-      name: "Content",
+      name: "Campaigns",
       path: "/detail",
       icon: <BiMessageAltDetail style={{ fontSize: "24px" }} />,
     },
@@ -61,9 +67,7 @@ const Sidebar = () => {
     }
   }, [location.pathname, tabs]);
 
-
   useEffect(() => {
-
     setIsAuthenticated(checkAuthentication());
   }, []);
 
@@ -77,7 +81,10 @@ const Sidebar = () => {
         const authToken = localStorage.getItem("access_token");
         const res = await axios.post(
           `${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
-          { refresh: localStorage.getItem("refresh_token"), device_id: localStorage.getItem("device_id") },
+          {
+            refresh: localStorage.getItem("refresh_token"),
+            device_id: localStorage.getItem("device_id"),
+          },
           {
             headers: {
               "Content-Type": "application/json",
@@ -113,8 +120,9 @@ const Sidebar = () => {
           {tabs.map((tab, index) => (
             <li key={index}>
               <div
-                className={`nav-link ${activeTabIndex === index ? "active" : ""
-                  }`}
+                className={`nav-link ${
+                  activeTabIndex === index ? "active" : ""
+                }`}
                 onClick={() => handleTabChange(index)}
               >
                 <span className="icon">{tab.icon}</span>
