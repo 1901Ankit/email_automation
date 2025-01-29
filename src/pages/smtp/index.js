@@ -280,7 +280,8 @@ const Smtp = () => {
                       name="host"
                       value={formData.host}
                       onChange={handleChange}
-                      className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+                      className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2
+                       focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                     />
                   </div>
                   <div className="w-full">

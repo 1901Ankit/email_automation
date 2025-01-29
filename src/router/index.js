@@ -19,6 +19,8 @@ import User_profile from "../component/user-profile";
 import Manage from "../component/manage";
 import * as TokenAPI from "../api/user_profile"
 import Contact from "../pages/contact";
+import Textpreview from "../component/textpreview";
+import Template from "../pages/template";
 
 const Router = () => {
   const location = useLocation();
@@ -93,6 +95,10 @@ const Router = () => {
           element={token ? <Home /> : <Navigate to="/" replace />}
         />
         <Route
+          path="/Textpreview"
+          element={token ? <Textpreview /> : <Navigate to="/" replace />}
+        />
+        <Route
           path="/detail"
           element={token ? <Content /> : <Navigate to="/" replace />}
         />
@@ -107,6 +113,10 @@ const Router = () => {
         <Route
           path="/smtp"
           element={token ? <Smtp /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/template"
+          element={token ? <Template /> : <Navigate to="/" replace />}
         />
         <Route
           path="/subscribe-plan"
