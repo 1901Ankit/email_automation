@@ -9,7 +9,7 @@ import "./index.css";
 const Home = () => {
 
   return (
-    <div className="container mx-auto pt-32 px-4 max-h-[100vh] overflow-auto">
+    <div className="container-fluid mx-auto pt-32 px-4 max-h-[100vh] overflow-auto">
       <div className="p-2">
         <h1 className="text-3xl font-bold uppercase">Analytics</h1>
       </div>

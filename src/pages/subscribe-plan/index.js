@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import * as API from "../../api/payment";
 import { useNavigate } from "react-router-dom";
-
 const Subscribe = () => {
   const nevigate = useNavigate();
   const handleRazorpayWindow = async (orderData) => {
@@ -14,7 +13,6 @@ const Subscribe = () => {
       order_id: orderData.razorpay_order_id,
       handler: async (response) => {
         console.log(response);
-
         try {
           const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
             response;
@@ -23,14 +21,12 @@ const Subscribe = () => {
             razorpay_payment_id,
             razorpay_signature,
           });
-
           nevigate("/home");
         } catch (error) {
           console.error("Payment verification error:", error);
           alert("Payment verification failed.");
         }
       },
-
       prefill: {
         name: "Ankit Sharma",
         email: "ankit.sharma@example.com",
@@ -43,11 +39,9 @@ const Subscribe = () => {
         color: "#3399CC",
       },
     };
-
     const razorpayInstance = new window.Razorpay(options);
     razorpayInstance.open();
   };
-
   const handlePayment = async (plan) => {
     try {
       const response = await API.createOrder({
@@ -61,12 +55,14 @@ const Subscribe = () => {
   };
   return (
     <>
-      <div className="container mx-auto pt-28 pb-10 px-4 max-h-[100vh] overflow-auto">
+      <div className="container-fluid mx-auto pt-28 pb-10 px-4 max-h-[100vh] overflow-auto">
         <div className="p-2">
           <h1 className="text-3xl font-bold uppercase">Subscription Plan</h1>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">          {[
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 mt-2">
+          {" "}
+          {[
             {
               name: "Basic",
               price: "₹149 / onwards",
@@ -110,10 +106,7 @@ const Subscribe = () => {
               onClick: () => handlePayment("elite"),
             },
           ].map((plan, index) => (
-            <div
-              key={index}
-              className="w-full md:w-1/4 flex-1 min-w-[250px]"
-            >
+            <div key={index} className="w-full md:w-1/4 flex-1 min-w-[250px]">
               <div
                 className="box flex flex-col justify-between h-full bg-white
           p-4 shadow-custom rounded-md border-t-8 border-b-8 border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/90"

@@ -145,6 +145,7 @@ const Login = () => {
         formData.append("system_info", systemInfo);
         // Perform login request
         const res = await API.login(formData);
+        
         if (res.data.user_id) {
           localStorage.setItem("id", res.data.user_id);
           localStorage.setItem("device_id", res.data.device_id);

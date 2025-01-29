@@ -3,14 +3,14 @@
   background-color: #ffffff;
   padding-top: 110px;
   position: relative;
-  height: 100vh;
+  height: 110vh;
   top: 0;
   left: 0;
   /* z-index: 999; */
   border-right: 1px solid #dee2e6;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 15px rgb(255, 248, 248); 
+  box-shadow: 0 2px 15px rgb(255, 248, 248) !important; 
 }
 .logo-wrapper {
   width: 100%;
@@ -72,11 +72,13 @@
   cursor: pointer;
 }
 .nav-link.active {
-  background-color: #7b2cbf;
+  background-color: hsl(272, 63%, 46%);
   color: white !important;
 }
 .nav-link .icon {
   margin-right: 10px;
 }
+
+
 
 

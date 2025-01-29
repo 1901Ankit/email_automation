@@ -14,14 +14,12 @@ const Contact = () => {
     subject: "",
     delay_seconds: 0,
   });
-
   const [csvFile, setCsvFile] = useState();
   const [contactData, setContactData] = useState([]);
   const [nameInput, setNameInput] = useState("");
   const [csvContacts, setCsvContacts] = useState([]);
-  const [editIndex, setEditIndex] = useState(null); // Track which contact to edit
+  const [editIndex, setEditIndex] = useState(null); 
 
-  // Function to parse CSV and extract contact data
   const handleCsvUpload = (file) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -31,8 +29,6 @@ const Contact = () => {
         const [email, firstName, lastName, company] = row.split(",");
         return { email, firstName, lastName, company };
       });
-
-      // Set csvContacts with all valid contacts (excluding empty rows)
       setCsvContacts(contacts.filter((contact) => contact.email));
     };
     reader.readAsText(file);
@@ -41,14 +37,12 @@ const Contact = () => {
   const handleSave = () => {
     const newContactData = [...contactData];
     if (editIndex !== null) {
-      // If editing, update the existing contact
       newContactData[editIndex] = {
         listName: nameInput,
-        contactCount: csvContacts.length, // Set contact count based on the CSV data
+        contactCount: csvContacts.length,
         creationDate: new Date().toLocaleDateString(),
       };
     } else {
-      // Otherwise, add a new contact
       newContactData.push({
         listName: nameInput,
         contactCount: csvContacts.length,
@@ -59,13 +53,13 @@ const Contact = () => {
     closeModal();
     setNameInput("");
     setCsvContacts([]);
-    setEditIndex(null); // Reset edit index after saving
+    setEditIndex(null); 
   };
 
   const handleEdit = (index) => {
     setEditIndex(index);
     setNameInput(contactData[index].listName);
-    setCsvContacts([]); // Clear csv contacts on edit
+    setCsvContacts([]); 
     openModal();
   };
 

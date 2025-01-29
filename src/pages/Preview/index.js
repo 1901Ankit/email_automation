@@ -85,9 +85,9 @@ const Preview = ({ placeholder }) => {
       setEmailStatus((prevStatus) => {
         // Create a new updated email status object based on the previous status
         const updatedEmailStatus = {
-          total_emails: (prevStatus?.total_emails || 0) + 1, 
+          total_emails: (prevStatus?.total_emails || 0) + 1,
           successful_sends: prevStatus?.successful_sends || 0,
-          failed_sends: prevStatus?.failed_sends || 0, 
+          failed_sends: prevStatus?.failed_sends || 0,
           email_statuses: [
             ...(prevStatus?.email_statuses || []),
             {
@@ -100,12 +100,12 @@ const Preview = ({ placeholder }) => {
 
         // Update counts based on the status
         if (data.status === "Sent successfully") {
-          updatedEmailStatus.successful_sends += 1; 
+          updatedEmailStatus.successful_sends += 1;
         } else if (data.status.includes("Failed to send")) {
-          updatedEmailStatus.failed_sends += 1; 
+          updatedEmailStatus.failed_sends += 1;
         }
 
-        return updatedEmailStatus; 
+        return updatedEmailStatus;
       });
     };
 

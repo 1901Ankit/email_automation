@@ -15,15 +15,21 @@ import { IoMdContacts } from "react-icons/io";
 const Sidebar = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(checkAuthentication());
+  const [expandedTab, setExpandedTab] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const initialRef = useRef(true);
+
   const tabs = [
     {
       name: "Analytics",
       path: "/home",
       icon: <IoHomeOutline style={{ fontSize: "24px" }} />,
     },
+    // {
+    //   name: "textpreview",
+    //   path: "/Textpreview",
+    //   icon: <IoHomeOutline style={{ fontSize: "24px" }} />,
+    // },
     {
       name: "Plan",
       path: "/subscribe-plan",
@@ -41,13 +47,41 @@ const Sidebar = () => {
     },
     {
       name: "Campaigns",
-      path: "/detail",
+      path: "/Campaigns",
       icon: <BiMessageAltDetail style={{ fontSize: "24px" }} />,
+      subTabs: [
+        {
+          name: "Sub Campaign 1",
+          path: "/detail",
+          icon: (
+            <BiMessageAltDetail
+              style={{
+                fontSize: "24px",
+              }}
+            />
+          ),
+        },
+        {
+          name: "Sub Campaign 2",
+          path: "/Textpreview",
+          icon: (
+            <BiMessageAltDetail
+              style={{
+                fontSize: "24px",
+              }}
+            />
+          ),
+        },
+      ],
     },
-
     {
       name: "Preview",
       path: "/preview",
+      icon: <VscPreview style={{ fontSize: "24px" }} />,
+    },
+    {
+      name: "Template",
+      path: "/template",
       icon: <VscPreview style={{ fontSize: "24px" }} />,
     },
     {
@@ -75,7 +109,7 @@ const Sidebar = () => {
     return !!localStorage.getItem("access_token");
   }
 
-  const handleTabChange = async (index) => {
+  const handleTabChange = async (index, subTabPath = null) => {
     if (index === tabs.length - 1) {
       try {
         const authToken = localStorage.getItem("access_token");
@@ -95,7 +129,6 @@ const Sidebar = () => {
 
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        localStorage.removeItem("id");
         localStorage.clear();
         sessionStorage.clear();
         toast.success("Logout successfully");
@@ -106,16 +139,17 @@ const Sidebar = () => {
       }
     } else {
       setActiveTabIndex(index);
-      navigate(tabs[index].path);
+      navigate(subTabPath || tabs[index].path);
     }
   };
 
+  const toggleExpand = (index) => {
+    setExpandedTab(expandedTab === index ? null : index);
+  };
+
   return (
-    <div className="layout">
-      <div className="flex flex-col sidebar shadow-lg">
-        {/* <div className="logo-wrapper">
-          <img src={logo} alt="Logo" />
-        </div> */}
+    <div className="layout max-h-[100vh]  shadow-xl">
+      <div className="flex flex-col sidebar shadow-xl">
         <ul className="sidebar-menu">
           {tabs.map((tab, index) => (
             <li key={index}>
@@ -123,11 +157,29 @@ const Sidebar = () => {
                 className={`nav-link ${
                   activeTabIndex === index ? "active" : ""
                 }`}
-                onClick={() => handleTabChange(index)}
+                onClick={() =>
+                  tab.subTabs ? toggleExpand(index) : handleTabChange(index)
+                }
               >
                 <span className="icon">{tab.icon}</span>
                 {tab.name}
               </div>
+              {tab.subTabs && expandedTab === index && (
+                <ul className="sub-menu">
+                  {tab.subTabs.map((subTab, subIndex) => (
+                    <li key={subIndex}>
+                      <div
+                        className="nav-link sub-link"
+                        onClick={() => handleTabChange(index, subTab.path)}
+                      >
+                        <span className="icon">{subTab.icon}</span>
+
+                        {subTab.name}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>
