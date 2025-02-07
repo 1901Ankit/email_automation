@@ -6,6 +6,7 @@ import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 const Contact = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCsvPreviewOpen, setIsCsvPreviewOpen] = useState(false); // New state for CSV preview
+  const [fileData, setFileData] = useState(null); // File data (parsed)
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -20,6 +21,12 @@ const Contact = () => {
   const [csvContacts, setCsvContacts] = useState([]);
   const [editIndex, setEditIndex] = useState(null); 
 
+
+  const HandleFileData = (data) => {
+    console.log("Received data from child:", data);
+    setFileData(data);  
+  };
+
   const handleCsvUpload = (file) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -29,6 +36,7 @@ const Contact = () => {
         const [email, firstName, lastName, company] = row.split(",");
         return { email, firstName, lastName, company };
       });
+      console.log("contacts",contacts);
       setCsvContacts(contacts.filter((contact) => contact.email));
     };
     reader.readAsText(file);
@@ -36,9 +44,11 @@ const Contact = () => {
 
   const handleSave = () => {
     const newContactData = [...contactData];
+    
     if (editIndex !== null) {
       newContactData[editIndex] = {
         listName: nameInput,
+        contactCount: csvContacts.length,
         contactCount: csvContacts.length,
         creationDate: new Date().toLocaleDateString(),
       };
@@ -117,7 +127,7 @@ const Contact = () => {
                     {item.listName}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate text-center">
-                    {item.contactCount}
+                    {fileData?.csvData.length-1}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate text-center">
                     {item.creationDate}
@@ -185,7 +195,7 @@ const Contact = () => {
                   <h1 className="text-3xl font-bold">Upload list</h1>
                   <h1 className="text-3xl font-bold">Sample csv</h1>
                 </div>
-                <Csv csvFile={csvFile} setCsvFile={setCsvFile} handleCsvUpload={handleCsvUpload} />
+                <Csv csvFile={csvFile} setCsvFile={setCsvFile} handleCsvUpload={handleCsvUpload} sendData={HandleFileData} />
               </div>
 
               <div className="flex justify-end">
@@ -234,9 +244,10 @@ const Contact = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {csvContacts.map((contact, index) => (
+                  {console.log("csvcontacts", csvContacts)}
+                  { fileData.csvData.map((contact, index) => (
                     <tr key={index}>
-                      <td className="px-6 py-3 text-xs text-gray-500 text-center">{contact.email}</td>
+                      <td className="px-6 py-3 text-xs text-gray-500 text-center">{contact.Email}</td>
                       <td className="px-6 py-3 text-xs text-gray-500 text-center">{contact.firstName}</td>
                       <td className="px-6 py-3 text-xs text-gray-500 text-center">{contact.lastName}</td>
                       <td className="px-6 py-3 text-xs text-gray-500 text-center">{contact.company}</td>
@@ -252,4 +263,12 @@ const Contact = () => {
   );
 };
 
+
+
+
+
 export default Contact;
+
+
+
+

@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Papa from "papaparse"; // For CSV parsing
 import "./csv.css";
 import csvfile from "../../assests/image/csvfile.png"; // CSV image
 import Modalcontact from "../modalcontact";
 
-const Csv = ({ csvFile, setCsvFile }) => {
+const Csv = ({ csvFile, setCsvFile,sendData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [modalContent, setModalContent] = useState(null); // Content for modal
-  const [fileData, setFileData] = useState(null); // File data (parsed)
+  const [ fileData,  setFileData] = useState(null); // Form data
+ 
 
+   console.log("csvFle",csvFile);
+  
   // Handle file upload and parsing
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -19,18 +22,25 @@ const Csv = ({ csvFile, setCsvFile }) => {
 
       reader.onload = () => {
         const csvData = Papa.parse(reader.result, { header: true }).data;
+        console.log("csvData",csvData);
+       
         setFileData({
           name: file.name,
           size: (file.size / 1024).toFixed(2) + " KB",
           csvData,
-        });
+        })
+        sendData({
+          name: file.name,
+          size: (file.size / 1024).toFixed(2) + " KB",
+          csvData,
+        })
       };
-
+       
       reader.readAsText(file); // Read the file
     }
   };
-
-  // Handle file upload (you can implement API call here to upload the file)
+ 
+   
   const handleUploadClick = async () => {
     if (fileData) {
       // Create a FormData object to send the file data in a POST request
@@ -60,7 +70,7 @@ const Csv = ({ csvFile, setCsvFile }) => {
     }
   };
 
-  // Open modal with table preview
+ 
   const handlePreviewClick = () => {
     if (fileData && fileData.csvData) {
       setModalContent(
