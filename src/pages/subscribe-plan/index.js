@@ -45,6 +45,7 @@ const Subscribe = () => {
         color: "#3399CC",
       },
     };
+
     const razorpayInstance = new window.Razorpay(options);
     razorpayInstance.open();
   };
@@ -54,19 +55,22 @@ const Subscribe = () => {
     alert("PhonePe integration is not implemented yet.");
   };
 
+
   const handlePayment = async (plan) => {
     setSelectedPlan(plan);
     setShowModal(true);
   };
 
   const handleConfirmPayment = async () => {
+    console.log("Selected Plan:", plan);
     try {
       const response = await API.createOrder({
         plan_name: selectedPlan.name,
       });
 
       if (paymentMethod === "razorpay") {
-        handleRazorpayWindow(response.data);
+        console.log("Order Created:", response.data);
+      handleRazorpayWindow(response.data);
       } else if (paymentMethod === "phonepe") {
         handlePhonePePayment(response.data);
       }
@@ -145,7 +149,6 @@ const Subscribe = () => {
                     ))}
                   </ul>
                 </div>
-
                 <div className="button-contain mt-4">
                   <button
                     type="button"

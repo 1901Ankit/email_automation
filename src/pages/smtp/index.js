@@ -158,18 +158,18 @@ const Smtp = () => {
           </div>
         ) : (
           <div className="mb-2">
-            <h1 className="text-3xl font-bold uppercase">SMTP Setup</h1>
-            <div className="flex items-center justify-between mb-4 mt-3">
+            <div className="flex items-center justify-between">
+              <h1 className="text-3xl font-bold uppercase">SMTP SERVER</h1>
               <button
-                className="bg-[#7b2cbf] text-white border-[#7b2cbf] rounded-full p-3 text-xl"
+                className="bg-[#7b2cbf] text-white border-[#7b2cbf] rounded-md p-2 text-lg font-semibold"
                 type="button"
                 onClick={openModal}
               >
-                <FaPlus />
+                Import Contact
               </button>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto mt-4">
               <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-[#7b2cbf] text-white">
