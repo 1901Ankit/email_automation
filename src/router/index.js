@@ -21,6 +21,7 @@ import * as TokenAPI from "../api/user_profile"
 import Contact from "../pages/contact";
 import Textpreview from "../component/textpreview";
 import Template from "../pages/template";
+import CategoryTemplates from "../pages/template/cateogorytemp";
 
 const Router = () => {
   const location = useLocation();
@@ -130,6 +131,7 @@ const Router = () => {
           path="/manage"
           element={token ? <Manage /> : <Navigate to="/" replace />}
         />
+         <Route path="/template/:category" element={ token?<CategoryTemplates />:<Navigate to="/" replace/>} />
         <Route path="/404" element={<Errorpage />} />
         <Route path="*" element={<Errorpage />} />
       </Routes>

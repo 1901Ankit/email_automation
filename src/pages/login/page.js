@@ -72,6 +72,7 @@ const Login = () => {
           formData.append("email", email);
           formData.append("password", password);
           const res = await API.register(formData);
+          
           toast.success(res.data.message);
           setShowNumberField(true);
         } catch (error) {
