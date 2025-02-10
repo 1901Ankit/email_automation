@@ -4,10 +4,7 @@ import Linechart from "../../component/linechart";
 import Barchart from "../../component/chart";
 import "./index.css";
 // import Rightsidebar from "../../component/rightsidebar/index";
-
-
 const Home = () => {
-
   return (
     <div className="container-fluid mx-auto pt-32 px-4 max-h-[100vh] overflow-auto">
       <div className="p-2">

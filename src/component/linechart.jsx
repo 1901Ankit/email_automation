@@ -3,20 +3,16 @@ import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getEmailList } from "../api/emailTemplate";
-
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
-
 const Linechart = (props) => {
   const [chartData, setChartData] = useState({
     labels: ["Failed Sends", "Successful Sends"],
     datasets: [],
   });
-
   const [totalSends, setTotalSends] = useState({
     successful_sends: 0,
     failed_sends: 0,
   });
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,16 +34,13 @@ const Linechart = (props) => {
             },
           ],
         };
-
         setChartData(updatedChartData);
       } catch (error) {
         console.error("Error fetching data from API", error);
       }
     };
-
     fetchData();
   }, [props.total_emails]);
-
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -74,7 +67,6 @@ const Linechart = (props) => {
       },
     },
   };
-
   return (
     <div className="w-full max-w-lg mx-auto p-4">
       {/* Pie Chart */}

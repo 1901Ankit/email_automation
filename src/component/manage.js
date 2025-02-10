@@ -90,49 +90,51 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
       const loginTime = systemInfo[3] || "Unknown Time";
 
       return (
-        <div
-          key={index}
-          className={`w-full sm:w-1/3 flex-shrink-0 min-w-[230px]  px-2  max-h-[100vh] overflow-auto ${
-            location.pathname == "/manage" && ""
-          }`}
-        >
-          <div
-            className="box relative flex flex-col h-full justify-start bg-white p-2 shadow-custom
-             rounded-md border-t-4 border-b-4 border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/70"
-          >
-            {localStorage.getItem("device_id") == item.device_id && (
-              <span className=" absolute text-sm text-green-500 font-semibold">
-                Current
-              </span>
-            )}
-            <div className="text-center">
-              <span className="text-[#7b2cbf] font-bold text-[20px]">
-                Device{index + 1}
-              </span>
-              <div className="h-[2px] bg-[#7b2cbf] mt-1 mx-auto w-[4.30rem]"></div>
-            </div>
-
-            <ol className="mt-3 text-gray-700 space-y-1 text-sm">
-              <li>Browser Name: {browserName}</li>
-              <li>Operating System: {operatingSystem}</li>
-              <li>Login Date: {loginDate}</li>
-              <li>Login Time: {loginTime}</li>
-            </ol>
-
-            <div className="flex-grow"></div>
-            <div className="mt-2 flex justify-end">
-              <button
-                type="button"
-                onClick={() =>
-                  handleLogoutDevice(item.device_id, item.device_name)
-                }
-                className="font-montserrat text-[#f7fff7] border-none rounded-lg py-1 px-3 cursor-pointer inline-flex 
-                items-center bg-[#7b2cbf]"
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {devices.map((item, index) => (
+            <div
+              key={index}
+              className="flex-shrink-0 min-w-[230px] px-2 max-h-[100vh] overflow-auto"
+            >
+              <div
+                className="box relative flex flex-col h-full justify-start bg-white p-2 shadow-custom
+               rounded-md border-t-4 border-b-4 border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/70"
               >
-                Logout
-              </button>
+                {localStorage.getItem("device_id") == item.device_id && (
+                  <span className="absolute text-sm text-green-500 font-semibold">
+                    Current
+                  </span>
+                )}
+                <div className="text-center">
+                  <span className="text-[#7b2cbf] font-bold text-[20px]">
+                    Device {index + 1}
+                  </span>
+                  <div className="h-[2px] bg-[#7b2cbf] mt-1 mx-auto w-[4.30rem]"></div>
+                </div>
+
+                <ol className="mt-3 text-gray-700 space-y-1 text-sm">
+                  <li>Browser Name: {browserName}</li>
+                  <li>Operating System: {operatingSystem}</li>
+                  <li>Login Date: {loginDate}</li>
+                  <li>Login Time: {loginTime}</li>
+                </ol>
+
+                <div className="flex-grow"></div>
+                <div className="mt-2 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleLogoutDevice(item.device_id, item.device_name)
+                    }
+                    className="font-montserrat text-[#f7fff7] border-none rounded-lg py-1 px-3 cursor-pointer inline-flex 
+                  items-center bg-[#7b2cbf]"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       );
     });
@@ -140,8 +142,8 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
 
   return (
     <div className="container mx-auto px-1 max-h-[100vh] overflow-auto">
-    <h1 className="text-3xl font-bold uppercase mt-28 p-3">
-    logged-in devices
+      <h1 className="text-3xl font-bold uppercase mt-28 p-3">
+        logged-in devices
       </h1>
 
       <div className="flex flex-nowrap  overflow-x-auto pricing mt-10">
