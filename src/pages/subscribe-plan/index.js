@@ -62,7 +62,7 @@ const Subscribe = () => {
   };
 
   const handleConfirmPayment = async () => {
-    console.log("Selected Plan:", plan);
+    // console.log("Selected Plan:", plan);
     try {
       const response = await API.createOrder({
         plan_name: selectedPlan.name,

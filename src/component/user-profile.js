@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import * as API from "../../src/api/user_profile";
+import TwoFAStatus from "./twofa";
 
 const User_profile = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
+  const [Toggle, setToggle] = useState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,7 +28,6 @@ const User_profile = () => {
 
         if (response.data) {
           setUserData(response.data);
-          console.log(response);
         } else {
           setUserData(null);
         }
@@ -42,11 +43,12 @@ const User_profile = () => {
   }, []);
 
   return (
-    <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
-      <div className="mb-2">
-        <h1 className="text-3xl font-bold text-center">User Profile</h1>
+    <div className="container-fluid mx-auto pt-28 pb-10 px-4 max-h-[100vh] overflow-auto">
+      <div className="">
+        <div className="p-2">
+          <h1 className="text-3xl font-bold uppercase"> User Profile</h1>
+        </div>{" "}
         {error && <div className="text-red-500">{error}</div>}
-
         {loading && !error && (
           <div className="loders">
             <div id="loader"></div>
@@ -130,9 +132,17 @@ const User_profile = () => {
                 />
               </div>
             </div>
+
+            <div className="flex items-center justify-between border border-gray-300 rounded-md mt-6 p-3">
+              <h3 className="text-sm	md:text-xl font-semibold text-gray-800">
+                Two-Factor Authentication (2FA)
+              </h3>
+              <div className="">
+                <TwoFAStatus />
+              </div>
+            </div>
           </div>
         ) : null}
-
         {!loading && !userData && !error && (
           <div className="text-gray-500">No data available</div>
         )}
