@@ -190,7 +190,7 @@ const Csv = ({ csvFile, setCsvFile,sendData }) => {
             </button>
           </div>
           {/* Upload Button */}
-          <div>
+          {/* <div>
             <button
               type="button"
               className="preview-button bg-[#7b2cbf] text-white px-4 py-2 rounded-md"
@@ -198,7 +198,7 @@ const Csv = ({ csvFile, setCsvFile,sendData }) => {
             >
               Upload
             </button>
-          </div>
+          </div> */}
         </div>
       )}
 
