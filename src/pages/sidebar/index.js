@@ -9,8 +9,9 @@ import { IoHomeOutline } from "react-icons/io5";
 import { AiOutlineLogin } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { RiSendPlaneFill } from "react-icons/ri";
-import * as TokenAPI from "../../api/user_profile";
 import { IoMdContacts } from "react-icons/io";
+import { HiMenu, HiX } from "react-icons/hi"; // Toggle button ke icons
+import { LuLayoutTemplate } from "react-icons/lu";
 
 const Sidebar = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -18,6 +19,7 @@ const Sidebar = () => {
   const [expandedTab, setExpandedTab] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const tabs = [
     {
@@ -25,11 +27,7 @@ const Sidebar = () => {
       path: "/home",
       icon: <IoHomeOutline style={{ fontSize: "24px" }} />,
     },
-    // {
-    //   name: "textpreview",
-    //   path: "/Textpreview",
-    //   icon: <IoHomeOutline style={{ fontSize: "24px" }} />,
-    // },
+
     {
       name: "Plan",
       path: "/subscribe-plan",
@@ -47,43 +45,20 @@ const Sidebar = () => {
     },
     {
       name: "Campaigns",
-      path: "/Campaigns",
+      path: "/detail",
       icon: <BiMessageAltDetail style={{ fontSize: "24px" }} />,
-      subTabs: [
-        {
-          name: "Sub Campaign 1",
-          path: "/detail",
-          icon: (
-            <BiMessageAltDetail
-              style={{
-                fontSize: "24px",
-              }}
-            />
-          ),
-        },
-        {
-          name: "Sub Campaign 2",
-          path: "/Textpreview",
-          icon: (
-            <BiMessageAltDetail
-              style={{
-                fontSize: "24px",
-              }}
-            />
-          ),
-        },
-      ],
+    },
+    {
+      name: "Template",
+      path: "/template",
+      icon: <LuLayoutTemplate  style={{ fontSize: "24px" }} />,
     },
     {
       name: "Preview",
       path: "/preview",
       icon: <VscPreview style={{ fontSize: "24px" }} />,
     },
-    {
-      name: "Template",
-      path: "/template",
-      icon: <VscPreview style={{ fontSize: "24px" }} />,
-    },
+
     {
       name: "Log out",
       path: "",
@@ -140,6 +115,11 @@ const Sidebar = () => {
     } else {
       setActiveTabIndex(index);
       navigate(subTabPath || tabs[index].path);
+
+      // 🔥 Close sidebar if on mobile
+      if (window.innerWidth < 768) {
+        setIsMobileMenuOpen(false);
+      }
     }
   };
 
@@ -148,38 +128,36 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="layout max-h-[100vh]  shadow-xl">
-      <div className="flex flex-col sidebar shadow-xl">
-        <ul className="sidebar-menu">
-          {tabs.map((tab, index) => (
-            <li key={index}>
-              <div
-                className={`nav-link ${
-                  activeTabIndex === index ? "active" : ""
-                }`}
-                onClick={() =>
-                  tab.subTabs ? toggleExpand(index) : handleTabChange(index)
-                }
-              >
-                <span className="icon">{tab.icon}</span>
-                {tab.name}
-              </div>
-              {tab.subTabs && expandedTab === index && (
-                <ul className="sub-menu">
-                  {tab.subTabs.map((subTab, subIndex) => (
-                    <li key={subIndex}>
-                      <div
-                        className="nav-link sub-link"
-                        onClick={() => handleTabChange(index, subTab.path)}
-                      >
-                        <span className="icon">{subTab.icon}</span>
+    <div className="h-screen flex layout absolute md:relative">
+      <div className="md:hidden  z-50 items-center justify-end mx-2 mt-4">
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="p-2 border-2 border-[#3B82F6] text-[#3B82F6] rounded-md"
+        >
+          {isMobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
+        </button>
+      </div>
 
-                        {subTab.name}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
+      <div
+        className={`bg-gray-100 h-full shadow-lg fixed md:static transition-all duration-300 sidebar z-10
+      ${
+        isMobileMenuOpen ? "w-60" : "w-0 md:w-52"
+      } overflow-hidden md:overflow-visible`}
+      >
+        <ul className="space-y-4 sidebar-menu">
+          {tabs.map((tab, index) => (
+            <li
+              key={index}
+              onClick={() => handleTabChange(index)}
+              className={`flex items-center gap-4 cursor-pointer p-2 rounded-lg transition-all font-semibold text-base
+              ${
+                activeTabIndex === index
+                  ? "bg-[#3B82F6] text-white"
+                  : "hover:bg-gray-200"
+              }`}
+            >
+              <span className="text-xl">{tab.icon}</span>
+              <span className="">{tab.name}</span>{" "}
             </li>
           ))}
         </ul>

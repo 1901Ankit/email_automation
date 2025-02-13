@@ -65,8 +65,8 @@ const Template = ({ placeholder }) => {
           <h1 className="text-2xl font-bold">Templates</h1>
 
           <select
-            className="px-4 py-2 rounded-md cursor-pointer text-start bg-white border-[1px] border-violet-500 text-gray-800 
-          focus:border-violet-500 transition-colors duration-300 focus:outline-none focus:ring-0 appearance-none"
+            className="px-4 py-2 rounded-md cursor-pointer text-start bg-white border-[1px] border-blue-500 text-gray-800 
+          focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0 appearance-none"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -84,7 +84,7 @@ const Template = ({ placeholder }) => {
             <div key={category} className="bg-white p-6 shadow-lg rounded-lg">
               {/* Category Label */}
               <h2
-                className="text-xl font-bold text-gray-800 mb-4 cursor-pointer hover:text-violet-600 transition duration-300"
+                className="text-xl font-bold text-gray-800 mb-4 cursor-pointer hover:text-blue-600 transition duration-300"
                 onClick={() =>
                   setExpandedCategory(
                     expandedCategory === category ? null : category
@@ -95,41 +95,44 @@ const Template = ({ placeholder }) => {
               </h2>
 
               {/* Flex Layout for Templates */}
-           
 
-<div className="flex flex-wrap justify-between gap-4">
-  {(expandedCategory === category ? templates : [templates[0]]).map((template) => (
-    <div
-      key={template.id}
-      className="relative w-full sm:w-[48%] md:w-[48%] lg:w-[48%] xl:w-[48%] h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300"
-      onClick={() => handleCategoryClick(template.category)}
-    >
-      {/* Template Preview */}
-      <div className="absolute h-full w-full overflow-y-auto">
-        <div
-          dangerouslySetInnerHTML={{ __html: template.html }}
-          className="w-full h-full"
-        />
-      </div>
+              <div className="flex flex-wrap justify-between gap-4">
+                {(expandedCategory === category
+                  ? templates
+                  : [templates[0]]
+                ).map((template) => (
+                  <div
+                    key={template.id}
+                    className="relative w-full  h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300"
+                    onClick={() => handleCategoryClick(template.category)}
+                  >
+                    {/* Template Preview */}
+                    <div className="absolute h-full w-full overflow-y-auto">
+                      <div
+                        dangerouslySetInnerHTML={{ __html: template.html }}
+                        className="w-full h-full"
+                      />
+                    </div>
 
-      {/* Hover Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <FaEye className=" to-black text-3xl mb-2" />
-        <p className="text-black text-lg font-semibold">View Template</p>
-      </div>
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <FaEye className=" to-black text-3xl mb-2" />
+                      <p className="text-black text-lg font-semibold">
+                        View Template
+                      </p>
+                    </div>
 
-      {/* Button with Template Title */}
-      <button
-        type="button"
-        className="absolute bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-purple-500 to-violet-600 
-        text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-violet-600 hover:to-purple-700 hover:shadow-lg transition-all duration-300"
-      >
-        {template.title}
-      </button>
-    </div>
-  ))}
-</div>
-
+                    {/* Button with Template Title */}
+                    <button
+                      type="button"
+                      className="absolute bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
+        text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
+                    >
+                      {template.title}
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>

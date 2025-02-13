@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { templates } from "../../lib/data";
 import JoditEditor from "jodit-react";
 import * as templateAPI from "../../api/emailTemplate";
+import { IoArrowBack } from "react-icons/io5";
 
 const CategoryTemplates = ({ placeholder }) => {
   const { category } = useParams();
@@ -45,24 +46,25 @@ const CategoryTemplates = ({ placeholder }) => {
   const filteredTemplates = templates.filter((t) => t.category === category);
 
   return (
-    <div className="container mx-auto pt-32">
-      <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
+    <div className="container-fluid  pt-32  max-h-[100vh] overflow-auto">
+      <h1 className="text-xl md:text-3xl font-bold uppercase mb-6">
         Templates for {category}
       </h1>
 
       {/* Back Button */}
       <Link
         to="/template"
-        className="inline-flex items-center gap-2 px-4 py-2 text-white bg-gradient-to-r from-purple-500 to-violet-600 rounded-lg shadow-lg 
-        hover:from-violet-600 hover:to-purple-700 hover:shadow-xl transition-all duration-300 ease-in-out"
+        className="inline-flex items-center gap-2 px-4 py-2 text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg 
+        hover:from-blue-600 hover:to-blue-700 hover:shadow-xl transition-all duration-300 ease-in-out no-underline"
       >
-        <span className="text-lg">←</span> Back to Categories
+        <IoArrowBack className="text-white text-2xl" />
+        Back to Categories
       </Link>
 
       {/* Modal for Editing Template */}
       {modalOpen && selectedTemplate && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-[60%] max-h-[100vh] overflow-hidden">
+          <div className="bg-white p-6 rounded-lg w-full max-w-full md:max-w-[60%] max-h-[100vh] overflow-hidden">
             <div className="h-[70vh] overflow-y-auto">
               <JoditEditor
                 ref={editor}
@@ -92,12 +94,12 @@ const CategoryTemplates = ({ placeholder }) => {
       )}
 
       {/* Templates Grid */}
-      <div className="flex flex-wrap justify-between gap-4 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
         {filteredTemplates.map((template) => (
           <div
             key={template.id}
-            className="relative w-full sm:w-[48%] md:w-[48%] lg:w-[48%] xl:w-[48%] h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300"
-            onClick={() => handleEditTemplate(template)} // Open modal for selected template
+            className="relative w-full h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300"
+            onClick={() => handleEditTemplate(template)}
           >
             <div className="absolute h-full w-full overflow-y-auto">
               <div
@@ -109,8 +111,8 @@ const CategoryTemplates = ({ placeholder }) => {
             {/* Button with Template Title */}
             <button
               type="button"
-              className="absolute bottom-5 left-[25%] w-1/2 bg-[#7b2cbf] 
-              text-white py-2 mx-3 rounded-md text-center font-bold"
+              className="absolute bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
+              text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
             >
               {template.title}
             </button>

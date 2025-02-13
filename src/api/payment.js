@@ -1,6 +1,6 @@
 import API from "./index";
 
-export const createOrder=(data) =>API.post("/create-order/", data);
-export const verifyPayment = (data) => API.post("/payment-callback/", data);
+export const initiatePayment=(data) =>API.post("/initiate-payment/", data);
+export const verifyPayment = (data) => API.post("/verify-payment/", data);
   
 export default API

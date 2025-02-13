@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
-import Csv from "../../component/csv/csv";
 import "react-image-crop/dist/ReactCrop.css";
 import "./index.css";
-import { templates } from "../../lib/data";
 import Editing from "../../component/templatedit";
 import JoditEditor from "jodit-react";
 import Select from "react-select";
@@ -10,8 +8,6 @@ import * as SMTPAPI from "../../api/smtp";
 import * as templateAPI from "../../api/emailTemplate";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
-
 const Content = ({ placeholder }) => {
   const editor = useRef(null);
   const navigate = useNavigate();
@@ -94,6 +90,7 @@ const Content = ({ placeholder }) => {
     }
     sessionStorage.setItem("options", JSON.stringify(selectedOptions));
   };
+
   const handleModalSave = async () => {
     if (emailEditorRef.current?.editor) {
       emailEditorRef.current.editor.exportHtml((data) => {
@@ -139,6 +136,7 @@ const Content = ({ placeholder }) => {
     sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
     setSelectedOptions(updatedSelectedOptions);
   };
+
   const customStyles = {
     indicatorSeparator: () => ({ display: "none" }),
     dropdownIndicator: (provided) => ({
@@ -171,6 +169,15 @@ const Content = ({ placeholder }) => {
       margin: "0",
     }),
   };
+
+  const [selectedListName, setSelectedListName] = useState("");
+  useEffect(() => {
+    // Retrieve the listName from sessionStorage when the component mounts
+    const storedListName = sessionStorage.getItem("listName");
+    if (storedListName) {
+      setSelectedListName(storedListName);
+    }
+  }, []);
 
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
@@ -209,15 +216,25 @@ const Content = ({ placeholder }) => {
                   />
                 </div>
               </div>
-              <div className="  mt-4 w-full">
-                <label htmlFor="EmailUseTLS"> Recipient</label>
+
+              <div className="mt-4 w-full">
+                <label htmlFor="EmailUseTLS">Recipient</label>
                 <Select
-                  // options={options.smtps}
-                  className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md  pl-2
-                 focus:border-blue-500 transition-colors duration-300 appearance-none 
-                 focus:outline-none focus:ring-0"
-                  id="Smtphost"
-                  name="Smtphost"
+                  options={options.Recipient}
+                  isMulti
+                  value={
+                    selectedListName
+                      ? [{ value: selectedListName, label: selectedListName }]
+                      : []
+                  }
+                  onChange={(selectedOption) =>
+                    handleChange(selectedOption, "Recipient")
+                  }
+                  className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
+          focus:border-blue-500 transition-colors duration-300 appearance-none 
+          focus:outline-none focus:ring-0"
+                  id="Recipient"
+                  name="Recipient"
                   styles={customStyles}
                   placeholder="Recipient"
                 />
@@ -353,16 +370,17 @@ const Content = ({ placeholder }) => {
                                     .join(", ")
                                 : "Sender"}
                             </span>
-                            <span
-                              className="sib-typo_text--bold sib-typo_text_size--lg"
-                              style={{
-                                color:
-                                  "var(--sib-color_content-primary,#1f2d3d)",
-                              }}
-                            >
-                              17:45
-                            </span>
                           </div>
+
+                          <span
+                            className="dynamic_name_container___y3O2E sib-typo_text--bold sib-typo_text_size--lg"
+                            style={{
+                              color: "var(--sib-color_content-primary,#1f2d3d)",
+                            }}
+                          >
+                            {selectedListName ? selectedListName : "Recipient"}
+                          </span>
+
                           <span
                             className="dynamic_subject_container___SyG68 sib-typo_text--bold sib-typo_text_size--md"
                             style={{

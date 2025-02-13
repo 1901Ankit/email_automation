@@ -1,15 +1,11 @@
 .sidebar {
-  width: 220px;
   background-color: #ffffff;
   padding-top: 110px;
-  position: relative;
   height: 110vh;
   top: 0;
   left: 0;
-  /* z-index: 999; */
   border-right: 1px solid #dee2e6;
-  display: flex;
-  flex-direction: column;
+
   box-shadow: 0 2px 15px rgb(255, 248, 248) !important; 
 }
 .logo-wrapper {
@@ -60,7 +56,7 @@
 .stama {
   font-size: 25px;
   font-weight: 700;
-  color: #7b2cbf;
+  color: #3B82F6;
 }
 .nav-link {
   display: flex;
@@ -72,7 +68,7 @@
   cursor: pointer;
 }
 .nav-link.active {
-  background-color: hsl(272, 63%, 46%);
+  background-color: #3B82F6;
   color: white !important;
 }
 .nav-link .icon {
