@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Pie } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2"; // Change Pie to Doughnut
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getEmailList } from "../api/emailTemplate";
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+
 const Linechart = (props) => {
   const [chartData, setChartData] = useState({
     labels: ["Failed Sends", "Successful Sends"],
@@ -13,6 +14,7 @@ const Linechart = (props) => {
     successful_sends: 0,
     failed_sends: 0,
   });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -23,13 +25,13 @@ const Linechart = (props) => {
           failed_sends: apiData.failed_sends,
         });
         const updatedChartData = {
-          labels: ["Failed ", "Successful "],
+          labels: ["Failed", "Successful"],
           datasets: [
             {
               label: "Email Sends",
               data: [apiData.failed_sends, apiData.successful_sends],
-              backgroundColor: ["#ff0000", "#4CB140"],
-              borderColor: ["#ff0000", "#4CB140"],
+              backgroundColor: ["#ce464f", "#46bf5a"],
+              borderColor: ["#ce464f", "#46bf5a"],
               borderWidth: 1,
             },
           ],
@@ -41,6 +43,7 @@ const Linechart = (props) => {
     };
     fetchData();
   }, [props.total_emails]);
+
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -49,7 +52,7 @@ const Linechart = (props) => {
         position: "top",
         labels: {
           font: {
-            size: 14,
+            size: 12,
             family: "Arial",
           },
         },
@@ -67,11 +70,12 @@ const Linechart = (props) => {
       },
     },
   };
+
   return (
     <div className="w-full max-w-lg mx-auto p-4">
-      {/* Pie Chart */}
-      <div className="relative w-full h-80">
-        <Pie data={chartData} options={options} />
+      {/* Doughnut Chart */}
+      <div className="relative w-full h-96 mt-5">
+        <Doughnut data={chartData} options={options} />
       </div>
     </div>
   );

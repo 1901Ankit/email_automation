@@ -4,14 +4,13 @@ import "./csv.css";
 import csvfile from "../../assests/image/csvfile.png"; // CSV image
 import Modalcontact from "../modalcontact";
 
-const Csv = ({ csvFile, setCsvFile,sendData }) => {
+const Csv = ({ csvFile, setCsvFile, sendData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [modalContent, setModalContent] = useState(null); // Content for modal
-  const [ fileData,  setFileData] = useState(null); // Form data
- 
+  const [fileData, setFileData] = useState(null); // Form data
 
-   console.log("csvFle",csvFile);
-  
+  console.log("csvFle", csvFile);
+
   // Handle file upload and parsing
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -22,25 +21,24 @@ const Csv = ({ csvFile, setCsvFile,sendData }) => {
 
       reader.onload = () => {
         const csvData = Papa.parse(reader.result, { header: true }).data;
-        console.log("csvData",csvData);
-       
+        console.log("csvData", csvData);
+
         setFileData({
           name: file.name,
           size: (file.size / 1024).toFixed(2) + " KB",
           csvData,
-        })
+        });
         sendData({
           name: file.name,
           size: (file.size / 1024).toFixed(2) + " KB",
           csvData,
-        })
+        });
       };
-       
+
       reader.readAsText(file); // Read the file
     }
   };
- 
-   
+
   const handleUploadClick = async () => {
     if (fileData) {
       // Create a FormData object to send the file data in a POST request
@@ -70,7 +68,6 @@ const Csv = ({ csvFile, setCsvFile,sendData }) => {
     }
   };
 
- 
   const handlePreviewClick = () => {
     if (fileData && fileData.csvData) {
       setModalContent(
@@ -129,7 +126,10 @@ const Csv = ({ csvFile, setCsvFile,sendData }) => {
       <div className="container-fluid">
         <div className="row items-center justify-center mt-3">
           <div className="col-sm-6">
-            <div className="drag-file-area">
+            <div className="flex items-center justify-center">
+              <h1 className="text-3xl font-bold">Upload list</h1>
+            </div>
+            <div className="drag-file-area ">
               <span className="material-icons-outlined upload-icon">
                 file_upload
               </span>
@@ -151,7 +151,10 @@ const Csv = ({ csvFile, setCsvFile,sendData }) => {
               </label>
             </div>
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-6 mt-5 md:mt-0">
+            <div className="flex items-center justify-center">
+              <h1 className="text-3xl font-bold">Sample csv</h1>
+            </div>
             <img
               src={csvfile}
               className="w-full h-full object-contain"

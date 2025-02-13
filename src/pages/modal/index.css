@@ -18,7 +18,7 @@
     padding: 20px;
     width: 50% !important;
     height: 80vh; 
-    overflow: auto; /* Allow scrolling if content is too large */
+    overflow: auto; 
     position: relative;
   
   }

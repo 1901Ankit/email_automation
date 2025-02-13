@@ -10,21 +10,14 @@ const Contact = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const [details, setDetails] = useState({
-    displayName: "",
-    subject: "",
-    delay_seconds: 0,
-  });
   const [csvFile, setCsvFile] = useState();
   const [contactData, setContactData] = useState([]);
   const [nameInput, setNameInput] = useState("");
   const [csvContacts, setCsvContacts] = useState([]);
-  const [editIndex, setEditIndex] = useState(null); 
-
+  const [editIndex, setEditIndex] = useState(null);
 
   const HandleFileData = (data) => {
-    console.log("Received data from child:", data);
-    setFileData(data);  
+    setFileData(data);
   };
 
   const handleCsvUpload = (file) => {
@@ -36,7 +29,7 @@ const Contact = () => {
         const [email, firstName, lastName, company] = row.split(",");
         return { email, firstName, lastName, company };
       });
-      console.log("contacts",contacts);
+      console.log("contacts", contacts);
       setCsvContacts(contacts.filter((contact) => contact.email));
     };
     reader.readAsText(file);
@@ -44,11 +37,10 @@ const Contact = () => {
 
   const handleSave = () => {
     const newContactData = [...contactData];
-    
+
     if (editIndex !== null) {
       newContactData[editIndex] = {
         listName: nameInput,
-        contactCount: csvContacts.length,
         contactCount: csvContacts.length,
         creationDate: new Date().toLocaleDateString(),
       };
@@ -59,17 +51,21 @@ const Contact = () => {
         creationDate: new Date().toLocaleDateString(),
       });
     }
+
+    // Save listName to sessionStorage
+    sessionStorage.setItem("listName", nameInput);
+
     setContactData(newContactData);
     closeModal();
     setNameInput("");
     setCsvContacts([]);
-    setEditIndex(null); 
+    setEditIndex(null);
   };
 
   const handleEdit = (index) => {
     setEditIndex(index);
     setNameInput(contactData[index].listName);
-    setCsvContacts([]); 
+    setCsvContacts([]);
     openModal();
   };
 
@@ -92,7 +88,7 @@ const Contact = () => {
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold uppercase">Contact Setup</h1>
           <button
-            className="bg-[#7b2cbf] text-white border-[#7b2cbf] rounded-md p-2 text-lg font-semibold"
+            className="bg-[#3B82F6] text-white border-[#3B82F6] rounded-md p-2 text-lg font-semibold"
             type="button"
             onClick={openModal}
           >
@@ -104,7 +100,7 @@ const Contact = () => {
       <div className="overflow-x-auto mt-10">
         <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-[#7b2cbf] text-white">
+            <thead className="bg-[#3B82F6] text-white">
               <tr>
                 <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
                   List Name
@@ -127,7 +123,7 @@ const Contact = () => {
                     {item.listName}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate text-center">
-                    {fileData?.csvData.length-1}
+                    {fileData?.csvData.length - 1}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate text-center">
                     {item.creationDate}
@@ -137,19 +133,28 @@ const Contact = () => {
                       className="text-blue-500 hover:text-blue-700 text-center"
                       onClick={() => handleEdit(index)}
                     >
-                      <FaEdit className="text-center" style={{ fontSize: "20px" }} />
+                      <FaEdit
+                        className="text-center"
+                        style={{ fontSize: "20px" }}
+                      />
                     </button>
                     <button
                       className="text-red-500 hover:text-red-700 text-center"
                       onClick={() => handleDelete(index)}
                     >
-                      <FaTrash className="text-center" style={{ fontSize: "20px" }} />
+                      <FaTrash
+                        className="text-center"
+                        style={{ fontSize: "20px" }}
+                      />
                     </button>
                     <button
                       className="text-black hover:text-black text-center"
                       onClick={handleCsvPreview}
                     >
-                      <FaEye className="text-center" style={{ fontSize: "20px" }} />
+                      <FaEye
+                        className="text-center"
+                        style={{ fontSize: "20px" }}
+                      />
                     </button>
                   </td>
                 </tr>
@@ -162,7 +167,7 @@ const Contact = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 max-h-[100vh] overflow-auto">
-          <div className="bg-white rounded-lg shadow-lg w-8/12 p-6">
+          <div className="bg-white rounded-lg shadow-lg w-full md:w-8/12 p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold">Import Contacts</h2>
               <button
@@ -176,7 +181,10 @@ const Contact = () => {
             <form className="p-0">
               <div className="flex">
                 <div className="w-full">
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Name
                   </label>
                   <input
@@ -191,17 +199,18 @@ const Contact = () => {
               </div>
 
               <div className="w-full mt-3">
-                <div className="flex items-center justify-around">
-                  <h1 className="text-3xl font-bold">Upload list</h1>
-                  <h1 className="text-3xl font-bold">Sample csv</h1>
-                </div>
-                <Csv csvFile={csvFile} setCsvFile={setCsvFile} handleCsvUpload={handleCsvUpload} sendData={HandleFileData} />
+                <Csv
+                  csvFile={csvFile}
+                  setCsvFile={setCsvFile}
+                  handleCsvUpload={handleCsvUpload}
+                  sendData={HandleFileData}
+                />
               </div>
 
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="bg-[#7b2cbf] text-white px-4 py-2 rounded mt-3 transition-colors duration-300"
+                  className="bg-[#3B82F6] text-white px-4 py-2 rounded mt-3 transition-colors duration-300"
                   onClick={handleSave}
                 >
                   Save
@@ -245,12 +254,20 @@ const Contact = () => {
                 </thead>
                 <tbody>
                   {console.log("csvcontacts", csvContacts)}
-                  { fileData.csvData.map((contact, index) => (
+                  {fileData.csvData.map((contact, index) => (
                     <tr key={index}>
-                      <td className="px-6 py-3 text-xs text-gray-500 text-center">{contact.Email}</td>
-                      <td className="px-6 py-3 text-xs text-gray-500 text-center">{contact.firstName}</td>
-                      <td className="px-6 py-3 text-xs text-gray-500 text-center">{contact.lastName}</td>
-                      <td className="px-6 py-3 text-xs text-gray-500 text-center">{contact.company}</td>
+                      <td className="px-6 py-3 text-xs text-gray-500 text-center">
+                        {contact.Email}
+                      </td>
+                      <td className="px-6 py-3 text-xs text-gray-500 text-center">
+                        {contact.firstName}
+                      </td>
+                      <td className="px-6 py-3 text-xs text-gray-500 text-center">
+                        {contact.lastName}
+                      </td>
+                      <td className="px-6 py-3 text-xs text-gray-500 text-center">
+                        {contact.company}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -263,12 +280,4 @@ const Contact = () => {
   );
 };
 
-
-
-
-
 export default Contact;
-
-
-
-

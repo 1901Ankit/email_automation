@@ -55,7 +55,7 @@ const User_profile = () => {
           </div>
         )}
         {!loading && !error && userData ? (
-          <div className="p-6 ">
+          <div className="md:p-6 p-0 ">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="text-lg font-semibold">Username:</label>

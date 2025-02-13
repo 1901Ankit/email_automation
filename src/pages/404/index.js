@@ -5,7 +5,7 @@ import { FcHome } from "react-icons/fc";
 
 const Errorpage = () => {
   return (
-    <div className="container p-0 ">
+    <div className="container-fluid  pt-20  max-h-[100vh] overflow-auto">
       <div className="page_404">
         <div className="row">
           <div className="col-sm-12 ">
@@ -26,7 +26,7 @@ const Errorpage = () => {
                   <Link to={"/"}>
                     <button
                       type="submit"
-                      className="bg-[#7b2cbf] text-white px-4 py-2 rounded mt-2 transition-colors duration-300 flex items-center gap-2 text-decoration-line: none;"
+                      className="bg-[#3B82F6] text-white px-4 py-2 rounded mt-2 transition-colors duration-300 flex items-center gap-2 text-decoration-line: none; no-underline"
                     >
                       Home
                       <FcHome

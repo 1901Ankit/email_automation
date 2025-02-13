@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FaPhoneAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import logo from "../../assests/image/wishi.png";
+import support from "../../assests/image/support.webp";
 const Header = () => {
   const [user, setUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -17,28 +18,27 @@ const Header = () => {
   };
   const handleOptionClick = (path) => {
     navigate(path);
-    setIsOpen(false); 
+    setIsOpen(false);
   };
   return (
     <div className="bg-white shadow-lg fixed top-0 left-0 right-0 z-40">
-      <div className="container-fluid mx-auto px-4 md:px-20">
+      <div className="container-fluid">
         <div className="flex justify-between items-center py-2">
-          <div className="flex items-center">
+          <div className="flex items-center justify-center md:justify-start w-full">
             <img src={logo} alt="Logo" className="w-44" />
           </div>
+
           <div className="flex items-center space-x-4">
-            <div className="flex items-center text-gray-700">
-              <FaPhoneAlt className="text-xl" />
-              <span className="ml-2">+1 (800) 210-2858</span>
-            </div>
             <div className="relative">
               <div
                 className="flex items-center cursor-pointer"
                 onClick={toggleDropdown}
               >
                 {user ? (
-                  <div className="bg-gradient-to-r from-[#7b2cbf] to-[#7b2cbf] text-white
-                   px-3.5 py-2 rounded-full shadow-md font-semibold">
+                  <div
+                    className="bg-gradient-to-r from-[#3B82F6] to-[#3B82F6] text-white
+                   px-3.5 py-2 rounded-full shadow-md font-semibold"
+                  >
                     {user.charAt(0).toUpperCase() || "W"}
                   </div>
                 ) : null}
@@ -60,6 +60,9 @@ const Header = () => {
                 </div>
               )}
             </div>
+            <a href="tel:+18002102858">
+              <img src={support} className="w-[50px] h-[35px]" />
+            </a>
           </div>
         </div>
       </div>
@@ -67,5 +70,3 @@ const Header = () => {
   );
 };
 export default Header;
-
-

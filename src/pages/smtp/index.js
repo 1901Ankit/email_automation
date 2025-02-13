@@ -161,7 +161,7 @@ const Smtp = () => {
             <div className="flex items-center justify-between">
               <h1 className="text-3xl font-bold uppercase">SMTP SERVER</h1>
               <button
-                className="bg-[#7b2cbf] text-white border-[#7b2cbf] rounded-md p-2 text-lg font-semibold"
+                className="bg-[#3B82F6] text-white border-[#3B82F6] rounded-md p-2 text-lg font-semibold"
                 type="button"
                 onClick={openModal}
               >
@@ -172,7 +172,7 @@ const Smtp = () => {
             <div className="overflow-x-auto mt-4">
               <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
                 <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-[#7b2cbf] text-white">
+                  <thead className="bg-[#3B82F6] text-white">
                     <tr>
                       <th
                         className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer"
@@ -265,11 +265,12 @@ const Smtp = () => {
               <h3 className="font-bold text-lg  text-center">
                 {isEditing ? "Edit SMTP Entry" : "Add New SMTP Entry"}
               </h3>
-              <form onSubmit={handleSubmit}>
-                <div className="flex">
-                  <div className="w-full me-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Host */}
+                  <div className="w-full">
                     <label
-                      htmlFor="EmailHost"
+                      htmlFor="host"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Host
@@ -280,13 +281,15 @@ const Smtp = () => {
                       name="host"
                       value={formData.host}
                       onChange={handleChange}
-                      className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2
-                       focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+                      className="block w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-2
+        focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                     />
                   </div>
+
+                  {/* Port */}
                   <div className="w-full">
                     <label
-                      htmlFor="EmailPort"
+                      htmlFor="port"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Port
@@ -297,14 +300,16 @@ const Smtp = () => {
                       name="port"
                       value={formData.port}
                       onChange={handleChange}
-                      className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+                      className="block w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                     />
                   </div>
                 </div>
-                <div className="flex mt-4">
-                  <div className="w-full me-6">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* TLS */}
+                  <div className="w-full">
                     <label
-                      htmlFor="EmailUseTLS"
+                      htmlFor="use_tls"
                       className="block text-sm font-medium text-gray-700"
                     >
                       TLS
@@ -315,9 +320,11 @@ const Smtp = () => {
                       name="use_tls"
                       value="True"
                       readOnly
-                      className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0 bg-gray-100"
+                      className="block w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0 bg-gray-100"
                     />
                   </div>
+
+                  {/* Email */}
                   <div className="w-full">
                     <label
                       htmlFor="username"
@@ -331,14 +338,16 @@ const Smtp = () => {
                       name="username"
                       value={formData.username}
                       onChange={handleChange}
-                      className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+                      className="block w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                     />
                   </div>
                 </div>
-                <div className="flex mt-4">
-                  <div className="w-full me-6">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Server Name */}
+                  <div className="w-full">
                     <label
-                      htmlFor="EmailUseTLS"
+                      htmlFor="name"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Give a name of your server
@@ -349,12 +358,14 @@ const Smtp = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
-                    ></input>
+                      className="block w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 appearance-none focus:outline-none focus:ring-0"
+                    />
                   </div>
+
+                  {/* Password */}
                   <div className="w-full">
                     <label
-                      htmlFor="Password"
+                      htmlFor="password"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Password
@@ -365,15 +376,16 @@ const Smtp = () => {
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
-                      className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+                      className="block w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                     />
                   </div>
                 </div>
 
-                <div className="mt-4 flex justify-end">
+                {/* Submit Button */}
+                <div className="flex justify-end">
                   <button
                     type="submit"
-                    className="bg-[#7b2cbf] text-white px-4 py-2 rounded mt-3 transition-colors duration-300"
+                    className="bg-[#3B82F6] text-white px-4 py-2 rounded mt-3 transition-colors duration-300"
                   >
                     {isEditing ? "Update" : "Add"}
                   </button>

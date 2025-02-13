@@ -38,9 +38,16 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
     }
   }, [loggedInDevices]);
 
-  const handleLogoutClick = (device_id) => {
-    setSelectedDeviceId(device_id);
-    setShowOtpModal(true);
+  const handleLogoutClick = async (device_id) => {
+    try {
+      await UserAPI.logoutOTPSend({ device_id: device_id });
+      setSelectedDeviceId(device_id);
+      setShowOtpModal(true);
+      toast.success("OTP send to you, please verify to procced!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to send OTP");
+    }
   };
 
   const handleOtpChange = (e, index) => {
@@ -51,11 +58,19 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
 
   const handleVerifyOtp = async () => {
     try {
-      const enteredOtp = otp.join(""); // OTP ko ek string me convert karna
-      const res = await UserAPI.verifyOtp({
-        device_id: selectedDeviceId,
-        otp: enteredOtp,
-      });
+      const enteredOtp = otp.join("");
+      let system_info = devices.map((device) => {
+        if (device.device_id == selectedDeviceId) {
+          return device;
+        }
+      })[0]["system_info"];
+
+      const formData = new FormData();
+      formData.append("device_id", selectedDeviceId);
+      formData.append("system_info", system_info);
+      formData.append("otp", enteredOtp);
+
+      const res = await UserAPI.logoutOTP(formData);
 
       if (res.data.success) {
         toast.success("OTP verified! Logging out...");
@@ -115,7 +130,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   };
 
   return (
-    <div className="container mx-auto px-1 max-h-[100vh] overflow-auto">
+    <div className="container-fluid mx-auto px-4 max-h-[100vh] overflow-auto">
       <h1 className="text-3xl font-bold uppercase mt-28 p-3">
         Logged-in Devices
       </h1>
@@ -135,7 +150,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
               key={index}
               className="flex-shrink-0 min-w-[230px] px-2 max-h-[100vh] overflow-auto"
             >
-              <div className="box relative flex flex-col h-full justify-start bg-white p-2 shadow-custom rounded-md border-t-4 border-b-4 border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/70">
+              <div className="box relative flex flex-col h-full justify-start bg-white p-2 shadow-custom rounded-md border-t-4 border-b-4 border-[#3B82F6] shadow-md shadow-[#3B82F6]/70">
                 {localStorage.getItem("device_id") == item.device_id && (
                   <span className="absolute text-sm text-green-500 font-semibold">
                     Current
@@ -143,7 +158,9 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
                 )}
 
                 <div>
-                  <h3 className="text-lg font-semibold text-center">Device {index + 1}</h3>
+                  <h3 className="text-lg font-semibold text-center">
+                    Device {index + 1}
+                  </h3>
                   <ol className="mt-3 text-gray-700 space-y-1 text-sm">
                     <li>
                       <strong>Browser Name:</strong> {browserName}
@@ -165,7 +182,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
                   <button
                     type="button"
                     onClick={() => handleLogoutClick(item.device_id)}
-                    className="font-montserrat text-[#f7fff7] border-none rounded-lg py-1 px-3 cursor-pointer inline-flex items-center bg-[#7b2cbf]"
+                    className="font-montserrat text-[#f7fff7] border-none rounded-lg py-1 px-3 cursor-pointer inline-flex items-center bg-[#3B82F6]"
                   >
                     Logout
                   </button>
@@ -183,7 +200,9 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
             <h1 className="text-lg font-semibold text-gray-700">
               An OTP has been sent to your email.
             </h1>
-            <p className="text-gray-600 text-sm">Please enter the OTP to verify.</p>
+            <p className="text-gray-600 text-sm">
+              Please enter the OTP to verify.
+            </p>
             <div className="flex justify-center space-x-2 mt-4">
               {otp.map((digit, index) => (
                 <input
@@ -200,7 +219,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
             </div>
             <button
               onClick={handleVerifyOtp}
-              className="bg-[#7b2cbf] text-white font-bold py-2 px-4 rounded-md mt-4"
+              className="bg-[#3B82F6] text-white font-bold py-2 px-4 rounded-md mt-4"
             >
               Verify
             </button>

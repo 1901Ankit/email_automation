@@ -37,7 +37,7 @@
 }
 
 .keepcon {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 100;
   line-height: 20px;
   letter-spacing: 0.5px;
@@ -177,9 +177,9 @@ form {
 }
 
 .overlay {
-  background: #7b2cbf;
-  background: -webkit-linear-gradient(to top,  #7d19d4, rgb(216, 24, 146));
-  background: linear-gradient(to top,  #7d19d4, rgb(216, 24, 146));
+  background: #3B82F6;
+  background: -webkit-linear-gradient(to top,  #3B82F6, rgb(19, 33, 64));
+  background: linear-gradient(to top,  #3B82F6, rgb(19, 33, 64));
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
@@ -202,7 +202,7 @@ form {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 0 40px;
+  /* padding: 0 40px; */
   text-align: center;
   top: 0;
   height: 100%;
