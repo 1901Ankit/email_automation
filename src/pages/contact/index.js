@@ -1,89 +1,222 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RxCrossCircled } from "react-icons/rx";
 import Csv from "../../component/csv/csv";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import * as API from "../../api/user";
+import {toast,Toaster} from "react-hot-toast";
+ 
+ import axios from "axios";
+ 
 
 const Contact = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCsvPreviewOpen, setIsCsvPreviewOpen] = useState(false); // New state for CSV preview
   const [fileData, setFileData] = useState(null); // File data (parsed)
+  const [previewData, setPreviewData] = useState({})
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  const [csvFile, setCsvFile] = useState();
+  
+ 
   const [contactData, setContactData] = useState([]);
-  const [nameInput, setNameInput] = useState("");
+ 
   const [csvContacts, setCsvContacts] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
+  const [nameInput, setNameInput] = useState("");
+  const [csvFile, setCsvFile] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editingContacts, setEditingContacts] = useState([]);
+  const [isModalEDitOpen, setIsModalEditOpen] = useState(false);
+  const [selectedFileId, setSelectedFileId] = useState(null);
 
   const HandleFileData = (data) => {
     setFileData(data);
   };
-
-  const handleCsvUpload = (file) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const fileData = reader.result;
-      const rows = fileData.split("\n");
-      const contacts = rows.slice(1).map((row) => {
-        const [email, firstName, lastName, company] = row.split(",");
-        return { email, firstName, lastName, company };
-      });
-      console.log("contacts", contacts);
-      setCsvContacts(contacts.filter((contact) => contact.email));
-    };
-    reader.readAsText(file);
-  };
-
-  const handleSave = () => {
-    const newContactData = [...contactData];
-
-    if (editIndex !== null) {
-      newContactData[editIndex] = {
-        listName: nameInput,
-        contactCount: csvContacts.length,
-        creationDate: new Date().toLocaleDateString(),
-      };
-    } else {
-      newContactData.push({
-        listName: nameInput,
-        contactCount: csvContacts.length,
-        creationDate: new Date().toLocaleDateString(),
-      });
+  const handleEdit = async (file_id) => {
+    setSelectedFileId(file_id);
+    try {
+      const response = await  API.getSingleContactList(file_id);
+      console.log("response_data", response);
+      setEditingContacts(response.data.contacts); // Store fetched contacts in state
+       setIsModalEditOpen(true);
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
     }
-
-    // Save listName to sessionStorage
-    sessionStorage.setItem("listName", nameInput);
-
-    setContactData(newContactData);
-    closeModal();
-    setNameInput("");
-    setCsvContacts([]);
-    setEditIndex(null);
   };
 
-  const handleEdit = (index) => {
-    setEditIndex(index);
-    setNameInput(contactData[index].listName);
-    setCsvContacts([]);
-    openModal();
+  const handleChange = (index, field, value) => {
+    setEditingContacts((prevContacts) =>
+      prevContacts.map((contact, i) =>
+        i === index
+          ? { ...contact, data: { ...contact.data, [field]: value } }
+          : contact
+      )
+    );
+  };
+  
+  const handleSaveEdit = async () => {
+    // Transform `editingContacts` to match the required API structure
+    console.log("selected",selectedFileId);
+    const formattedContacts = {
+      contacts: editingContacts.map((contact) => ({
+        ...(contact.id ? { id: contact.id } : {}), // Include `id` only if it exists
+        data: {
+          Email: contact.data.Email,
+          firstName: contact.data.firstName,
+          lastName: contact.data.lastName,
+          companyName: contact.data.companyName,
+        },
+      })),
+    };
+  
+    console.log("Formatted Contacts:", formattedContacts);
+  
+    try {
+    const res=   await API.updateSingleContact(selectedFileId, formattedContacts); // Ensure API accepts object format
+    console.log("res", res);
+      setIsModalEditOpen(false);
+      alert("Contacts updated successfully!");
+    } catch (error) {
+      console.error("Error updating contacts:", error);
+    }
+  };
+  
+
+  // const handleCsvUpload = (file) => {
+  //   console.log("file", file);
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     const fileData = reader.result;
+  //     const rows = fileData.split("\n");
+  //     const contacts = rows.slice(1).map((row) => {
+  //       const [email, firstName, lastName, company] = row.split(",");
+  //       return { email, firstName, lastName, company };
+  //     });
+  //     console.log("contacts", contacts);
+  //     setCsvContacts(contacts.filter((contact) => contact.email));
+  //   };
+  //   reader.readAsText(file);
+  // };
+
+  // const handleSave = () => {
+  //   const newContactData = [...contactData];
+  //   console.log(newContactData);
+  //   if (editIndex !== null) {
+  //     newContactData[editIndex] = {
+  //       listName: nameInput,
+  //       contactCount: csvContacts.length,
+  //       creationDate: new Date().toLocaleDateString(),
+  //     };
+  //   } else {
+  //     newContactData.push({
+  //       listName: nameInput,
+  //       contactCount: csvContacts.length,
+  //       creationDate: new Date().toLocaleDateString(),
+  //     });
+  //   }
+
+  //   // Save listName to sessionStorage
+  //   sessionStorage.setItem("listName", nameInput);
+
+  //   setContactData(newContactData);
+  //   closeModal();
+  //   setNameInput("");
+  //   setCsvContacts([]);
+  //   setEditIndex(null);
+  // };
+
+ 
+
+  const handleDelete = async (file_id) => {
+     try {
+       
+      const res= await API.deleteSingleContactList(file_id);
+      
+      toast.success(res.data.message);
+
+      
+     } catch (error) {
+       console.log("errror",error);
+     }
   };
 
-  const handleDelete = (index) => {
-    const newContactData = contactData.filter((_, i) => i !== index);
-    setContactData(newContactData);
-  };
-
-  const handleCsvPreview = () => {
+  const handleCsvPreview =async (file_id) => {
+     console.log("hey i am from csv preview");
+    try {
+        
+      const res= await API.getSingleContactList(file_id);
+      console.log("res", res.data)
+      setPreviewData(res.data);
+ 
+    } catch (error) {
+      console.log("errr",error);
+    }
+    
+       
     setIsCsvPreviewOpen(true);
   };
-
+  console.log("prev",previewData);
   const handleCloseCsvPreview = () => {
     setIsCsvPreviewOpen(false);
   };
 
+  const handleFileChange = (e) => {
+    setCsvFile(e.target.files[0]);
+  };
+
+  const handleSave = async () => {
+    if (!nameInput || !csvFile) {
+      alert("Please fill in all fields and select a CSV file.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", nameInput);
+    formData.append("csv_file", csvFile);
+
+    try {
+      const response = await  API.uploadContacts(formData);
+ 
+
+    console.log("response", response);
+
+      if (response.ok) {
+        alert("File uploaded successfully!");
+        closeModal();
+      } else {
+     
+      }
+    } catch (error) {
+      console.error("Upload failed", error);
+      alert("Upload failed. Please try again.");
+    }
+  };
+
+
+  useEffect(() => {
+    console.log("Updated previewData:", previewData);
+  }, [previewData]);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const response = await API.getContactList();
+        console.log("res",response);
+        setContacts(response.data.user_contact_files);  
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+        toast.error("Failed to load contacts.");
+        setLoading(false);
+      }
+    };
+
+    fetchContacts();
+  }, []);  
+  console.log("prev",previewData);
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
+      <Toaster/>
       <div className="mb-2">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold uppercase">Contact Setup</h1>
@@ -117,21 +250,21 @@ const Contact = () => {
               </tr>
             </thead>
             <tbody className="bg-gray-50 divide-y divide-gray-200 items-center justify-center">
-              {contactData.map((item, index) => (
+              { contacts.map((item, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate text-center">
-                    {item.listName}
+                    {item.file_name}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate text-center">
-                    {fileData?.csvData.length - 1}
+                    {item?.contacts?.length}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border truncate text-center">
-                    {item.creationDate}
+                    {item?.created_at}
                   </td>
                   <td className="px-6 py-4 text-xs text-gray-500 border space-x-2 flex items-center justify-around">
                     <button
                       className="text-blue-500 hover:text-blue-700 text-center"
-                      onClick={() => handleEdit(index)}
+                      onClick={() => handleEdit(item.file_id)}
                     >
                       <FaEdit
                         className="text-center"
@@ -140,7 +273,7 @@ const Contact = () => {
                     </button>
                     <button
                       className="text-red-500 hover:text-red-700 text-center"
-                      onClick={() => handleDelete(index)}
+                      onClick={() => handleDelete(item.file_id)}
                     >
                       <FaTrash
                         className="text-center"
@@ -149,7 +282,7 @@ const Contact = () => {
                     </button>
                     <button
                       className="text-black hover:text-black text-center"
-                      onClick={handleCsvPreview}
+                      onClick={()=>handleCsvPreview(item?.file_id)}
                     >
                       <FaEye
                         className="text-center"
@@ -179,47 +312,117 @@ const Contact = () => {
             </div>
 
             <form className="p-0">
-              <div className="flex">
-                <div className="w-full">
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
-                    value={nameInput}
-                    onChange={(e) => setNameInput(e.target.value)}
-                  />
-                </div>
-              </div>
+          <div className="w-full">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+            />
+          </div>
 
-              <div className="w-full mt-3">
-                <Csv
-                  csvFile={csvFile}
-                  setCsvFile={setCsvFile}
-                  handleCsvUpload={handleCsvUpload}
-                  sendData={HandleFileData}
-                />
-              </div>
+          <div className="w-full mt-3">
+            <label className="block text-sm font-medium text-gray-700">Upload CSV</label>
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleFileChange}
+              className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+            />
+          </div>
 
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="bg-[#3B82F6] text-white px-4 py-2 rounded mt-3 transition-colors duration-300"
-                  onClick={handleSave}
-                >
-                  Save
-                </button>
-              </div>
-            </form>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className="bg-[#3B82F6] text-white px-4 py-2 rounded mt-3 transition-colors duration-300"
+              onClick={handleSave}
+            >
+              Save
+            </button>
+          </div>
+        </form>
           </div>
         </div>
       )}
+
+{isModalEDitOpen && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white p-6 rounded-lg  ">
+      <h2 className="text-xl font-bold mb-4 text-center">Edit Contacts Details</h2>
+      <div className="max-h-80 overflow-y-auto">
+        <table className="  border border-gray-300">
+          <thead className="bg-gray-200">
+            <tr>
+              <th className="px-4 py-2 border">First Name</th>
+              <th className="px-4 py-2 border">Last Name</th>
+              <th className="px-4 py-2 border">Email</th>
+              <th className="px-4 py-2 border">Company Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {editingContacts?.map((contact, index) => (
+              <tr key={index} className="text-center">
+                <td className="px-4 py-2 border">
+                  <input
+                    type="text"
+                    value={contact?.data?.firstName || ""}
+                    onChange={(e) => handleChange(index, "firstName", e.target.value)}
+                    className="border p-2 w-full"
+                  />
+                </td>
+                <td className="px-4 py-2 border">
+                  <input
+                    type="text"
+                    value={contact?.data?.lastName || ""}
+                    onChange={(e) => handleChange(index, "lastName", e.target.value)}
+                    className="border p-2 w-full"
+                  />
+                </td>
+                <td className="px-4 py-2 border">
+                  <input
+                    type="text"
+                    value={contact?.data?.Email || ""}
+                    onChange={(e) => handleChange(index, "Email", e.target.value)}
+                    className="border p-2 w-full"
+                  />
+                </td>
+                <td className="px-4 py-2 border">
+                  <input
+                    type="text"
+                    value={contact?.data?.companyName || ""}
+                    onChange={(e) => handleChange(index, "companyName", e.target.value)}
+
+                    className="border p-2 w-full"
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex justify-end mt-4 space-x-2">
+        <button
+          onClick={() => setIsModalEditOpen(false)}
+          className="px-4 py-2 bg-gray-500 text-white rounded"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleSaveEdit}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* CSV Preview Modal */}
       {isCsvPreviewOpen && (
@@ -254,19 +457,19 @@ const Contact = () => {
                 </thead>
                 <tbody>
                   {console.log("csvcontacts", csvContacts)}
-                  {fileData.csvData.map((contact, index) => (
+                  {previewData?.contacts?.map((contact, index) => (
                     <tr key={index}>
                       <td className="px-6 py-3 text-xs text-gray-500 text-center">
-                        {contact.Email}
+                        {contact?.data?.Email}
                       </td>
                       <td className="px-6 py-3 text-xs text-gray-500 text-center">
-                        {contact.firstName}
+                        {contact?.data?.firstName}
                       </td>
                       <td className="px-6 py-3 text-xs text-gray-500 text-center">
-                        {contact.lastName}
+                        {contact?.data?.lastName}
                       </td>
                       <td className="px-6 py-3 text-xs text-gray-500 text-center">
-                        {contact.company}
+                        {contact?.data?.companyName}
                       </td>
                     </tr>
                   ))}
