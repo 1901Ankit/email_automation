@@ -8,6 +8,7 @@ import * as SMTPAPI from "../../api/smtp";
 import * as templateAPI from "../../api/emailTemplate";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import * as API from "../../api/user";
 const Content = ({ placeholder }) => {
   const editor = useRef(null);
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const Content = ({ placeholder }) => {
   const [selectedOptions, setSelectedOptions] = useState({
     smtps: [],
   });
+  const [contacts, setContacts] = useState([]);
   const [csvFile, setCsvFile] = useState();
 
   useEffect(() => {
@@ -45,6 +47,22 @@ const Content = ({ placeholder }) => {
     [placeholder]
   );
 
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const response = await API.getContactList();
+        console.log("res",response);
+        setContacts(response.data.user_contact_files);  
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+        toast.error("Failed to load contacts.");
+        setLoading(false);
+      }
+    };
+
+    fetchContacts();
+  }, []); 
   useEffect(() => {
     const loadData = async () => {
       const smtpResponse = await SMTPAPI.getAllSMTPs({
