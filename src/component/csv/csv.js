@@ -9,7 +9,7 @@ const Csv = ({ csvFile, setCsvFile, sendData }) => {
   const [modalContent, setModalContent] = useState(null); // Content for modal
   const [fileData, setFileData] = useState(null); // Form data
 
-  console.log("csvFle", csvFile);
+   
 
   // Handle file upload and parsing
   const handleFileChange = (e) => {
