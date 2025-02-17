@@ -4,7 +4,7 @@ import Csv from "../../component/csv/csv";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import * as API from "../../api/user";
 import {toast,Toaster} from "react-hot-toast";
- 
+import { FiPlus } from "react-icons/fi";
  import axios from "axios";
  
 
@@ -45,13 +45,9 @@ const Contact = () => {
   };
 
   const handleChange = (index, field, value) => {
-    setEditingContacts((prevContacts) =>
-      prevContacts.map((contact, i) =>
-        i === index
-          ? { ...contact, data: { ...contact.data, [field]: value } }
-          : contact
-      )
-    );
+    const updatedContacts = [...editingContacts];
+    updatedContacts[index].data[field] = value;
+    setEditingContacts(updatedContacts);
   };
   
   const handleSaveEdit = async () => {
@@ -71,14 +67,30 @@ const Contact = () => {
   
     console.log("Formatted Contacts:", formattedContacts);
   
+    
+    // const res=   await API.updateSingleContact(selectedFileId, formattedContacts); // Ensure API accepts object format
+    // console.log("res", res);
+    console.log("TOKEN", localStorage.getItem("access_token")); // Ensure token is available
+
     try {
-    const res=   await API.updateSingleContact(selectedFileId, formattedContacts); // Ensure API accepts object format
-    console.log("res", res);
+      const res = await axios.put(
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/contact-update/${selectedFileId}/`, // Removed trailing slash
+        formattedContacts, // Data should be in the second parameter
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Ensure token is passed correctly
+          },
+        }
+      );
+    
+      console.log("Response:", res.data);
       setIsModalEditOpen(false);
       alert("Contacts updated successfully!");
     } catch (error) {
-      console.error("Error updating contacts:", error);
+      console.error("Error updating contacts:", error.response?.data || error.message);
     }
+    
   };
   
 
@@ -192,7 +204,9 @@ const Contact = () => {
     }
   };
 
-
+  const addNew = () => {
+    setEditingContacts([...editingContacts, { data: { firstName: "", lastName: "", Email: "", companyName: "" } }]);
+  };
   useEffect(() => {
     console.log("Updated previewData:", previewData);
   }, [previewData]);
@@ -353,7 +367,17 @@ const Contact = () => {
 {isModalEDitOpen && (
   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
     <div className="bg-white p-6 rounded-lg  ">
-      <h2 className="text-xl font-bold mb-4 text-center">Edit Contacts Details</h2>
+        <div className="flex justify-between">
+          <div>
+          <h2 className="text-xl font-bold mb-4 text-center">Edit Contacts Details</h2>
+          </div>
+
+          <div className="flex items-center justify-center space-x-2" onClick={addNew}>
+  <h2 className="text-xl font-bold cursor-pointer">Add New</h2>
+  <FiPlus size={20} className="mb-2" />
+</div>
+
+        </div>
       <div className="max-h-80 overflow-y-auto">
         <table className="  border border-gray-300">
           <thead className="bg-gray-200">
