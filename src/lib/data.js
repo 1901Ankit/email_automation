@@ -85,259 +85,475 @@ export const templates = [
     category: "Business",
     html: `
 
-     <!DOCTYPE html>
-<html lang="en">
+   <!DOCTYPE html>
+<html>
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Responsive Onboarding Email</title>
+    <title>Wish Geeks Tech Service</title>
   </head>
   <body>
     <table
       style="
-        width: 80%;
-        max-width: 350px;
-        margin: 0 auto;
-        border-collapse: collapse;
-        background-color: white;
+        width: 100%;
+        max-width: 400px;
+        height: 100%;
         position: relative;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        overflow-x: hidden;
+        overflow-y: hidden;
       "
     >
-      <!-- Header Section -->
-      <tr>
-        <td style="position: relative; text-align: center">
-          <!-- Background Image -->
-          <img
-            src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Group+1010107868.png"
-            alt="Wish Geeks Techserve"
-            style="width: 100%; height: auto; display: block"
-          />
-          <!-- Logo on Top Left -->
-          <img
-            src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/techserve+logo.png"
-            style="width: 150px; position: absolute; top: 10px; left: 10px"
-          />
-          <!-- Text & Button Overlay -->
-          <div
-            style="
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              text-align: center;
-            "
-          >
-            <!-- Welcome Text (Appears on Image, Moved Higher) -->
-            <p
-              style="
-                color: white;
-                font-size: 28px;
-                font-weight: bold;
-                margin-bottom: 10px;
-              "
-            >
-              WELCOME ONBOARDING
-            </p>
-            <!-- Visit Button (Appears on Image, Moved Higher) -->
-            <a
-              href="#"
-              style="
-                background-color: white;
-                color: #338DFB;
-                padding: 18px 35px;
-                text-decoration: none;
-                font-size: 18px;
-                border-radius: 30px;
-                display: inline-block;
-                font-weight: bold;
-              "
-            >
-              Visit our site
-            </a>
-          </div>
-        </td>
-      </tr>
-      <!-- Welcome Message -->
-      <tr>
-        <td
-          style="
-            text-align: center;
-            font-size: 28px;
-            font-weight: 600;
-            padding: 15px;
-            color: #338DFB;
-          "
-        >
-          Welcome to the team
-        </td>
-      </tr>
-      <!-- Three Column Section -->
       <tr>
         <td>
           <table
-            style="
-              width: 100%;
-              text-align: center;
-              padding: 15px;
-              margin-top: -20px;
-            "
+            role="presentation"
+            cellpadding="0"
+            cellspacing="0"
+            width="600"
+            align="center"
+            style="background-color: #ffffff"
           >
+            <!-- Header Section -->
             <tr>
-              <td style="width: 33%; padding: 10px">
+              <td>
                 <div
                   style="
-                    background-color: #338DFB;
-                    border-radius: 10px;
-                    width: 80px;
-                    height: 85px;
-                    margin-left: 20px;
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    gap: 10px;
                   "
                 >
-                  <img
-                    src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Vector.png"
-                    alt="Onboarding Kit"
-                    style="width: 50px;margin-left:15px; padding-top:20px"
-                  />
+                  <!-- Left Side: Image with Logo -->
+                  <div style="flex: 1; position: relative; max-width: 100%">
+                    <img
+                      src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/6.png"
+                      alt=""
+                      style="width: 100%; height: auto"
+                    />
+                    <!-- Logo on top of the left image -->
+                    <img
+                      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/techserve+logo.png"
+                      style="
+                        width: 150px;
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                      "
+                      alt="Techserve Logo"
+                    />
+                  </div>
+
+                  <!-- Right Side: Image with Text -->
+                  <div style="flex: 1; position: relative">
+                    <img
+                      src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/7.png"
+                      alt=""
+                      style="width: 100%; height: auto; margin-top: 20%"
+                    />
+                    <h1
+                      style="
+                        margin: 0;
+                        font-size: 18px;
+                        line-height: 1.2;
+                        position: absolute;
+                        top: 30%;
+                        left: 10px;
+                        color: white;
+                      "
+                    >
+                      We're here to fix all your Tech Needs
+                    </h1>
+                  </div>
                 </div>
-                <h4 style="font-size: 14px; width:120px">Your onboarding kits</h4>
-                <p style="font-size: 10px; line-height: 15px">
-                  Contains essential information about your job workflow and
-                  onboarding checklist.
-                </p>
               </td>
-              <td style="width: 33%; padding: 10px">
+            </tr>
+
+            <!-- About Us Section -->
+            <tr>
+              <td style="padding: 20px;;">
                 <div
                   style="
-                    background-color: #338DFB;
-                    border-radius: 10px;
-                    width: 80px;
-                    height: 85px;
-                    margin-left: 20px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
                   "
                 >
-                  <img
-                    src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Vector+(1).png"
-                    alt="Onboarding Process"
-                    style="width: 35px; margin-left:20px;padding-top:20px;"
-                  />
+                  <!-- Left Side: About Us Text -->
+                  <div style="flex: 1; padding-right: 20px">
+                    <h2 style="color: #000000; margin: 0">About Us:-</h2>
+                    <p style="color: #666666; line-height: 1.5">
+                      We provide expert solutions for a wide range of IT service
+                      needs. From cameras and GPS systems to printers, routers,
+                      WiFi networks, and support for computers and mobile
+                      devices, our services ensure seamless performance for both
+                      home and business environments.
+                    </p>
+                  </div>
+
+                  <!-- Right Side: Image -->
+                  <div style="flex: 1">
+                    <img
+                      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Group+1010108044.png"
+                      alt="About Us Image"
+                      style="width: 100%; height: auto"
+                    />
+                  </div>
                 </div>
-                <h4 style="font-size: 14px">Onboarding Process</h4>
-                <p style="font-size: 10px; line-height: 15px">
-                  Access the infographic about ultimate's onboarding process and
-                  timeline.
-                </p>
               </td>
-              <td style="width: 33%; padding: 10px">
-                <div
+            </tr>
+
+            <!-- Services Icons Section -->
+            <tr>
+              <td>
+                <!-- Outer Border Div -->
+                <table
+                  role="presentation"
+                  width="100%"
                   style="
-                    background-color: #338DFB;
+                    border: 2px solid rgb(208, 211, 212);
                     border-radius: 10px;
-                    width: 80px;
-                    height: 85px;
-                    margin-left: 20px;
-                    margin-top: -10px;
+                    border-collapse: collapse;
+                    padding: 10px;
                   "
                 >
-                  <img
-                    src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Group.png"
-                    alt="Company Vision"
-                    style="width: 45px; margin-left:17px;padding-top:20px; margin-top:-15px"
-                  />
+                  <!-- Title Row -->
+                  <tr>
+                    <td colspan="5" style="padding: 10px; text-align: center">
+                      <h2 style="color: #4393f7">Our Services</h2>
+                    </td>
+                  </tr>
+
+                  <!-- Service Items -->
+                  <tr>
+                    <td align="center" style="padding: 10px">
+                      <div
+                        style="
+                          text-align: center;
+                          background-color: #b3d9f7;
+                          border-radius: 50%;
+                          width: 80px;
+                          height: 80px;
+                          display: flex;
+                          flex-direction: column;
+                          align-items: center;
+                          justify-content: center;
+                          border: 2px solid rgb(208, 211, 212);
+                        "
+                      >
+                        <img
+                          src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/2.png"
+                          alt="GPS"
+                          style="width: 40px; height: 40px"
+                        />
+                        <p style="margin-top: 5px; color: #4393f7">GPS</p>
+                      </div>
+                    </td>
+
+                    <td align="center" style="padding: 10px">
+                      <div
+                        style="
+                          text-align: center;
+                          background-color: #b3d9f7;
+                          border-radius: 50%;
+                          width: 80px;
+                          height: 80px;
+                          display: flex;
+                          flex-direction: column;
+                          align-items: center;
+                          justify-content: center;
+                          border: 2px solid rgb(208, 211, 212);
+                        "
+                      >
+                        <img
+                          src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/4.png"
+                          alt="Printer"
+                          style="width: 40px; height: 40px"
+                        />
+                        <p style="margin-top: 5px; color: #4393f7">Printer</p>
+                      </div>
+                    </td>
+
+                    <td align="center" style="padding: 10px">
+                      <div
+                        style="
+                          text-align: center;
+                          background-color: #b3d9f7;
+                          border-radius: 50%;
+                          width: 80px;
+                          height: 80px;
+                          display: flex;
+                          flex-direction: column;
+                          align-items: center;
+                          justify-content: center;
+                          border: 2px solid rgb(208, 211, 212);
+                        "
+                      >
+                        <img
+                          src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/5.png"
+                          alt="Alarm"
+                          style="width: 40px; height: 40px"
+                        />
+                        <p style="margin-top: 5px; color: #4393f7">Alarm</p>
+                      </div>
+                    </td>
+
+                    <td align="center" style="padding: 10px">
+                      <div
+                        style="
+                          text-align: center;
+                          background-color: #b3d9f7;
+                          border-radius: 50%;
+                          width: 80px;
+                          height: 80px;
+                          display: flex;
+                          flex-direction: column;
+                          align-items: center;
+                          justify-content: center;
+                          border: 2px solid rgb(208, 211, 212);
+                        "
+                      >
+                        <img
+                          src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/1.png"
+                          alt="Computer"
+                          style="width: 40px; height: 40px"
+                        />
+                        <p style="margin-top: 5px; color: #4393f7">Computer</p>
+                      </div>
+                    </td>
+
+                    <td align="center" style="padding: 10px">
+                      <div
+                        style="
+                          text-align: center;
+                          background-color: #b3d9f7;
+                          border-radius: 50%;
+                          width: 80px;
+                          height: 80px;
+                          display: flex;
+                          flex-direction: column;
+                          align-items: center;
+                          justify-content: center;
+                          border: 2px solid rgb(208, 211, 212);
+                        "
+                      >
+                        <img
+                          src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/9.png"
+                          alt="Router"
+                          style="width: 40px; height: 40px"
+                        />
+                        <p style="margin-top: 5px; color: #4393f7">Router</p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Features Section -->
+            <tr>
+              <td>
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td
+                      align="center"
+                      style="
+                    
+                        display: flex;
+                       
+                        justify-content: center;
+                      "
+                    >
+                      <span
+                        style="
+                          background-color: #4393f7;
+                          color: white;
+                          padding: 8px 16px;
+                          border-radius: 20px;
+                          margin-right: 10px;
+                          margin-bottom: 10px;
+                          margin-top: 10px;
+                        "
+                        >VPN</span
+                      >
+                      <span
+                        style="
+                          background-color: #4393f7;
+                          color: white;
+                          padding: 8px 16px;
+                          border-radius: 20px;
+                          margin-right: 10px;
+                          margin-bottom: 10px;
+                          margin-top: 10px;
+                        "
+                        >Antivirus</span
+                      >
+                      <span
+                        style="
+                          background-color: #4393f7;
+                          color: white;
+                          padding: 8px 16px;
+                          border-radius: 20px;
+                          margin-right: 10px;
+                          margin-bottom: 10px;
+                          margin-top: 10px;
+                        "
+                        >Unlimited Support</span
+                      >
+                      <span
+                        style="
+                          background-color: #4393f7;
+                          color: white;
+                          padding: 8px 16px;
+                          border-radius: 20px;
+                          margin-right: 10px;
+                          margin-bottom: 10px;
+                          margin-top: 10px;
+                        "
+                        >Dedicated Experts</span
+                      >
+                      <span
+                        style="
+                          background-color: #4393f7;
+                          color: white;
+                          padding: 8px 16px;
+                          border-radius: 20px;
+                          margin-right: 10px;
+                          margin-bottom: 10px;
+                          margin-top: 10px;
+                        "
+                        >Discounted Services</span
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 20px">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 20px;
+                  "
+                >
+                  <!-- Added gap between the divs -->
+                  <!-- CTA Section -->
+                  <div
+                    style="
+                      flex: 1;
+                      background-color: #f5f9ff;
+                      text-align: center;
+                      padding: 0px;
+                      display: flex;
+                      flex-direction: row;
+                      gap: 10px;
+                    "
+                  >
+                    <!-- Added gap between p and a tags -->
+                    <p
+                      style="
+                        font-weight: bold;
+                        width: 150px;
+                        font-size: 14px;
+                        margin-left: 10px;
+                        text-align: left;
+                      "
+                    >
+                      Tired of paying high charges for fixation to your
+                      technician
+                    </p>
+                    <a
+                      href="#"
+                      style="
+                        background-color: #4393f7;
+                        color: white;
+                        padding: 10px;
+                        text-decoration: none;
+                        height: 20px;
+                        margin-top: 20px;
+                        margin-right: 20px;
+                        width: 150px;
+                        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                      "
+                      >Try Our Services</a
+                    >
+                    <!-- Added box-shadow for shadow effect -->
+                  </div>
+                  <!-- Pricing Section -->
+                  <div
+                    style="
+                      flex: 1;
+                      background-color: #f5f9ff;
+                      text-align: center;
+                      padding: 0px;
+                      gap: 10px;
+                      height: 80px;
+                      width: 200px;
+                    "
+                  >
+                    <!-- Added gap between p and a tags -->
+                    <p
+                      style="
+                        color: #156cd6;
+                        font-size: 12px;
+                        font-weight: bold;
+                        margin-top: 20px;
+                        margin-right: 10px;
+                        text-align: right;
+                      "
+                    >
+                      Avail the Services starting from $9.99 Monthly Get 10%
+                      Discount with membership includes
+                    </p>
+                  </div>
                 </div>
-                <h4 style="font-size: 14px; width: 120px">
-                  Company Vision & Mission
-                </h4>
-                <p style="font-size: 10px; line-height: 15px">
-                  Get to know the company's vision, mission, and core values
-                  here.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div
+                  style="
+                    width: 100%;
+                    background-color: #156cd6;
+                    height: 2px;
+                    margin-top: -5px;
+                  "
+                ></div>
+              </td>
+            </tr>
+
+            <!-- Footer Section -->
+            <tr>
+              <td
+                style="
+                  background-color: #4393f7;
+                  color: white;
+
+                  text-align: center;
+                "
+              >
+                <p>support mail-hr@wishgeekstechserve.com</p>
+                <p>Contact Us-8700133076</p>
+                <p>
+                  <a href="#" style="color: white; text-decoration: underline"
+                    >Unsubscribe</a
+                  >
                 </p>
               </td>
             </tr>
           </table>
         </td>
       </tr>
-      <!-- Exciting Message -->
-      <tr>
-        <td
-          style="
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: -30px;
-          "
-        >
-          <!-- Left Icon -->
-          <img
-            src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/staRRR.png"
-            alt="Star"
-            style="width: 30px; height: auto"
-          />
-          <!-- Centered Text -->
-          <span>We can’t wait to get to know you!</span>
-          <!-- Right Icon -->
-          <img
-            src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/staRRR.png"
-            alt="Star"
-            style="width: 30px; height: auto"
-          />
-        </td>
-      </tr>
-      <!-- Message Section -->
-      <tr>
-        <td style="text-align: center; font-size: 14px; padding: 15px">
-          <p style="width: 300px; margin: auto; line-height: 25px">
-            Starting a new job at a new company can be pretty stressful. It’s a
-            mixture of emotions, so we want to help ease those nerves!
-          </p>
-        </td>
-      </tr>
-      <!-- Illustration -->
-      <tr>
-        <td  align="center">
-          <img
-            src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/image+256.png"
-            alt="Onboarding Illustration"
-            style="max-width: 50%; height: auto;"
-          />
-        </td>
-      </tr>
-      <!-- Footer -->
-      <tr>
-        <td
-          style="
-            background-color: #338DFB;
-            color: white;
-            text-align: center;
-            padding: 10px;
-          "
-        >
-          <p style="margin: 0; font-size: 14px">
-            support mail-hr@wishgeekstechserve.com
-          </p>
-          <p style="margin: 20px 0; font-size: 14px">
-            Contact Us - <b>8700133076</b>
-          </p>
-          <a
-            href="#"
-            style="
-              color: white;
-              text-decoration: underline;
-              font-weight: bold;
-              font-size: 16px;
-            "
-            >Unsubscribe</a
-          >
-        </td>
-      </tr>
     </table>
   </body>
 </html>
+
       `,
     title: "Select Template 1 ",
   },
@@ -384,6 +600,7 @@ export const templates = [
                     <td style=" margin: 0px; font-size: 10px; line-height: normal; padding: 2px 0px 10px 0px;">
                       <a href="mailto:info@wishgeekstechserve.com" style="text-decoration: none; color: #000; font-family:Arial, Helvetica, sans-serif;">
                         <span style="text-decoration: none; color: #0097B2; font-size: 14px;"><i class="fa-regular fa-envelope"></i></span> info@wishgeekstechserve.com</a>
+                      
                     </td>
                   </tr>
                   <tr>
@@ -396,6 +613,7 @@ export const templates = [
               </table>
             </div>
             <div style="margin-left: 30px;"><img src="https://qawsedrftgyhujikl.s3.ap-south-1.amazonaws.com/IMG_6062+(1).jpg" alt="" width="200px" height=""></div>
+            
           </div>
         </div>
       </body>

@@ -65,9 +65,10 @@ const Contact = () => {
   const handleEdit = (index) => {
     setEditIndex(index);
     setNameInput(contactData[index].listName);
-    setCsvContacts([]);
+    setCsvContacts(Array(contactData[index].contactCount).fill({}));
     openModal();
   };
+  
 
   const handleDelete = (index) => {
     const newContactData = contactData.filter((_, i) => i !== index);
