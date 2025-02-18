@@ -23,6 +23,7 @@ const Login = () => {
   const [Username, SetUsername] = useState("");
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
+  const [show2fa,setShow2fa]= useState(false);
   const [password, setPassword] = useState("");
   const [number, setNumber] = useState("");
   const [otp, setOtp] = useState(new Array(6).fill(""));
@@ -156,12 +157,15 @@ const Login = () => {
           localStorage.setItem("user", signInEmail);
           localStorage.setItem("access_token", res.data.access);
           localStorage.setItem("refresh_token", res.data.refresh);
-          console.log("res", res.data.access);
+          console.log("res", res);
+
           toast.success(res.data.message);
-          if(res?.data?.redirect){
+          if(res?.data?.redirect !=="home"
+          ){
             setShowSigninFields(false);
             setShowOtpField(false);
             setShowNumberField(true);
+            setShow2fa(true);
             // Clear any previous OTP entries
             setLoading(false);
             setLoadingStates({ ...loadingStates, signIn: false });
@@ -256,6 +260,7 @@ const Login = () => {
       const response = await API.verifyOtp(formData);
       
       toast.success(response.data.message);
+      setShow2fa(false);
       handleSignInClick();
     } catch (error) {
       toast.error(error.response.data.message);
@@ -646,7 +651,7 @@ const Login = () => {
                 </>
               )}
                
-               {showNumberField && !showOtpField && (
+               {showNumberField && !showOtpField && show2fa &&(
                 <>
                   <div className="otp-verification-container">
                     <h1 className="otp-instruction">
