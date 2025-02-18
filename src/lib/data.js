@@ -85,473 +85,120 @@ export const templates = [
     category: "Business",
     html: `
 
-   <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wish Geeks Tech Service</title>
-  </head>
-  <body>
-    <table
-      style="
-        width: 100%;
-        max-width: 400px;
-        height: 100%;
-        position: relative;
-        margin: 0 auto;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        overflow-x: hidden;
-        overflow-y: hidden;
-      "
-    >
-      <tr>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams Announcement</title>
+</head>
+<body style="margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100%; background-color: #f5f7fa;">
+
+<table style="width: 300px; background-color: white; border-collapse: collapse; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+  <!-- Header Section with Image and Shadow -->
+<!-- Header Section with Background Image -->
+ <tr>
+  
+    <td style="background-image: url('https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Frame+1010110237.png'); background-size: cover; height: 220px; width: 400px; position: relative; text-align: left; padding: 0; border-radius: 0px 0px 15px 15px;">
+<div style="margin-top: -90px;">
+            <!-- Logo positioned at the top left inside the header, with some space from the top -->
+            <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/techserve+logo.png" alt="Header Image"
+            style="width: 200px; margin-left: 20px; border-radius: 5px;">
+</div>
+    </td>
+ </tr>
+
+<tr>
+    <td>
+        <div style="width: 400px ;
+        height: 5px; background-color: rgba(51, 141, 251, 1); ">
+
+        </div>
+    </td>
+</tr>
+
+<!-- Centered Image Under Header -->
+<tr style="position: relative;">
+    <td style="text-align: center; padding: 0;">
+        <img class="main-image"
+            src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/cuate.png"
+            alt="Welcome Image"
+            style="width: 200px; height: 250px; margin-top: -125px; border-radius: 10px; background-color: #fff;"/>
+    </td>
+</tr>
+    <tr style="text-align: center; color:rgba(51, 141, 251, 1);">
         <td>
-          <table
-            role="presentation"
-            cellpadding="0"
-            cellspacing="0"
-            width="600"
-            align="center"
-            style="background-color: #ffffff"
-          >
-            <!-- Header Section -->
-            <tr>
-              <td>
-                <div
-                  style="
-                    position: relative;
-                    display: flex;
-                    flex-direction: row;
-                    gap: 10px;
-                  "
-                >
-                  <!-- Left Side: Image with Logo -->
-                  <div style="flex: 1; position: relative; max-width: 100%">
-                    <img
-                      src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/6.png"
-                      alt=""
-                      style="width: 100%; height: auto"
-                    />
-                    <!-- Logo on top of the left image -->
-                    <img
-                      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/techserve+logo.png"
-                      style="
-                        width: 150px;
-                        position: absolute;
-                        top: 10px;
-                        left: 10px;
-                      "
-                      alt="Techserve Logo"
-                    />
-                  </div>
-
-                  <!-- Right Side: Image with Text -->
-                  <div style="flex: 1; position: relative">
-                    <img
-                      src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/7.png"
-                      alt=""
-                      style="width: 100%; height: auto; margin-top: 20%"
-                    />
-                    <h1
-                      style="
-                        margin: 0;
-                        font-size: 18px;
-                        line-height: 1.2;
-                        position: absolute;
-                        top: 30%;
-                        left: 10px;
-                        color: white;
-                      "
-                    >
-                      We're here to fix all your Tech Needs
-                    </h1>
-                  </div>
-                </div>
-              </td>
-            </tr>
-
-            <!-- About Us Section -->
-            <tr>
-              <td style="padding: 20px;;">
-                <div
-                  style="
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                  "
-                >
-                  <!-- Left Side: About Us Text -->
-                  <div style="flex: 1; padding-right: 20px">
-                    <h2 style="color: #000000; margin: 0">About Us:-</h2>
-                    <p style="color: #666666; line-height: 1.5">
-                      We provide expert solutions for a wide range of IT service
-                      needs. From cameras and GPS systems to printers, routers,
-                      WiFi networks, and support for computers and mobile
-                      devices, our services ensure seamless performance for both
-                      home and business environments.
-                    </p>
-                  </div>
-
-                  <!-- Right Side: Image -->
-                  <div style="flex: 1">
-                    <img
-                      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Group+1010108044.png"
-                      alt="About Us Image"
-                      style="width: 100%; height: auto"
-                    />
-                  </div>
-                </div>
-              </td>
-            </tr>
-
-            <!-- Services Icons Section -->
-            <tr>
-              <td>
-                <!-- Outer Border Div -->
-                <table
-                  role="presentation"
-                  width="100%"
-                  style="
-                    border: 2px solid rgb(208, 211, 212);
-                    border-radius: 10px;
-                    border-collapse: collapse;
-                    padding: 10px;
-                  "
-                >
-                  <!-- Title Row -->
-                  <tr>
-                    <td colspan="5" style="padding: 10px; text-align: center">
-                      <h2 style="color: #4393f7">Our Services</h2>
-                    </td>
-                  </tr>
-
-                  <!-- Service Items -->
-                  <tr>
-                    <td align="center" style="padding: 10px">
-                      <div
-                        style="
-                          text-align: center;
-                          background-color: #b3d9f7;
-                          border-radius: 50%;
-                          width: 80px;
-                          height: 80px;
-                          display: flex;
-                          flex-direction: column;
-                          align-items: center;
-                          justify-content: center;
-                          border: 2px solid rgb(208, 211, 212);
-                        "
-                      >
-                        <img
-                          src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/2.png"
-                          alt="GPS"
-                          style="width: 40px; height: 40px"
-                        />
-                        <p style="margin-top: 5px; color: #4393f7">GPS</p>
-                      </div>
-                    </td>
-
-                    <td align="center" style="padding: 10px">
-                      <div
-                        style="
-                          text-align: center;
-                          background-color: #b3d9f7;
-                          border-radius: 50%;
-                          width: 80px;
-                          height: 80px;
-                          display: flex;
-                          flex-direction: column;
-                          align-items: center;
-                          justify-content: center;
-                          border: 2px solid rgb(208, 211, 212);
-                        "
-                      >
-                        <img
-                          src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/4.png"
-                          alt="Printer"
-                          style="width: 40px; height: 40px"
-                        />
-                        <p style="margin-top: 5px; color: #4393f7">Printer</p>
-                      </div>
-                    </td>
-
-                    <td align="center" style="padding: 10px">
-                      <div
-                        style="
-                          text-align: center;
-                          background-color: #b3d9f7;
-                          border-radius: 50%;
-                          width: 80px;
-                          height: 80px;
-                          display: flex;
-                          flex-direction: column;
-                          align-items: center;
-                          justify-content: center;
-                          border: 2px solid rgb(208, 211, 212);
-                        "
-                      >
-                        <img
-                          src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/5.png"
-                          alt="Alarm"
-                          style="width: 40px; height: 40px"
-                        />
-                        <p style="margin-top: 5px; color: #4393f7">Alarm</p>
-                      </div>
-                    </td>
-
-                    <td align="center" style="padding: 10px">
-                      <div
-                        style="
-                          text-align: center;
-                          background-color: #b3d9f7;
-                          border-radius: 50%;
-                          width: 80px;
-                          height: 80px;
-                          display: flex;
-                          flex-direction: column;
-                          align-items: center;
-                          justify-content: center;
-                          border: 2px solid rgb(208, 211, 212);
-                        "
-                      >
-                        <img
-                          src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/1.png"
-                          alt="Computer"
-                          style="width: 40px; height: 40px"
-                        />
-                        <p style="margin-top: 5px; color: #4393f7">Computer</p>
-                      </div>
-                    </td>
-
-                    <td align="center" style="padding: 10px">
-                      <div
-                        style="
-                          text-align: center;
-                          background-color: #b3d9f7;
-                          border-radius: 50%;
-                          width: 80px;
-                          height: 80px;
-                          display: flex;
-                          flex-direction: column;
-                          align-items: center;
-                          justify-content: center;
-                          border: 2px solid rgb(208, 211, 212);
-                        "
-                      >
-                        <img
-                          src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/9.png"
-                          alt="Router"
-                          style="width: 40px; height: 40px"
-                        />
-                        <p style="margin-top: 5px; color: #4393f7">Router</p>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-
-            <!-- Features Section -->
-            <tr>
-              <td>
-                <table role="presentation" width="100%">
-                  <tr>
-                    <td
-                      align="center"
-                      style="
-                    
-                        display: flex;
-                       
-                        justify-content: center;
-                      "
-                    >
-                      <span
-                        style="
-                          background-color: #4393f7;
-                          color: white;
-                          padding: 8px 16px;
-                          border-radius: 20px;
-                          margin-right: 10px;
-                          margin-bottom: 10px;
-                          margin-top: 10px;
-                        "
-                        >VPN</span
-                      >
-                      <span
-                        style="
-                          background-color: #4393f7;
-                          color: white;
-                          padding: 8px 16px;
-                          border-radius: 20px;
-                          margin-right: 10px;
-                          margin-bottom: 10px;
-                          margin-top: 10px;
-                        "
-                        >Antivirus</span
-                      >
-                      <span
-                        style="
-                          background-color: #4393f7;
-                          color: white;
-                          padding: 8px 16px;
-                          border-radius: 20px;
-                          margin-right: 10px;
-                          margin-bottom: 10px;
-                          margin-top: 10px;
-                        "
-                        >Unlimited Support</span
-                      >
-                      <span
-                        style="
-                          background-color: #4393f7;
-                          color: white;
-                          padding: 8px 16px;
-                          border-radius: 20px;
-                          margin-right: 10px;
-                          margin-bottom: 10px;
-                          margin-top: 10px;
-                        "
-                        >Dedicated Experts</span
-                      >
-                      <span
-                        style="
-                          background-color: #4393f7;
-                          color: white;
-                          padding: 8px 16px;
-                          border-radius: 20px;
-                          margin-right: 10px;
-                          margin-bottom: 10px;
-                          margin-top: 10px;
-                        "
-                        >Discounted Services</span
-                      >
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-
-            <tr>
-              <td style="padding: 20px">
-                <div
-                  style="
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    gap: 20px;
-                  "
-                >
-                  <!-- Added gap between the divs -->
-                  <!-- CTA Section -->
-                  <div
-                    style="
-                      flex: 1;
-                      background-color: #f5f9ff;
-                      text-align: center;
-                      padding: 0px;
-                      display: flex;
-                      flex-direction: row;
-                      gap: 10px;
-                    "
-                  >
-                    <!-- Added gap between p and a tags -->
-                    <p
-                      style="
-                        font-weight: bold;
-                        width: 150px;
-                        font-size: 14px;
-                        margin-left: 10px;
-                        text-align: left;
-                      "
-                    >
-                      Tired of paying high charges for fixation to your
-                      technician
-                    </p>
-                    <a
-                      href="#"
-                      style="
-                        background-color: #4393f7;
-                        color: white;
-                        padding: 10px;
-                        text-decoration: none;
-                        height: 20px;
-                        margin-top: 20px;
-                        margin-right: 20px;
-                        width: 150px;
-                        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-                      "
-                      >Try Our Services</a
-                    >
-                    <!-- Added box-shadow for shadow effect -->
-                  </div>
-                  <!-- Pricing Section -->
-                  <div
-                    style="
-                      flex: 1;
-                      background-color: #f5f9ff;
-                      text-align: center;
-                      padding: 0px;
-                      gap: 10px;
-                      height: 80px;
-                      width: 200px;
-                    "
-                  >
-                    <!-- Added gap between p and a tags -->
-                    <p
-                      style="
-                        color: #156cd6;
-                        font-size: 12px;
-                        font-weight: bold;
-                        margin-top: 20px;
-                        margin-right: 10px;
-                        text-align: right;
-                      "
-                    >
-                      Avail the Services starting from $9.99 Monthly Get 10%
-                      Discount with membership includes
-                    </p>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div
-                  style="
-                    width: 100%;
-                    background-color: #156cd6;
-                    height: 2px;
-                    margin-top: -5px;
-                  "
-                ></div>
-              </td>
-            </tr>
-
-            <!-- Footer Section -->
-            <tr>
-              <td
-                style="
-                  background-color: #4393f7;
-                  color: white;
-
-                  text-align: center;
-                "
-              >
-                <p>support mail-hr@wishgeekstechserve.com</p>
-                <p>Contact Us-8700133076</p>
-                <p>
-                  <a href="#" style="color: white; text-decoration: underline"
-                    >Unsubscribe</a
-                  >
-                </p>
-              </td>
-            </tr>
-          </table>
+            <h1 style="font-weight: 700;  font-size: 38px; margin-top: -2px; font-family: inter,sans-serif;" >Team are here!</h1>
+            <p style="width: 350px;margin-left: 40px;margin-top: -25px; font-size: 14px; margin-bottom: 25px; color: rgba(51, 141, 251, 1);">Today you can invite your team to start collaborating on user insights</p>
         </td>
-      </tr>
-    </table>
-  </body>
+    </tr>
+
+
+    <tr style="background-color: rgba(51, 141, 251, 0.1); border-radius: 40px 20px 20px 20px; position: relative;">
+        <td style="padding: 20px; background-color: rgba(51, 141, 251, 0.1); border-radius: 40px 20px 0px 0px; position: relative; height: 550px;">
+            <div style="position: absolute; margin-top: -140px;">
+                <button style="background-color: rgba(51, 141, 251, 1); color: #fff; border-radius: 50px; padding: 15px; width: 220px; margin-left: 70px; 
+                transform: translateY(-50%); border: none;">invite my team</button>
+            </div>
+            <div style="display: flex; margin-top: -110px;">
+                <h2 style="color: rgba(64, 123, 255, 1); font-size: 22px; font-family: inter, sans-serif; margin-left: 20px;">COME GROW WITH US : </h2>
+                <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/pana.png" style="width: 60px;">
+            </div>
+    
+            <div style="display: flex; justify-content: space-evenly; align-items: center; margin-top: 20px;">
+                <!-- First Circle -->
+                <div style="width: 150px; height: 150px; background-color:#fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                    <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/building+projection.png" alt="Build" style="width: 70px; margin-top: 25px; ">
+                    <h4 style="margin-top: 0px; color: #000000; font-size: 14px;  font-family:inter, sans-serif;">Build</h4>
+                    <p style="font-size: 12px; margin-top: -20px; width: 90px; color: #000000; text-align: center;  font-family:inter, sans-serif;">Alone we can do so little, together we can do so much.</p>
+                </div>
+    
+                <!-- Second Circle -->
+                <div style="width: 150px; height: 150px; background-color:#fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                    <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/growing+graph+icon.png" alt="Grow" style="width:47px; margin-top: 0px;">
+                    <h4 style="margin-top: 5px;color: #000000; font-size: 18px ; margin-bottom: 20px;  font-family:inter, sans-serif;">Grow</h4>
+                    <p style="font-size: 12px; color: #000000; text-align: center; font-size: 12px; margin-top: -20px; width: 103px ;padding: 0px;  font-family:inter, sans-serif; ">Growth, in some curious way, depends on being always in motion.</p>
+                </div>
+            </div>
+    
+            <div style="display: flex; justify-content: space-evenly; align-items: center; margin-top: 30px;">
+                <!-- Third Circle -->
+                <div style="width: 150px; height: 150px; background-color:#fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                    <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/monitor+with+small+text+on+the+screen.png" alt="Monitor" style="width: 60px; margin-top: 20px;">
+                    <h4 style="margin-top: 5px; color: #000000; font-size: 14px;  font-family:inter, sans-serif;">Monitor</h4>
+                    <p style="font-size: 12px; margin-top: -10px; color: #000000; text-align: center;  width: 103px;  font-family:inter, sans-serif;">From visionary leaders to creative minds.</p>
+                </div>
+    
+                <!-- Fourth Circle -->
+                <div style="width: 150px; height: 150px; background-color:#fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                    <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Medication+schedule+calendar.png" alt="Schedule" style="width: 80px; margin-top: 20px; ">
+                    <h4 style="margin-top: -10px; color: #000000; font-size: 14px;  font-family:inter, sans-serif;">Schedule</h4>
+                    <p style="font-size: 12px; margin-top: -20px; color: #000000; text-align: center;  font-family:inter, sans-serif; width: 103px;">Success seems to be connected with action.</p>
+                </div>
+            </div>
+        </td>
+    </tr>
+    
+    <!-- Footer Section -->
+    <tr style="position: absolute; margin-top: -100px;  ">
+        <td style="background-color:rgba(51, 141, 251, 1); text-align: center; padding: 20px; color: white; border-radius: 20px 20px 0px 0px; width: 357px; position: relative; ">
+            <p style="margin: 5px 0; font-family:inter, sans-serif;">support mail-hr@wishgeekstechserve.com</p>
+            <p style="margin: 5px 0; font-family:inter, sans-serif;">Contact Us- <strong>8700133076</strong></p>
+            <a href="#" style="color: white; text-decoration: underline; font-size: 20px; font-weight: 700; font-family:inter, sans-serif;">Unsubscribe</a>
+        </td>
+       
+
+    </tr>
+    <tr>
+        <td style="background-color: #fff; border-radius: 50px 50px 5px 0px; position: absolute;margin-top: -px; ">
+            <div style="width: 400px; height: 30px;"></div>
+        </td>
+    </tr>
+  
+
+</table>
+
+</body>
 </html>
 
       `,
