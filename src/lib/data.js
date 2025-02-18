@@ -84,7 +84,6 @@ export const templates = [
     id: 3,
     category: "Business",
     html: `
-
   <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,7 +97,6 @@ export const templates = [
   <!-- Header Section with Image and Shadow -->
 <!-- Header Section with Background Image -->
  <tr>
-  
     <td style="background-image: url('https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Frame+1010110237.png'); background-size: cover; height: 220px; width: 400px; position: relative; text-align: left; padding: 0; border-radius: 0px 0px 15px 15px;">
 <div style="margin-top: -90px;">
             <!-- Logo positioned at the top left inside the header, with some space from the top -->
@@ -107,7 +105,6 @@ export const templates = [
 </div>
     </td>
  </tr>
-
 <tr>
     <td>
         <div style="width: 400px ;
@@ -116,7 +113,6 @@ export const templates = [
         </div>
     </td>
 </tr>
-
 <!-- Centered Image Under Header -->
 <tr style="position: relative;">
     <td style="text-align: center; padding: 0;">
