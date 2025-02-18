@@ -16,5 +16,6 @@ export const updateSingleContact= (file_id, formdata)=>API.put(`/contact-update/
 export const resetPassword = (uidbId, token, passwordData) =>
   API.post(`/reset_password/${uidbId}/${token}/`, passwordData);
 export const  uploadContacts = (data) => API.post("/upload-contacts/", data);
+export const createCampainion= (data)=>API.post("/campaign/",data);
  
 export default API;

@@ -60,7 +60,7 @@ const Contact = () => {
           Email: contact.data.Email,
           firstName: contact.data.firstName,
           lastName: contact.data.lastName,
-          companyName: contact.data.companyName,
+          company: contact.data.companyName,
         },
       })),
     };
@@ -86,7 +86,7 @@ const Contact = () => {
     
       console.log("Response:", res.data);
       setIsModalEditOpen(false);
-      alert("Contacts updated successfully!");
+       toast.success("Contacts updated successfully!");
     } catch (error) {
       console.error("Error updating contacts:", error.response?.data || error.message);
     }
@@ -191,13 +191,11 @@ const Contact = () => {
  
 
     console.log("response", response);
-
-      if (response.ok) {
-        alert("File uploaded successfully!");
+ 
+       
+         toast.success(response.data.message)
         closeModal();
-      } else {
-     
-      }
+       
     } catch (error) {
       console.error("Upload failed", error);
       alert("Upload failed. Please try again.");
@@ -226,7 +224,7 @@ const Contact = () => {
     };
 
     fetchContacts();
-  }, []);  
+  }, [handleSave]);  
   console.log("prev",previewData);
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
@@ -418,8 +416,8 @@ const Contact = () => {
                 <td className="px-4 py-2 border">
                   <input
                     type="text"
-                    value={contact?.data?.companyName || ""}
-                    onChange={(e) => handleChange(index, "companyName", e.target.value)}
+                    value={contact?.data?.company || ""}
+                    onChange={(e) => handleChange(index, "company", e.target.value)}
 
                     className="border p-2 w-full"
                   />
@@ -493,7 +491,7 @@ const Contact = () => {
                         {contact?.data?.lastName}
                       </td>
                       <td className="px-6 py-3 text-xs text-gray-500 text-center">
-                        {contact?.data?.companyName}
+                        {contact?.data?.company}
                       </td>
                     </tr>
                   ))}
