@@ -14,9 +14,12 @@ const Content = ({ placeholder }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState({
-    displayName: "",
+    display_name: "",
     subject: "",
     delay_seconds: 0,
+    contact_list:[] ,
+    smtp_server_ids :[],
+    compaign_name:"",
   });
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -26,6 +29,7 @@ const Content = ({ placeholder }) => {
   const [selectedOptions, setSelectedOptions] = useState({
     smtps: [],
   });
+  
   const [contacts, setContacts] = useState([]);
   const [csvFile, setCsvFile] = useState();
 
@@ -37,6 +41,10 @@ const Content = ({ placeholder }) => {
 
     setDetails(retriedDetails);
     setSelectedOptions(retriedOptions);
+   
+      setSelectedRecipients(retriedDetails.recipients);
+ 
+  
   }, []);
 
   const config = useMemo(
@@ -46,23 +54,28 @@ const Content = ({ placeholder }) => {
     }),
     [placeholder]
   );
+  const [selectedRecipients, setSelectedRecipients] = useState([]); // Add this
 
-  useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        const response = await API.getContactList();
-        console.log("res",response);
-        setContacts(response.data.user_contact_files);  
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching contacts:", error);
-        toast.error("Failed to load contacts.");
-        setLoading(false);
-      }
-    };
-
-    fetchContacts();
-  }, []); 
+  const handleChange = (selectedOption, type) => {
+    console.log("selectedOptions", selectedOption);
+    console.log("type",type);
+    const updatedSelectedOptions = { ...selectedOptions };
+    
+    if (type === "smtp") {
+      updatedSelectedOptions.smtps = selectedOption;
+      console.log("uppppp",updatedSelectedOptions)
+      setDetails({ ...details,   smtp_server_ids: updatedSelectedOptions.smtps })
+    } else if (type === "Recipient") {
+      updatedSelectedOptions.recipients = selectedOption; // Store recipient selections
+      setSelectedRecipients(selectedOption); // Update selected recipients state
+      setDetails({ ...details,    contact_list: updatedSelectedOptions.recipients })
+    }
+    
+    sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
+  
+    setSelectedOptions(updatedSelectedOptions);
+  };
+ 
   useEffect(() => {
     const loadData = async () => {
       const smtpResponse = await SMTPAPI.getAllSMTPs({
@@ -101,6 +114,7 @@ const Content = ({ placeholder }) => {
       toast.error("Please fill all the required fields");
       return;
     }
+    console.log("details", details);
     sessionStorage.setItem("details", JSON.stringify(details));
     if (selectedOptions.smtps.length < 1) {
       toast.error("Please select at least one SMTP host Info");
@@ -128,32 +142,37 @@ const Content = ({ placeholder }) => {
       }, 1500);
     } catch (error) {}
   };
-  const handleSubmit = (e) => {
+  const handleSubmit =async  (e) => {
+  
     e.preventDefault();
+    console.log("Hey I am In");
     // check variations
-    saveEnteredDetails();
-    if (!JSON.parse(sessionStorage.getItem("csv"))) {
-      toast.error("Please upload your CSV file list");
-      return;
-    }
-    if (!csvFile) {
-      toast.error("Please upload your CSV file list");
-      return;
-    }
-
+    // saveEnteredDetails();
+    // if (!JSON.parse(sessionStorage.getItem("csv"))) {
+    //   toast.error("Please upload your CSV file list");
+    //   return;
+    // }
+    // if (!csvFile) {
+    //   toast.error("Please upload your CSV file list");
+    //   return;
+    // }
+    console.log("details", details);
+ const res= await API.createCampainion(details);
+ console.log("res",res);
     // if (csvFile) {
     navigate("/preview", { state: { file: csvFile } });
     // }
   };
 
-  const handleChange = (selectedOption, type) => {
-    const updatedSelectedOptions = { ...selectedOptions };
-    if (type === "smtp") {
-      updatedSelectedOptions.smtps = selectedOption;
-    }
-    sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
-    setSelectedOptions(updatedSelectedOptions);
-  };
+  // const handleChange = (selectedOption, type) => {
+  //   const updatedSelectedOptions = { ...selectedOptions };
+  //   if (type === "smtp") {
+  //     updatedSelectedOptions.smtps = selectedOption;
+  //   }
+  //   sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
+  //   setContacts(updatedSelectedOptions)
+  //   setSelectedOptions(updatedSelectedOptions);
+  // };
 
   const customStyles = {
     indicatorSeparator: () => ({ display: "none" }),
@@ -188,15 +207,25 @@ const Content = ({ placeholder }) => {
     }),
   };
 
-  const [selectedListName, setSelectedListName] = useState("");
+  // const [selectedListName, setSelectedListName] = useState([]);
   useEffect(() => {
-    // Retrieve the listName from sessionStorage when the component mounts
-    const storedListName = sessionStorage.getItem("listName");
-    if (storedListName) {
-      setSelectedListName(storedListName);
-    }
-  }, []);
+    const fetchContacts = async () => {
+      try {
+        const response = await API.getContactList();
+      
+        setContacts(response.data.user_contact_files);  
+ 
+     
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+        toast.error("Failed to load contacts.");
+        setLoading(false);
+      }
+    };
 
+    fetchContacts();
+  }, []);  
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
       <div className="mb-2">
@@ -238,24 +267,22 @@ const Content = ({ placeholder }) => {
               <div className="mt-4 w-full">
                 <label htmlFor="EmailUseTLS">Recipient</label>
                 <Select
-                  options={options.Recipient}
-                  isMulti
-                  value={
-                    selectedListName
-                      ? [{ value: selectedListName, label: selectedListName }]
-                      : []
-                  }
-                  onChange={(selectedOption) =>
-                    handleChange(selectedOption, "Recipient")
-                  }
-                  className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
-          focus:border-blue-500 transition-colors duration-300 appearance-none 
-          focus:outline-none focus:ring-0"
-                  id="Recipient"
-                  name="Recipient"
-                  styles={customStyles}
-                  placeholder="Recipient"
-                />
+    options={contacts.map(liname => ({
+      value: liname.file_id,
+      label: liname.file_name
+    }))}
+    isMulti
+    value={selectedRecipients} // Use selectedRecipients instead of mapping contacts
+    onChange={(selectedOption) => handleChange(selectedOption, "Recipient")}
+    className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
+      focus:border-blue-500 transition-colors duration-300 appearance-none 
+      focus:outline-none focus:ring-0"
+    id="Recipient"
+    name="Recipient"
+    styles={customStyles}
+    placeholder="Recipient"
+  />
+
               </div>
 
               <div className="flex mt-4">
@@ -264,10 +291,26 @@ const Content = ({ placeholder }) => {
                   <input
                     type="text"
                     id="displayName"
-                    name="displayName"
-                    value={details.displayName}
+                    name="display_name"
+                    value={details.display_name}
                     onChange={(e) =>
-                      setDetails({ ...details, displayName: e.target.value })
+                      setDetails({ ...details,  display_name: e.target.value })
+                    }
+                    className="block w-full mt-1 border-[1px] border-[#93C3FD] 
+                rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
+                  />
+                </div>
+              </div>
+              <div className="flex mt-4">
+                <div className="w-full ">
+                  <label htmlFor="Subject">Campaign Name</label>
+                  <input
+                    type="text"
+                    id="displayName"
+                    name="campaign_name"
+                    value={details?.campaign_name}
+                    onChange={(e) =>
+                      setDetails({ ...details,   compaign_name: e.target.value })
                     }
                     className="block w-full mt-1 border-[1px] border-[#93C3FD] 
                 rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
@@ -282,13 +325,23 @@ const Content = ({ placeholder }) => {
                   type="number"
                   id="secondsInput"
                   name="secondsInput"
-                  min="0"
+                  min="1"
                   max="59"
+                  
                   step="1"
+                  onInput={(e) => {
+                    let value = e.target.value;
+                    // Prevent entering more than 60
+                    if (value > 60) {
+                      value = 60;
+                    }
+                    // Ensure it's a number and within the allowed range
+                    setDetails({ ...details, delay_seconds: Math.max(1, Math.min(60, Number(value))) });
+                  }}
                   value={details.delay_seconds}
-                  onChange={(e) =>
-                    setDetails({ ...details, delay_seconds: e.target.value })
-                  }
+                  // onChange={(e) =>
+                  //   setDetails({ ...details, delay_seconds: e.target.value })
+                  // }
                   placeholder="Seconds"
                   className="block w-full mt-1 border-[1px]
                  border-[#93C3FD] rounded-md py-2 pl-2 focus:border-blue-500 transition-colors 
@@ -301,7 +354,7 @@ const Content = ({ placeholder }) => {
                 <input
                   type="text"
                   id="Subject"
-                  name="Subject"
+                  name="subject"
                   value={details.subject}
                   onChange={(e) =>
                     setDetails({ ...details, subject: e.target.value })
@@ -310,6 +363,10 @@ const Content = ({ placeholder }) => {
                focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
               </div>
+              <button type="submit" className="text-4xl">
+               Send
+
+              </button>
             </form>
           </div>
         )}
@@ -396,7 +453,7 @@ const Content = ({ placeholder }) => {
                               color: "var(--sib-color_content-primary,#1f2d3d)",
                             }}
                           >
-                            {selectedListName ? selectedListName : "Recipient"}
+                            {/* { contacts ?  contacts : "Recipient"} */}
                           </span>
 
                           <span

@@ -57,7 +57,7 @@ const Contact = () => {
           Email: contact.data.Email,
           firstName: contact.data.firstName,
           lastName: contact.data.lastName,
-          companyName: contact.data.companyName,
+          company: contact.data.companyName,
         },
       })),
     };
@@ -218,8 +218,8 @@ const Contact = () => {
     };
 
     fetchContacts();
-  }, []);
-
+  }, [handleSave]);  
+  console.log("prev",previewData);
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
       <div className="mb-2">
