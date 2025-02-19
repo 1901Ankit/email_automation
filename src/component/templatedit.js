@@ -85,6 +85,7 @@ const Editing = ({ placeholder }) => {
     const fetchUserAllSavedTemplate = async () => {
       try {
         const response = await templateAPI.getSavedEmailTemplates();
+        console.log("responsee_temp",response);
         setTemplates(response.data);
       } catch (error) {
 

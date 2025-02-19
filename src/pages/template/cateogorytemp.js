@@ -1,100 +1,89 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { templates } from "../../lib/data";
 import JoditEditor from "jodit-react";
 import * as templateAPI from "../../api/emailTemplate";
 import { IoArrowBack } from "react-icons/io5";
+import { toast, Toaster } from "react-hot-toast";
+import { Dialog } from "@headlessui/react";
 
-const CategoryTemplates = ({ placeholder }) => {
+const CategoryTemplates = () => {
   const { category } = useParams();
-  const editor = useRef(null);
-  const [modalOpen, setModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const [finalTemplate, setFinalTemplate] = useState(null);
+  const [isNameModalOpen, setIsNameModalOpen] = useState(false);
+  const [isEditorModalOpen, setIsEditorModalOpen] = useState(false);
+  const [templateContent, setTemplateContent] = useState("");
+  const [templateName, setTemplateName] = useState("");
 
-  const config = useMemo(
-    () => ({
-      readonly: false,
-      placeholder: "Start typing...",
-    }),
-    [placeholder]
+  const editorConfig = useMemo(() => ({
+    readonly: false,
+    placeholder: "Start typing...",
+  }), []);
+
+  const filteredTemplates = useMemo(() => 
+    templates.filter((t) => t.category === category),
+    [category]
   );
 
-  // Function to open modal with selected template
   const handleEditTemplate = (template) => {
     setSelectedTemplate(template);
-    setFinalTemplate(template.html); // Ensure the editor starts with the correct content
-    setModalOpen(true);
+    setTemplateContent(template.html);
+    setIsNameModalOpen(true);
   };
 
-  // Save the edited template
-  const handleModalSave = async () => {
+  const handleNameSubmit = () => {
+    if (!templateName.trim()) {
+      toast.error("Template name is required!");
+      return;
+    }
+    setIsNameModalOpen(false);
+    setIsEditorModalOpen(true);
+  };
+
+  const handleSaveTemplate = async () => {
     try {
-      const htmlContent = finalTemplate;
-      const blob = new Blob([htmlContent], { type: "text/html" });
+      const blob = new Blob([templateContent], { type: "text/html" });
       const formData = new FormData();
       formData.append("file", blob, "template.html");
+      formData.append("name", templateName);
 
       await templateAPI.createHtmlTemplate(formData);
-      setModalOpen(false);
+      toast.success("Template saved successfully!");
+      handleCloseModals();
     } catch (error) {
+      toast.error("Failed to save template");
       console.error("Error saving template:", error);
     }
   };
 
-  // Filter templates based on the selected category
-  const filteredTemplates = templates.filter((t) => t.category === category);
+  const handleCloseModals = () => {
+    setIsNameModalOpen(false);
+    setIsEditorModalOpen(false);
+    setSelectedTemplate(null);
+    setTemplateName("");
+    setTemplateContent("");
+  };
 
   return (
-    <div className="container-fluid  pt-32  max-h-[100vh] overflow-auto">
-      <h1 className="text-xl md:text-3xl font-bold uppercase mb-6">
-        Templates for {category}
-      </h1>
+    <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
+      <Toaster />
+      
+      <div className="flex flex-col gap-6 mb-8">
+        <h1 className="text-xl md:text-3xl font-bold uppercase">
+          Templates for {category}
+        </h1>
 
-      {/* Back Button */}
-      <Link
-        to="/template"
-        className="inline-flex items-center gap-2 px-4 py-2 text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg 
-        hover:from-blue-600 hover:to-blue-700 hover:shadow-xl transition-all duration-300 ease-in-out no-underline"
-      >
-        <IoArrowBack className="text-white text-2xl" />
-        Back to Categories
-      </Link>
+        <Link
+          to="/template"
+          className="inline-flex items-center gap-2 px-4 py-2 w-fit text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg 
+          hover:from-blue-600 hover:to-blue-700 hover:shadow-xl transition-all duration-300 ease-in-out no-underline"
+        >
+          <IoArrowBack className="text-white text-2xl" />
+          Back to Categories
+        </Link>
+      </div>
 
-      {/* Modal for Editing Template */}
-      {modalOpen && selectedTemplate && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-full md:max-w-[60%] max-h-[100vh] overflow-hidden">
-            <div className="h-[70vh] overflow-y-auto">
-              <JoditEditor
-                ref={editor}
-                value={finalTemplate} // Ensure editor starts with correct content
-                config={config}
-                tabIndex={1}
-                onBlur={(newContent) => setFinalTemplate(newContent)}
-                onChange={(newContent) => setFinalTemplate(newContent)}
-              />
-            </div>
-            <div className="flex justify-between items-center mt-4">
-              <button
-                onClick={handleModalSave}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-              >
-                Save
-              </button>
-              <button
-                onClick={() => setModalOpen(false)}
-                className="bg-gray-500 text-white px-4 py-2 rounded ml-2"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Templates Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {filteredTemplates.map((template) => (
           <div
             key={template.id}
@@ -107,8 +96,6 @@ const CategoryTemplates = ({ placeholder }) => {
                 className="w-full h-full"
               />
             </div>
-
-            {/* Button with Template Title */}
             <button
               type="button"
               className="absolute bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
@@ -119,6 +106,70 @@ const CategoryTemplates = ({ placeholder }) => {
           </div>
         ))}
       </div>
+
+      <Dialog
+        open={isNameModalOpen}
+        onClose={handleCloseModals}
+        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <h2 className="text-lg font-semibold mb-4 text-center">Enter Template Name</h2>
+          <input
+            type="text"
+            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            placeholder="Enter Template Name"
+            value={templateName}
+            onChange={(e) => setTemplateName(e.target.value)}
+          />
+          <div className="flex justify-between mt-4">
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              onClick={handleNameSubmit}
+            >
+              Next
+            </button>
+            <button
+              className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
+              onClick={handleCloseModals}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </Dialog>
+
+      <Dialog
+        open={isEditorModalOpen}
+        onClose={handleCloseModals}
+        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      >
+        <div className="bg-white p-6 rounded-lg w-full max-w-[80%] max-h-[90vh] overflow-hidden">
+          <h1> Template Name : {templateName} </h1>
+          <div className="h-[70vh] overflow-y-auto">
+            <JoditEditor
+              value={templateContent}
+              config={editorConfig}
+              tabIndex={1}
+              onBlur={setTemplateContent}
+              onChange={setTemplateContent}
+            />
+          </div>
+          <div className="flex justify-between items-center mt-4">
+            <button
+              onClick={handleSaveTemplate}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Save
+            </button>
+            <button
+              onClick={handleCloseModals}
+              className="bg-gray-500 text-white px-4 py-2 rounded ml-2 hover:bg-gray-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 };

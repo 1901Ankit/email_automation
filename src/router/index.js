@@ -24,7 +24,7 @@ import Template from "../pages/template";
 import CategoryTemplates from "../pages/template/cateogorytemp";
 import Privacy from "../pages/subfooter/privacy";
 import Terms_condition from "../pages/subfooter/terms";
-
+import MangeCampaigns from "../pages/manage-campaigns/MangeCampaigns";
 const Router = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -119,6 +119,10 @@ const Router = () => {
           <Route
             path="/template"
             element={token ? <Template /> : <Navigate to="/" replace />}
+          />
+           <Route
+            path="/manage-campaigns"
+            element={token ? <MangeCampaigns/>  : <Navigate to="/" replace />}
           />
           <Route
             path="/subscribe-plan"

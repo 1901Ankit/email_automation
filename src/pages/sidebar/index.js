@@ -49,6 +49,11 @@ const Sidebar = () => {
       icon: <BiMessageAltDetail style={{ fontSize: "24px" }} />,
     },
     {
+      name: "Manage  Campaigns",
+      path: "/manage-campaigns",
+      icon: <BiMessageAltDetail style={{ fontSize: "24px" }} />,
+    },
+    {
       name: "Template",
       path: "/template",
       icon: <LuLayoutTemplate  style={{ fontSize: "24px" }} />,

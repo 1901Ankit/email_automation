@@ -118,10 +118,11 @@ const Preview = ({ placeholder }) => {
   }, []);
 
   useEffect(() => {
+    console.log("location.state", location.state);
     if (location.state && location.state.file) {
       setFile(location.state.file);
     } else {
-      toast.error("You must have to provide csv file list");
+     
       setFile(null);
       navigate("/detail", { replace: true });
     }
@@ -270,6 +271,7 @@ const Preview = ({ placeholder }) => {
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
                   readOnly
                 />
+                
               </div>
 
               <div className="container-fluid p-0">
