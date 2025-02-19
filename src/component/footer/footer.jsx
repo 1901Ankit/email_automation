@@ -6,7 +6,7 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="border-2 border-blue-500 shadow-xl sm:py-0 md:py-2 bg-[#3B82F6]">
+    <footer className="border-2 border-blue-500 shadow-xl sm:py-0 md:py-2 bg-[#3B82F6] block">
       <div className="container-fluid mx-auto sm:px-0 md:px-4 ">
         <div className="flex flex-col md:flex-row items-center justify-between  text-center md:text-left">
           <div className="flex flex-row items-center justify-between gap-4 py-1">

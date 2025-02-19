@@ -74,7 +74,7 @@ const Linechart = (props) => {
   return (
     <div className="w-full max-w-lg mx-auto p-4">
       {/* Doughnut Chart */}
-      <div className="relative w-full h-96 mt-5">
+      <div className="relative w-full h-full ">
         <Doughnut data={chartData} options={options} />
       </div>
     </div>
