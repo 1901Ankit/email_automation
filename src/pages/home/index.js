@@ -22,7 +22,12 @@ const Home = () => {
 
   const emailData = [
     { id: 1, title: "Total Emails", count: emailStats.total, image: grph },
-    { id: 2, title: "Successful Emails", count: emailStats.successful, image: people },
+    {
+      id: 2,
+      title: "Successful Emails",
+      count: emailStats.successful,
+      image: people,
+    },
     { id: 3, title: "Failed Emails", count: emailStats.failed, image: cube },
   ];
 
@@ -37,9 +42,20 @@ const Home = () => {
           <div className="container-fluid mx-auto md:px-4 px-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {emailData.map((item) => (
-                <div key={item.id} className={`p-6 rounded-2xl shadow-xl ${item.id === 1 ? 'bg-blue-100 text-blue-600' : item.id === 2 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                <div
+                  key={item.id}
+                  className={`p-6 rounded-2xl shadow-xl ${
+                    item.id === 1
+                      ? "bg-blue-100 text-blue-600"
+                      : item.id === 2
+                      ? "bg-green-100 text-green-600"
+                      : "bg-red-100 text-red-600"
+                  }`}
+                >
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-2xl font-semibold text-gray-700">{item.title}</h2>
+                    <h2 className="text-2xl font-semibold text-gray-700">
+                      {item.title}
+                    </h2>
                     <img src={item.image} alt={item.title} className="w-16" />
                   </div>
                   <h3 className="text-3xl font-bold">{item.count}</h3>
@@ -49,13 +65,16 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="mt-3">
+        <div className="mt-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="w-full">
               <Barchart data={emailStats.labels || []} />
             </div>
-            <div className="container w-full">
-              <Linechart data={emailStats.lineChart || []} data1={emailStats.lineChart2022 || []} />
+            <div className=" w-full">
+              <Linechart
+                data={emailStats.lineChart || []}
+                data1={emailStats.lineChart2022 || []}
+              />
             </div>
           </div>
         </div>

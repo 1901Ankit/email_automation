@@ -25,49 +25,49 @@ const Sidebar = () => {
     {
       name: "Analytics",
       path: "/home",
-      icon: <IoHomeOutline style={{ fontSize: "24px" }} />,
+      icon: <IoHomeOutline style={{ fontSize: "18px" }} />,
     },
-
     {
       name: "Plan",
       path: "/subscribe-plan",
-      icon: <RiSendPlaneFill style={{ fontSize: "24px" }} />,
+      icon: <RiSendPlaneFill style={{ fontSize: "18px" }} />,
     },
     {
       name: "Contact",
       path: "/contact",
-      icon: <IoMdContacts style={{ fontSize: "24px" }} />,
+      icon: <IoMdContacts style={{ fontSize: "18px" }} />,
     },
     {
       name: "SMTP Setup",
       path: "/smtp",
-      icon: <VscServerEnvironment style={{ fontSize: "24px" }} />,
-    },
-    {
-      name: "Campaigns",
-      path: "/detail",
-      icon: <BiMessageAltDetail style={{ fontSize: "24px" }} />,
-    },
-    {
-      name: "Manage  Campaigns",
-      path: "/manage-campaigns",
-      icon: <BiMessageAltDetail style={{ fontSize: "24px" }} />,
+      icon: <VscServerEnvironment style={{ fontSize: "18px" }} />,
     },
     {
       name: "Template",
       path: "/template",
-      icon: <LuLayoutTemplate  style={{ fontSize: "24px" }} />,
+      icon: <LuLayoutTemplate  style={{ fontSize: "18px" }} />,
     },
+    {
+      name: "Campaigns",
+      path: "/detail",
+      icon: <BiMessageAltDetail style={{ fontSize: "18px" }} />,
+    },
+    {
+      name: "Manage  Campaigns",
+      path: "/manage-campaigns",
+      icon: <BiMessageAltDetail style={{ fontSize: "18px" }} />,
+    },
+
     {
       name: "Preview",
       path: "/preview",
-      icon: <VscPreview style={{ fontSize: "24px" }} />,
+      icon: <VscPreview style={{ fontSize: "18px" }} />,
     },
 
     {
       name: "Log out",
       path: "",
-      icon: <AiOutlineLogin style={{ fontSize: "24px" }} />,
+      icon: <AiOutlineLogin style={{ fontSize: "18px" }} />,
     },
   ];
 
@@ -149,7 +149,7 @@ const Sidebar = () => {
         isMobileMenuOpen ? "w-60" : "w-0 md:w-52"
       } overflow-hidden md:overflow-visible`}
       >
-        <ul className="space-y-4 sidebar-menu">
+        <ul className="space-y-2 sidebar-menu">
           {tabs.map((tab, index) => (
             <li
               key={index}

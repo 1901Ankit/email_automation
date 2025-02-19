@@ -120,13 +120,13 @@ const Editing = ({ placeholder }) => {
   return (
     <div>
       <div className="flex justify-between mt-4">
-        <div className="w-6/12">
+        <div className="w-full">
           <label htmlFor="dropdown">Saved template</label>
           <div className="relative" ref={dropdownRef}>
             <div
               id="dropdown"
               onClick={toggleDropdown}
-              className="block text-start w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-3 text-gray-400 cursor-pointer"
+              className="block text-start w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-3 text-gray-400 cursor-pointer "
             >
               See your saved template and choose one
             </div>
@@ -182,13 +182,13 @@ const Editing = ({ placeholder }) => {
             )}
           </div>
         </div>
-        <div className="w-5/12 h-full ">
+      </div>
+      <div className="w-full h-full mt-3">
           <label> Selected template</label>
           <div className="block text-start w-full border border-red-700 mt-1 rounded-md py-2 pl-3 text-gray-600 font-bold">
             {selectedTemplateFileName || "No template is selected"}
           </div>
         </div>
-      </div>
 
       {viewModalOpen && (
         <EmailEditor

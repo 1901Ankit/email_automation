@@ -23,7 +23,7 @@ const Login = () => {
   const [Username, SetUsername] = useState("");
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
-  const [show2fa,setShow2fa]= useState(false);
+  const [show2fa, setShow2fa] = useState(false);
   const [password, setPassword] = useState("");
   const [number, setNumber] = useState("");
   const [otp, setOtp] = useState(new Array(6).fill(""));
@@ -159,8 +159,7 @@ const Login = () => {
           console.log("res", res);
 
           toast.success(res.data.message);
-          if(res?.data?.redirect !=="home"
-          ){
+          if (res?.data?.redirect !== "home") {
             setShowSigninFields(false);
             setShowOtpField(false);
             setShowNumberField(true);
@@ -354,7 +353,15 @@ const Login = () => {
   return (
     <>
       <div className="container-fluid head p-0">
-        <video autoPlay={true} muted loop id="background-video">
+        <video
+          autoPlay={true}
+          playsInline
+          loop
+          controls
+          controlsList="nodownload"
+          muted
+          id="background-video"
+        >
           <source src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/icon_1.mp4" />
         </video>
         <div
@@ -637,8 +644,8 @@ const Login = () => {
                   </div>
                 </>
               )}
-               
-               {showNumberField && !showOtpField && show2fa &&(
+
+              {showNumberField && !showOtpField && show2fa && (
                 <>
                   <div className="otp-verification-container">
                     <h1 className="otp-instruction mt-3">

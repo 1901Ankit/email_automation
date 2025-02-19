@@ -161,13 +161,13 @@ const Barchart = () => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-6">
+    <div className="w-full max-w-6xl">
       <h2 className="text-xl font-bold mb-4 text-center">
         Email Report ({dayjs(startDate).format("DD MMM")} -{" "}
         {dayjs(endDate).format("DD MMM")})
       </h2>
-      <div className="flex justify-around items-center mb-6">
-        <div>
+      <div className="flex flex-col md:flex-row md:justify-around items-center mb-6 gap-2 w-full">
+        <div className="w-full md:w-auto">
           <label className="block text-sm font-medium text-gray-700">
             Start Date
           </label>
@@ -180,7 +180,7 @@ const Barchart = () => {
             />
           </div>
         </div>
-        <div>
+        <div className="w-full md:w-auto">
           <label className="block text-sm font-medium text-gray-700">
             End Date
           </label>
