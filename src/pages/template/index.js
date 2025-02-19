@@ -11,16 +11,12 @@ const Template = ({ placeholder }) => {
   const [finalTemplate, setFinalTemplate] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [expandedCategory, setExpandedCategory] = useState(null);
-  const navigate = useNavigate(); // Initialize navigation
+  const navigate = useNavigate();
 
   const handleCategoryClick = (category) => {
-    navigate(`/template/${category}`); // Navigate to category page
+    navigate(`/template/${category}`); 
   };
-
-  // Get all unique categories including "All"
   const categories = ["All", ...new Set(templates.map((t) => t.category))];
-
-  // Group templates by category
   const groupedTemplates = templates.reduce((acc, template) => {
     const { category } = template;
     if (!acc[category]) {
@@ -29,8 +25,6 @@ const Template = ({ placeholder }) => {
     acc[category].push(template);
     return acc;
   }, {});
-
-  // Filtered grouped templates based on selected category
   const displayedTemplates =
     selectedCategory === "All"
       ? groupedTemplates

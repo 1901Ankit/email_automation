@@ -134,13 +134,13 @@ const Login = () => {
   };
   const handleSignIn = async (e) => {
     e.preventDefault();
- 
+
     const newErrors = validateSignInForm();
 
     if (Object.keys(newErrors).length === 0) {
       setLoadingStates({ ...loadingStates, signIn: true });
       setLoading(true);
-      
+
       try {
         setSignInErrors({ api: "" });
         const formData = new FormData();
@@ -150,7 +150,6 @@ const Login = () => {
         formData.append("system_info", systemInfo);
         // Perform login request
         const res = await API.login(formData);
-         console.log("jhdgsdf",res.data.access);
         if (res.data.user_id) {
           localStorage.setItem("id", res.data.user_id);
           localStorage.setItem("device_id", res.data.device_id);
@@ -171,14 +170,9 @@ const Login = () => {
             setLoadingStates({ ...loadingStates, signIn: false });
             setOtp(new Array(6).fill(""));
           } else {
-              
-          setShow(true);
+            setShow(true);
             navigate("/home");
           }
-       
-         
-        
-          
         } else {
           toast.warning("Device limit exceeded!");
           setLoggedInDevices(res.data.logged_in_devices);
@@ -258,7 +252,7 @@ const Login = () => {
     formData.append("otp", Number(otpValue));
     try {
       const response = await API.verifyOtp(formData);
-      
+
       toast.success(response.data.message);
       setShow2fa(false);
       handleSignInClick();
@@ -269,32 +263,30 @@ const Login = () => {
 
   const handleTwoStepVerifyOtp = async (e) => {
     e.preventDefault();
-  
+
     const otpValue = otp.join(""); // Ensure otp is an array of digits
     if (!otpValue || !signInEmail) {
       toast.error("Email and OTP are required.");
       return;
     }
-  
+
     const formData = new FormData();
     formData.append("email", signInEmail);
     formData.append("otp", otpValue); // No need for Number() if it's already a string
-  
+
     const systemInfo = `${browserName}, ${osName}, ${new Date().toLocaleString()}`;
     formData.append("system_info", systemInfo);
-  
+
     try {
-       
       const response = await axios({
         method: "POST",
         url: `${process.env.REACT_APP_BACKEND_BASE_URL}/2FA-otp/`,
-          data: formData, // ✅ Use `data`, not `body`
+        data: formData, // ✅ Use `data`, not `body`
         headers: {
           "Content-Type": "multipart/form-data",
-         
         },
       });
-  
+
       console.log("Response:", response.data);
       localStorage.setItem("id", response.data.user_id);
       localStorage.setItem("device_id", response.data.device_id);
@@ -302,10 +294,10 @@ const Login = () => {
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
       toast.success(response.data.message);
-     navigate("/home");
+      navigate("/home");
     } catch (error) {
       console.log("Error:", error);
-      
+
       if (error.response) {
         toast.error(error.response.data.message || "Something went wrong!");
       } else {
@@ -313,7 +305,7 @@ const Login = () => {
       }
     }
   };
-  
+
   const handleResetPasswordClick = async () => {
     try {
       const formData = new FormData();
@@ -326,16 +318,12 @@ const Login = () => {
         : toast.error(error.message);
     }
   };
-
   // Resertpassword
   const handleResetPassword = async (e) => {
     setLoadingStates({ ...loadingStates, reset: true });
-
     e.preventDefault();
-
     try {
       setLoading(true);
-
       const formData = new FormData();
       formData.append("new_password1", newPassword);
       formData.append("new_password2", confirmPassword);
@@ -357,7 +345,6 @@ const Login = () => {
     }
     setTimeout(() => {
       setLoadingStates({ ...loadingStates, reset: false });
-      // Handle successful reset password logic
     }, 2000);
   };
 
@@ -654,7 +641,7 @@ const Login = () => {
                {showNumberField && !showOtpField && show2fa &&(
                 <>
                   <div className="otp-verification-container">
-                    <h1 className="otp-instruction">
+                    <h1 className="otp-instruction mt-3">
                       {" "}
                       An OTP has been sent to your email.
                     </h1>
@@ -690,11 +677,12 @@ const Login = () => {
                       </svg>
                     </div>
                   </div>
+
                   {errors.otp && <span className="error">{errors.otp}</span>}
                   {showNumberField && (
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-3">
                       <button
-                        className="bg-[#000]  text-[14px] text-white px-4 py-2 rounded-2xl	 transition-colors duration-300 mt-3"
+                        className="bg-[#000] text-[14px] text-white px-4 py-2 rounded-2xl transition-colors duration-300 "
                         type="submit"
                         onClick={handleTwoStepVerifyOtp}
                       >
@@ -722,15 +710,16 @@ const Login = () => {
                           "Verify OTP"
                         )}
                       </button>
+
                       <button
                         type="button"
-                        className="bg-[#000] text-[14px] text-white px-4 py-2 rounded-2xl transition-colors duration-300 mt-3"
+                        className="bg-[#000] text-[14px] text-white px-4 py-2 rounded-2xl transition-colors duration-300 "
                         onClick={() => {
                           setShowSignupFields(true);
                           setShowNumberField(false);
                         }}
                       >
-                        Back
+                        Sign In
                       </button>
                     </div>
                   )}
