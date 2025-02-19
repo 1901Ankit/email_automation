@@ -126,12 +126,50 @@ const Login = () => {
     }
     return newErrors;
   };
-  const handleSignUpClick = () => {
-    setIsSignUp(true);
-  };
-  const handleSignInClick = () => {
-    setIsSignUp(false);
-  };
+   // Update these functions to properly handle the toggle between sign-up and sign-in
+
+const handleSignUpClick = () => {
+  // Set the main toggle state
+  setIsSignUp(true);
+  
+  // Reset all form states
+  setShowNumberField(false);
+  setShowOtpField(false);
+  setShow2fa(false);
+  
+  // Reset all form data
+  SetUsername("");
+  setEmail("");
+  setPassword("");
+  setOtp(new Array(6).fill(""));
+  setErrors({});
+  
+  // Make sure the right forms are visible
+  setShowSignupFields(true);
+  setShowSigninFields(false);
+  setShowResetFields(false);
+};
+
+const handleSignInClick = () => {
+  // Set the main toggle state
+  setIsSignUp(false);
+  
+  // Reset all form states
+  setShowNumberField(false);
+  setShowOtpField(false);
+  setShow2fa(false);
+  
+  // Reset all form data
+  setSignInEmail("");
+  setSignInPassword("");
+  setOtp(new Array(6).fill(""));
+  setSignInErrors({});
+  
+  // Make sure the right forms are visible
+  setShowSignupFields(false);
+  setShowSigninFields(true);
+  setShowResetFields(false);
+};
   const handleSignIn = async (e) => {
     e.preventDefault();
 
