@@ -6,18 +6,15 @@ import * as API from "../../api/user";
 import { FiPlus } from "react-icons/fi";
 import axios from "axios";
 import { toast } from "react-toastify";
-import csvfile from "../../assests/image/csvfile.png"; // CSV image
-
+import csvfile from "../../assests/image/csvfile.png"; 
 const Contact = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCsvPreviewOpen, setIsCsvPreviewOpen] = useState(false); // New state for CSV preview
-  const [fileData, setFileData] = useState(null); // File data (parsed)
+  const [isCsvPreviewOpen, setIsCsvPreviewOpen] = useState(false); 
+  const [fileData, setFileData] = useState(null);
   const [previewData, setPreviewData] = useState({});
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
   const [contactData, setContactData] = useState([]);
-
   const [csvContacts, setCsvContacts] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [nameInput, setNameInput] = useState("");
@@ -27,7 +24,6 @@ const Contact = () => {
   const [editingContacts, setEditingContacts] = useState([]);
   const [isModalEDitOpen, setIsModalEditOpen] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState(null);
-
   const HandleFileData = (data) => {
     setFileData(data);
   };
@@ -35,24 +31,21 @@ const Contact = () => {
     setSelectedFileId(file_id);
     try {
       const response = await API.getSingleContactList(file_id);
-      setEditingContacts(response.data.contacts); // Store fetched contacts in state
+      setEditingContacts(response.data.contacts); 
       setIsModalEditOpen(true);
     } catch (error) {
       console.error("Error fetching contacts:", error);
     }
   };
-
   const handleChange = (index, field, value) => {
     const updatedContacts = [...editingContacts];
     updatedContacts[index].data[field] = value;
     setEditingContacts(updatedContacts);
   };
-
   const handleSaveEdit = async () => {
-    // Transform `editingContacts` to match the required API structure
     const formattedContacts = {
       contacts: editingContacts.map((contact) => ({
-        ...(contact.id ? { id: contact.id } : {}), // Include `id` only if it exists
+        ...(contact.id ? { id: contact.id } : {}), 
         data: {
           Email: contact.data.Email,
           firstName: contact.data.firstName,
@@ -61,29 +54,22 @@ const Contact = () => {
         },
       })),
     };
-
     try {
       const res = await axios.put(
-        `${process.env.REACT_APP_BACKEND_BASE_URL}/contact-update/${selectedFileId}/`, // Removed trailing slash
-        formattedContacts, // Data should be in the second parameter
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/contact-update/${selectedFileId}/`, 
+        formattedContacts, 
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Ensure token is passed correctly
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         }
       );
-
-      console.log("Response:", res.data);
       setIsModalEditOpen(false);
-
-      // Show success toast
       toast.success("Contacts updated successfully!");
-
-      // Reload page after the toast
       setTimeout(() => {
         window.location.reload();
-      }, 1500); // Wait for 1.5 seconds before reloading
+      }, 1500);
     } catch (error) {
       console.error(
         "Error updating contacts:",
@@ -92,50 +78,6 @@ const Contact = () => {
       toast.error("Failed to update contacts.");
     }
   };
-
-  // const handleCsvUpload = (file) => {
-  //   console.log("file", file);
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     const fileData = reader.result;
-  //     const rows = fileData.split("\n");
-  //     const contacts = rows.slice(1).map((row) => {
-  //       const [email, firstName, lastName, company] = row.split(",");
-  //       return { email, firstName, lastName, company };
-  //     });
-  //     console.log("contacts", contacts);
-  //     setCsvContacts(contacts.filter((contact) => contact.email));
-  //   };
-  //   reader.readAsText(file);
-  // };
-
-  // const handleSave = () => {
-  //   const newContactData = [...contactData];
-  //   console.log(newContactData);
-  //   if (editIndex !== null) {
-  //     newContactData[editIndex] = {
-  //       listName: nameInput,
-  //       contactCount: csvContacts.length,
-  //       creationDate: new Date().toLocaleDateString(),
-  //     };
-  //   } else {
-  //     newContactData.push({
-  //       listName: nameInput,
-  //       contactCount: csvContacts.length,
-  //       creationDate: new Date().toLocaleDateString(),
-  //     });
-  //   }
-
-  //   // Save listName to sessionStorage
-  //   sessionStorage.setItem("listName", nameInput);
-
-  //   setContactData(newContactData);
-  //   closeModal();
-  //   setNameInput("");
-  //   setCsvContacts([]);
-  //   setEditIndex(null);
-  // };
-
   const handleDelete = async (file_id) => {
     try {
       const res = await API.deleteSingleContactList(file_id);
@@ -144,30 +86,35 @@ const Contact = () => {
         window.location.reload();
       }, 1500);
     } catch (error) {
-      console.log("Error:", error);
       toast.error("Failed to delete contact.");
     }
   };
   const handleCsvPreview = async (file_id) => {
-    console.log("hey i am from csv preview");
     try {
       const res = await API.getSingleContactList(file_id);
       setPreviewData(res.data);
     } catch (error) {}
     setIsCsvPreviewOpen(true);
   };
-
   const handleCloseCsvPreview = () => {
     setIsCsvPreviewOpen(false);
   };
-
   const handleFileChange = (e) => {
     setCsvFile(e.target.files[0]);
   };
-
   const handleSave = async () => {
     if (!nameInput || !csvFile) {
       alert("Please fill in all fields and select a CSV file.");
+      return;
+    }
+    const fileContent = await csvFile.text();
+    const rows = fileContent
+      .split(/\r?\n/)
+      .filter((line) => line.trim() !== "");
+    if (rows.length > 1000) {
+      alert(
+        `CSV file contains ${rows.length} rows, which exceeds the limit of 1000. Please upload a smaller file.`
+      );
       return;
     }
     const formData = new FormData();
@@ -175,20 +122,19 @@ const Contact = () => {
     formData.append("csv_file", csvFile);
     try {
       const response = await API.uploadContacts(formData);
-      console.log("response", response);
       if (response.ok) {
         toast.success("File uploaded successfully!");
         setTimeout(() => {
           closeModal();
           window.location.reload();
         }, 1500);
+      } else {
+        toast.error("Failed to upload file.");
       }
     } catch (error) {
-      console.log("errr", error);
       toast.error("An error occurred while uploading the file.");
     }
   };
-
   const containerRef = useRef(null);
   const addNew = () => {
     setEditingContacts([
@@ -201,9 +147,7 @@ const Contact = () => {
       }
     }, 100);
   };
-
   useEffect(() => {}, [previewData]);
-
   useEffect(() => {
     const fetchContacts = async () => {
       try {
@@ -212,15 +156,13 @@ const Contact = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching contacts:", error);
-        toast.error("Failed to load contacts.");
         setLoading(false);
       }
     };
-
     fetchContacts();
-  }, [handleSave]);  
-  console.log("prev",previewData);
+  }, [handleSave]);
   return (
+    <>
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
       <div className="mb-2">
         <div className="flex items-center justify-between">
@@ -233,7 +175,7 @@ const Contact = () => {
             Import Contact
           </button>
         </div>
-      </div> 
+      </div>
       <div className="overflow-x-auto mt-10">
         <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
           <table className="min-w-full divide-y divide-gray-200">
@@ -308,7 +250,7 @@ const Contact = () => {
               <h2 className="text-xl font-bold">Import Contacts</h2>
               <button
                 className="text-black font-bold text-4xl rounded-md bg-white p-1 w-8 h-8 flex items-center justify-center"
-                onClick={closeModal} >
+                onClick={closeModal}>
                 <RxCrossCircled />
               </button>
             </div>
@@ -328,46 +270,46 @@ const Contact = () => {
                   onChange={(e) => setNameInput(e.target.value)}
                 />
               </div>
-            <div className="container-fluid">
-        <div className="row items-center justify-center mt-3">
-          <div className="col-sm-6">
-            <div className="flex items-center justify-center">
-              <h1 className="text-3xl font-bold">Upload list</h1>
-            </div>
-            <div className="drag-file-area ">
-              <span className="material-icons-outlined upload-icon">
-                file_upload
-              </span>
-              <h3 className="dynamic-message">
-                Drag & Drop any file here (only CSV)
-              </h3>
-              <label className="label">
-                <span className="browse-files">
-                  <input
-                    type="file"
-                    className="default-file-input file-input"
-                    onChange={handleFileChange}
-                  />
-                  <span className="browse-files-text text-center">
-                    Browse file
-                  </span>
-                  <span className="mx-2">from device</span>
-                </span>
-              </label>
-            </div>
-          </div>
-          <div className="col-sm-6 mt-5 md:mt-0">
-            <div className="flex items-center justify-center">
-              <h1 className="text-3xl font-bold">Sample csv</h1>
-            </div>
-            <img
-              src={csvfile}
-              className="w-full h-full object-contain"
-              alt="CSV File"
-            />
-          </div>
-        </div>
-        </div>
+              <div className="container-fluid">
+                <div className="row items-center justify-center mt-3">
+                  <div className="col-sm-6">
+                    <div className="flex items-center justify-center">
+                      <h1 className="text-3xl font-bold">Upload list</h1>
+                    </div>
+                    <div className="drag-file-area ">
+                      <span className="material-icons-outlined upload-icon">
+                        file_upload
+                      </span>
+                      <h3 className="dynamic-message">
+                        Drag & Drop any file here (only CSV)
+                      </h3>
+                      <label className="label">
+                        <span className="browse-files">
+                          <input
+                            type="file"
+                            className="default-file-input file-input"
+                            onChange={handleFileChange}
+                          />
+                          <span className="browse-files-text text-center">
+                            Browse file
+                          </span>
+                          <span className="mx-2">from device</span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  <div className="col-sm-6 mt-5 md:mt-0">
+                    <div className="flex items-center justify-center">
+                      <h1 className="text-3xl font-bold">Sample csv</h1>
+                    </div>
+                    <img
+                      src={csvfile}
+                      className="w-full h-full object-contain"
+                      alt="CSV File"
+                    />
+                  </div>
+                </div>
+              </div>
               <div className="flex justify-end">
                 <button
                   type="button"
@@ -383,8 +325,8 @@ const Contact = () => {
       )}
 
       {isModalEDitOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-auto">
-          <div className="bg-white p-6 rounded-lg w-full max-w-[90%]  md:max-w-[65%] mt-20">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50  overflow-auto">
+          <div className="bg-white p-6 rounded-lg w-full max-w-[90%] md:max-w-[70%]">
             <div className="flex justify-between items-center ">
               <h2 className="text-xl font-bold text-center">
                 Edit Contacts Details
@@ -412,7 +354,7 @@ const Contact = () => {
                   <tbody>
                     {editingContacts?.map((contact, index) => (
                       <tr key={index} className="text-center">
-                        <td className="px-4 py-2 border">
+                        <td className="px-2 py-2 border">
                           <input
                             type="text"
                             value={contact?.data?.firstName || ""}
@@ -422,7 +364,7 @@ const Contact = () => {
                             className="border p-2 w-full text-sm md:text-base"
                           />
                         </td>
-                        <td className="px-4 py-2 border">
+                        <td className="px-2 py-2 border">
                           <input
                             type="text"
                             value={contact?.data?.lastName || ""}
@@ -432,7 +374,7 @@ const Contact = () => {
                             className="border p-2 w-full text-sm md:text-base"
                           />
                         </td>
-                        <td className="px-4 py-2 border">
+                        <td className="px-2 py-2 border">
                           <input
                             type="email"
                             value={contact?.data?.Email || ""}
@@ -442,7 +384,7 @@ const Contact = () => {
                             className="border p-2 w-full text-sm md:text-base"
                           />
                         </td>
-                        <td className="px-4 py-2 border">
+                        <td className="px-2 py-2 border">
                           <input
                             type="text"
                             value={contact?.data?.companyName || ""}
@@ -509,20 +451,19 @@ const Contact = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {console.log("csvcontacts", csvContacts)}
                   {previewData?.contacts?.map((contact, index) => (
                     <tr key={index}>
-                      <td className="px-6 py-3 text-xs text-gray-500 text-center">
+                      <td className="px-6 py-3 text-xs text-gray-500 text-center border">
                         {contact?.data?.Email}
                       </td>
-                      <td className="px-6 py-3 text-xs text-gray-500 text-center">
+                      <td className="px-6 py-3 text-xs text-gray-500 text-center border">
                         {contact?.data?.firstName}
                       </td>
-                      <td className="px-6 py-3 text-xs text-gray-500 text-center">
+                      <td className="px-6 py-3 text-xs text-gray-500 text-center border">
                         {contact?.data?.lastName}
                       </td>
-                      <td className="px-6 py-3 text-xs text-gray-500 text-center">
-                        {contact?.data?.company}
+                      <td className="px-6 py-3 text-xs text-gray-500 text-center border">
+                        {contact?.data?.companyName}
                       </td>
                     </tr>
                   ))}
@@ -533,6 +474,7 @@ const Contact = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

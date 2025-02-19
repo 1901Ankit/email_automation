@@ -83,7 +83,6 @@ const Router = () => {
   const shouldShowHeader =
     !["/", "/reset_password/:uidID/:token"].includes(location.pathname) &&
     !location.pathname.startsWith("/reset_password");
-
   return (
     <>
       <div className="d-flex">

@@ -109,7 +109,6 @@ export const templates = [
     <td>
         <div style="width: 400px ;
         height: 5px; background-color: rgba(51, 141, 251, 1); ">
-
         </div>
     </td>
 </tr>
@@ -128,8 +127,6 @@ export const templates = [
             <p style="width: 350px;margin-left: 40px;margin-top: -25px; font-size: 14px; margin-bottom: 25px; color: rgba(51, 141, 251, 1);">Today you can invite your team to start collaborating on user insights</p>
         </td>
     </tr>
-
-
     <tr style="background-color: rgba(51, 141, 251, 0.1); border-radius: 40px 20px 20px 20px; position: relative;">
         <td style="padding: 20px; background-color: rgba(51, 141, 251, 0.1); border-radius: 40px 20px 0px 0px; position: relative; height: 550px;">
             <div style="position: absolute; margin-top: -140px;">
@@ -140,7 +137,6 @@ export const templates = [
                 <h2 style="color: rgba(64, 123, 255, 1); font-size: 22px; font-family: inter, sans-serif; margin-left: 20px;">COME GROW WITH US : </h2>
                 <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/pana.png" style="width: 60px;">
             </div>
-    
             <div style="display: flex; justify-content: space-evenly; align-items: center; margin-top: 20px;">
                 <!-- First Circle -->
                 <div style="width: 150px; height: 150px; background-color:#fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
@@ -148,7 +144,6 @@ export const templates = [
                     <h4 style="margin-top: 0px; color: #000000; font-size: 14px;  font-family:inter, sans-serif;">Build</h4>
                     <p style="font-size: 12px; margin-top: -20px; width: 90px; color: #000000; text-align: center;  font-family:inter, sans-serif;">Alone we can do so little, together we can do so much.</p>
                 </div>
-    
                 <!-- Second Circle -->
                 <div style="width: 150px; height: 150px; background-color:#fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
                     <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/growing+graph+icon.png" alt="Grow" style="width:47px; margin-top: 0px;">
@@ -156,7 +151,6 @@ export const templates = [
                     <p style="font-size: 12px; color: #000000; text-align: center; font-size: 12px; margin-top: -20px; width: 103px ;padding: 0px;  font-family:inter, sans-serif; ">Growth, in some curious way, depends on being always in motion.</p>
                 </div>
             </div>
-    
             <div style="display: flex; justify-content: space-evenly; align-items: center; margin-top: 30px;">
                 <!-- Third Circle -->
                 <div style="width: 150px; height: 150px; background-color:#fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
@@ -174,7 +168,6 @@ export const templates = [
             </div>
         </td>
     </tr>
-    
     <!-- Footer Section -->
     <tr style="position: absolute; margin-top: -100px;  ">
         <td style="background-color:rgba(51, 141, 251, 1); text-align: center; padding: 20px; color: white; border-radius: 20px 20px 0px 0px; width: 357px; position: relative; ">
@@ -182,18 +175,13 @@ export const templates = [
             <p style="margin: 5px 0; font-family:inter, sans-serif;">Contact Us- <strong>8700133076</strong></p>
             <a href="#" style="color: white; text-decoration: underline; font-size: 20px; font-weight: 700; font-family:inter, sans-serif;">Unsubscribe</a>
         </td>
-       
-
     </tr>
     <tr>
         <td style="background-color: #fff; border-radius: 50px 50px 5px 0px; position: absolute;margin-top: -px; ">
             <div style="width: 400px; height: 30px;"></div>
         </td>
     </tr>
-  
-
 </table>
-
 </body>
 </html>
 
