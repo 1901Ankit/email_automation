@@ -20,6 +20,10 @@ const Header = () => {
     navigate(path);
     setIsOpen(false);
   };
+  const [selectedOption, setSelectedOption] = useState(null);
+
+
+
   return (
     <div className="bg-white shadow-lg fixed top-0 left-0 right-0 z-40">
       <div className="container-fluid">
@@ -44,20 +48,24 @@ const Header = () => {
                 ) : null}
               </div>
               {isOpen && (
-                <div className="absolute top-[3rem] right-0.5 bg-white shadow-md rounded-lg  w-40">
-                  <button
-                    onClick={() => handleOptionClick("/user-profile")}
-                    className="block w-full text-left px-4 py-2 text-gray-700"
-                  >
-                    User Profile
-                  </button>
-                  <button
-                    onClick={() => handleOptionClick("/manage")}
-                    className="block w-full text-left px-4 py-2 text-gray-700"
-                  >
-                    Manage Device
-                  </button>
-                </div>
+           <div className="absolute top-[3rem] right-0.5 bg-white shadow-md rounded-lg w-40">
+           <button
+             onClick={() => handleOptionClick("/user-profile")}
+             className={`block w-full text-left px-4 py-2 text-gray-700 ${
+               selectedOption === "/user-profile" ? "bg-blue-500 text-white" : "hover:bg-blue-500 hover:text-white"
+             }`}
+           >
+             User Profile
+           </button>
+           <button
+             onClick={() => handleOptionClick("/manage")}
+             className={`block w-full text-left px-4 py-2 text-gray-700 ${
+               selectedOption === "/manage" ? "bg-blue-500 text-white" : "hover:bg-blue-500 hover:text-white"
+             }`}
+           >
+             Manage Device
+           </button>
+         </div>
               )}
             </div>
             <a href="tel:+18002102858">

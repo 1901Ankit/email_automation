@@ -27,7 +27,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="flex flex-col max-h-[100vh] overflow-auto w-full">
+    <div className="flex flex-col max-h-[100vh] overflow-auto w-full ">
       <div className="container-fluid pt-32 flex-grow overflow-auto">
         <div className="p-2">
           <h1 className="text-3xl font-bold uppercase">Analytics</h1>

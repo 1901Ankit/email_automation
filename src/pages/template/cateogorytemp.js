@@ -11,7 +11,6 @@ const CategoryTemplates = ({ placeholder }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [finalTemplate, setFinalTemplate] = useState(null);
-
   const config = useMemo(
     () => ({
       readonly: false,
@@ -19,14 +18,12 @@ const CategoryTemplates = ({ placeholder }) => {
     }),
     [placeholder]
   );
-
   // Function to open modal with selected template
   const handleEditTemplate = (template) => {
     setSelectedTemplate(template);
     setFinalTemplate(template.html); // Ensure the editor starts with the correct content
     setModalOpen(true);
   };
-
   // Save the edited template
   const handleModalSave = async () => {
     try {
@@ -34,23 +31,19 @@ const CategoryTemplates = ({ placeholder }) => {
       const blob = new Blob([htmlContent], { type: "text/html" });
       const formData = new FormData();
       formData.append("file", blob, "template.html");
-
       await templateAPI.createHtmlTemplate(formData);
       setModalOpen(false);
     } catch (error) {
       console.error("Error saving template:", error);
     }
   };
-
   // Filter templates based on the selected category
   const filteredTemplates = templates.filter((t) => t.category === category);
-
   return (
     <div className="container-fluid  pt-32  max-h-[100vh] overflow-auto">
       <h1 className="text-xl md:text-3xl font-bold uppercase mb-6">
         Templates for {category}
       </h1>
-
       {/* Back Button */}
       <Link
         to="/template"
@@ -60,11 +53,10 @@ const CategoryTemplates = ({ placeholder }) => {
         <IoArrowBack className="text-white text-2xl" />
         Back to Categories
       </Link>
-
       {/* Modal for Editing Template */}
       {modalOpen && selectedTemplate && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-full md:max-w-[60%] max-h-[100vh] overflow-hidden">
+          <div className="bg-white p-6 rounded-lg w-full max-w-full md:max-w-[65%] max-h-[100vh] overflow-hidden">
             <div className="h-[70vh] overflow-y-auto">
               <JoditEditor
                 ref={editor}
@@ -92,7 +84,6 @@ const CategoryTemplates = ({ placeholder }) => {
           </div>
         </div>
       )}
-
       {/* Templates Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
         {filteredTemplates.map((template) => (
@@ -107,7 +98,6 @@ const CategoryTemplates = ({ placeholder }) => {
                 className="w-full h-full"
               />
             </div>
-
             {/* Button with Template Title */}
             <button
               type="button"
