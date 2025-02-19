@@ -147,7 +147,7 @@ const Contact = () => {
       }
     }, 100);
   };
-  useEffect(() => {}, [previewData]);
+ 
   useEffect(() => {
     const fetchContacts = async () => {
       try {
@@ -160,7 +160,7 @@ const Contact = () => {
       }
     };
     fetchContacts();
-  }, [handleSave]);
+  }, [ ]);
   return (
     <>
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">

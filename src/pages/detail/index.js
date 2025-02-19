@@ -159,9 +159,9 @@ const Content = ({ placeholder }) => {
       formData.append("display_name", details.display_name);
       formData.append("subject", details.subject);
       formData.append("delay_seconds", details.delay_seconds);
-      formData.append("uploaded_file_key", details.uploaded_file_key);
+      formData.append("uploaded_file_name", details.uploaded_file_key);
       formData.append("contact_list", details.contact_list);
-  
+      formData.append("name",details.uploaded_file_key)
       // Append each SMTP ID separately
       if (Array.isArray(details.smtp_server_ids)) {
         details.smtp_server_ids.forEach((id) => {
