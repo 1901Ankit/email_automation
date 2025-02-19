@@ -53,6 +53,7 @@ const EmailEditor = ({
         formData,
         selectedTemplatedDetails.id
       );
+      console.log("response", response);
       setSelectedTemplatedDetails(null);
    
       setViewModalOpen(false);

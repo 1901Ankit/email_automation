@@ -17,10 +17,11 @@ const Content = ({ placeholder }) => {
     display_name: "",
     subject: "",
     delay_seconds: 0,
-    contact_list:[] ,
-    smtp_server_ids :[],
-    compaign_name:"",
-  });
+    contact_list: null,     // Changed from array to single value
+    smtp_server_ids: [],
+    campaign_name: "",      // Fixed spelling
+    uploaded_file_key: ""
+});
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [options, setOptions] = useState({ smtps: [] });
@@ -64,11 +65,15 @@ const Content = ({ placeholder }) => {
     if (type === "smtp") {
       updatedSelectedOptions.smtps = selectedOption;
       console.log("uppppp",updatedSelectedOptions)
-      setDetails({ ...details,   smtp_server_ids: updatedSelectedOptions.smtps })
+      // const smtp_server_ids = smtpOptions.map(smtp => parseInt(smtp.value));
+      let smtp_server_ids = updatedSelectedOptions.smtps.map(smtp => Number(smtp.value));
+      setDetails({ ...details,   smtp_server_ids: smtp_server_ids })
     } else if (type === "Recipient") {
       updatedSelectedOptions.recipients = selectedOption; // Store recipient selections
+      console.log("receipient_id_ext",updatedSelectedOptions);
       setSelectedRecipients(selectedOption); // Update selected recipients state
-      setDetails({ ...details,    contact_list: updatedSelectedOptions.recipients })
+      let contact_list_ids = updatedSelectedOptions.recipients.map(smtp => smtp.value);
+      setDetails({ ...details,    contact_list:  contact_list_ids[0] })
     }
     
     sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
@@ -86,6 +91,7 @@ const Content = ({ placeholder }) => {
         navigate("/smtp");
         return;
       }
+      console.log(smtpResponse?.data?.servers, "hello");
       const modifiedSMTPsResponse = smtpResponse?.data?.servers?.map((obj) => {
         return { label: obj.username, value: obj.id };
       });
@@ -142,28 +148,56 @@ const Content = ({ placeholder }) => {
       }, 1500);
     } catch (error) {}
   };
-  const handleSubmit =async  (e) => {
-  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Hey I am In");
-    // check variations
-    // saveEnteredDetails();
-    // if (!JSON.parse(sessionStorage.getItem("csv"))) {
-    //   toast.error("Please upload your CSV file list");
-    //   return;
-    // }
-    // if (!csvFile) {
-    //   toast.error("Please upload your CSV file list");
-    //   return;
-    // }
-    console.log("details", details);
- const res= await API.createCampainion(details);
- console.log("res",res);
-    // if (csvFile) {
-    navigate("/preview", { state: { file: csvFile } });
-    // }
+  
+    try {
+      details.uploaded_file_key = JSON.parse(sessionStorage.getItem("key"));
+  
+      const formData = new FormData();
+      formData.append("campaign_name", details.campaign_name);
+      formData.append("display_name", details.display_name);
+      formData.append("subject", details.subject);
+      formData.append("delay_seconds", details.delay_seconds);
+      formData.append("uploaded_file_key", details.uploaded_file_key);
+      formData.append("contact_list", details.contact_list);
+  
+      // Append each SMTP ID separately
+      if (Array.isArray(details.smtp_server_ids)) {
+        details.smtp_server_ids.forEach((id) => {
+          formData.append("smtp_server_ids", id);
+        });
+      } else {
+        console.error("smtp_server_ids is not an array");
+      }
+  
+      // Make API call inside try block
+      const res = await API.createCampainion(formData);
+  
+      // Check for API response errors
+      if (res?.response?.data?.campaign_name) {
+        toast.error(res.response.data.campaign_name[0]);
+        return; // Stop execution if there's an error
+      }
+     console.log("respinse_from_email",res);
+      toast.success(res?.data?.success || "Campaign created successfully!");
+      navigate("/preview", { state: { file: csvFile } });
+  
+    } catch (error) {
+      console.error("Error submitting form:", error);
+  
+      // Handle specific error cases
+      if (error?.response?.data) {
+        // If API returns validation errors
+        Object.values(error.response.data).forEach((errMsg) => {
+          toast.error(errMsg[0]); // Show all errors in toast
+        });
+      } else {
+        toast.error("Something went wrong! Please try again.");
+      }
+    }
   };
-
+  
   // const handleChange = (selectedOption, type) => {
   //   const updatedSelectedOptions = { ...selectedOptions };
   //   if (type === "smtp") {
@@ -215,7 +249,7 @@ const Content = ({ placeholder }) => {
       
         setContacts(response.data.user_contact_files);  
  
-     
+         
         setLoading(false);
       } catch (error) {
         console.error("Error fetching contacts:", error);
@@ -226,6 +260,7 @@ const Content = ({ placeholder }) => {
 
     fetchContacts();
   }, []);  
+  console.log("Contacts", contacts);
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
       <div className="mb-2">
@@ -310,7 +345,7 @@ const Content = ({ placeholder }) => {
                     name="campaign_name"
                     value={details?.campaign_name}
                     onChange={(e) =>
-                      setDetails({ ...details,   compaign_name: e.target.value })
+                      setDetails({ ...details,    campaign_name: e.target.value })
                     }
                     className="block w-full mt-1 border-[1px] border-[#93C3FD] 
                 rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
@@ -363,8 +398,15 @@ const Content = ({ placeholder }) => {
                focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                 />
               </div>
-              <button type="submit" className="text-4xl">
-               Send
+              <div className="" onClick={saveEnteredDetails}>
+        <Editing
+          setSelectedTemplate={setSelectedTemplate}
+          setModalOpen={setModalOpen}
+        />
+      </div>
+
+              <button type="submit" className="text-4xl mt-3">
+               Submit
 
               </button>
             </form>
@@ -488,18 +530,13 @@ const Content = ({ placeholder }) => {
         </div>
       </div>
 
-      <div className="" onClick={saveEnteredDetails}>
-        <Editing
-          setSelectedTemplate={setSelectedTemplate}
-          setModalOpen={setModalOpen}
-        />
-      </div>
+   
 
-      <div className="mt-5 text-right pb-3">
+      {/* <div className="mt-5 text-right pb-3">
         <button type="submit" className="preview-button">
           Submit
         </button>
-      </div>
+      </div> */}
 
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">

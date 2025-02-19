@@ -17,5 +17,6 @@ export const resetPassword = (uidbId, token, passwordData) =>
   API.post(`/reset_password/${uidbId}/${token}/`, passwordData);
 export const  uploadContacts = (data) => API.post("/upload-contacts/", data);
 export const createCampainion= (data)=>API.post("/campaign/",data);
- 
+export const getAllCampigns= ()=>API.get("/campaigns-list/");
+export const deleteCampigns= (id)=>API.delete(`/campaigns/${id}`)
 export default API;
