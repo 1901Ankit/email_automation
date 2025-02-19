@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+.react-datepicker {
+  width: 100% !important;
+  max-width: 350px; 
+  margin: auto;
+}
+
+.react-datepicker__triangle {
+  display: none; /* Remove small arrow */
+}

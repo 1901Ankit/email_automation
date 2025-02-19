@@ -15,13 +15,16 @@ const CategoryTemplates = () => {
   const [templateContent, setTemplateContent] = useState("");
   const [templateName, setTemplateName] = useState("");
 
-  const editorConfig = useMemo(() => ({
-    readonly: false,
-    placeholder: "Start typing...",
-  }), []);
+  const editorConfig = useMemo(
+    () => ({
+      readonly: false,
+      placeholder: "Start typing...",
+    }),
+    []
+  );
 
-  const filteredTemplates = useMemo(() => 
-    templates.filter((t) => t.category === category),
+  const filteredTemplates = useMemo(
+    () => templates.filter((t) => t.category === category),
     [category]
   );
 
@@ -67,7 +70,7 @@ const CategoryTemplates = () => {
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
       <Toaster />
-      
+
       <div className="flex flex-col gap-6 mb-8">
         <h1 className="text-xl md:text-3xl font-bold uppercase">
           Templates for {category}
@@ -113,7 +116,9 @@ const CategoryTemplates = () => {
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
       >
         <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-          <h2 className="text-lg font-semibold mb-4 text-center">Enter Template Name</h2>
+          <h2 className="text-lg font-semibold mb-4 text-center">
+            Enter Template Name
+          </h2>
           <input
             type="text"
             className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
@@ -141,10 +146,12 @@ const CategoryTemplates = () => {
       <Dialog
         open={isEditorModalOpen}
         onClose={handleCloseModals}
-        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50  max-h-[100vh] overflow-auto"
       >
-        <div className="bg-white p-6 rounded-lg w-full max-w-[80%] max-h-[90vh] overflow-hidden">
-          <h1> Template Name : {templateName} </h1>
+        <div className="bg-white p-6 rounded-lg w-full md:max-w-[60%] md:h-full h-fit overflow-hidden">
+          <h1 className="text-xl md:text-3xl font-bold uppercase">
+            Template Name : {templateName}{" "}
+          </h1>
           <div className="h-[70vh] overflow-y-auto">
             <JoditEditor
               value={templateContent}

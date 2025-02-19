@@ -14,7 +14,7 @@ const Template = ({ placeholder }) => {
   const navigate = useNavigate();
 
   const handleCategoryClick = (category) => {
-    navigate(`/template/${category}`); 
+    navigate(`/template/${category}`);
   };
   const categories = ["All", ...new Set(templates.map((t) => t.category))];
   const groupedTemplates = templates.reduce((acc, template) => {
@@ -52,11 +52,11 @@ const Template = ({ placeholder }) => {
   );
 
   return (
-    <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
+    <div className="container-fluid pt-24 max-h-[100vh] overflow-auto">
       <div className="hsyw p-0">
         {/* Category Selector */}
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Templates</h1>
+          <h1 className="text-3xl font-bold uppercase">Templates</h1>
 
           <select
             className="px-4 py-2 rounded-md cursor-pointer text-start bg-white border-[1px] border-blue-500 text-gray-800 

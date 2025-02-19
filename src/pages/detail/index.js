@@ -17,11 +17,11 @@ const Content = ({ placeholder }) => {
     display_name: "",
     subject: "",
     delay_seconds: 0,
-    contact_list: null,     // Changed from array to single value
+    contact_list: null, // Changed from array to single value
     smtp_server_ids: [],
-    campaign_name: "",      // Fixed spelling
-    uploaded_file_key: ""
-});
+    campaign_name: "", // Fixed spelling
+    uploaded_file_key: "",
+  });
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [options, setOptions] = useState({ smtps: [] });
@@ -30,7 +30,7 @@ const Content = ({ placeholder }) => {
   const [selectedOptions, setSelectedOptions] = useState({
     smtps: [],
   });
-  
+
   const [contacts, setContacts] = useState([]);
   const [csvFile, setCsvFile] = useState();
 
@@ -42,10 +42,8 @@ const Content = ({ placeholder }) => {
 
     setDetails(retriedDetails);
     setSelectedOptions(retriedOptions);
-   
-      setSelectedRecipients(retriedDetails.recipients);
- 
-  
+
+    setSelectedRecipients(retriedDetails.recipients);
   }, []);
 
   const config = useMemo(
@@ -59,28 +57,32 @@ const Content = ({ placeholder }) => {
 
   const handleChange = (selectedOption, type) => {
     console.log("selectedOptions", selectedOption);
-    console.log("type",type);
+    console.log("type", type);
     const updatedSelectedOptions = { ...selectedOptions };
-    
+
     if (type === "smtp") {
       updatedSelectedOptions.smtps = selectedOption;
-      console.log("uppppp",updatedSelectedOptions)
+      console.log("uppppp", updatedSelectedOptions);
       // const smtp_server_ids = smtpOptions.map(smtp => parseInt(smtp.value));
-      let smtp_server_ids = updatedSelectedOptions.smtps.map(smtp => Number(smtp.value));
-      setDetails({ ...details,   smtp_server_ids: smtp_server_ids })
+      let smtp_server_ids = updatedSelectedOptions.smtps.map((smtp) =>
+        Number(smtp.value)
+      );
+      setDetails({ ...details, smtp_server_ids: smtp_server_ids });
     } else if (type === "Recipient") {
       updatedSelectedOptions.recipients = selectedOption; // Store recipient selections
-      console.log("receipient_id_ext",updatedSelectedOptions);
+      console.log("receipient_id_ext", updatedSelectedOptions);
       setSelectedRecipients(selectedOption); // Update selected recipients state
-      let contact_list_ids = updatedSelectedOptions.recipients.map(smtp => smtp.value);
-      setDetails({ ...details,    contact_list:  contact_list_ids[0] })
+      let contact_list_ids = updatedSelectedOptions.recipients.map(
+        (smtp) => smtp.value
+      );
+      setDetails({ ...details, contact_list: contact_list_ids[0] });
     }
-    
+
     sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
-  
+
     setSelectedOptions(updatedSelectedOptions);
   };
- 
+
   useEffect(() => {
     const loadData = async () => {
       const smtpResponse = await SMTPAPI.getAllSMTPs({
@@ -150,10 +152,10 @@ const Content = ({ placeholder }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       details.uploaded_file_key = JSON.parse(sessionStorage.getItem("key"));
-  
+
       const formData = new FormData();
       formData.append("campaign_name", details.campaign_name);
       formData.append("display_name", details.display_name);
@@ -170,22 +172,21 @@ const Content = ({ placeholder }) => {
       } else {
         console.error("smtp_server_ids is not an array");
       }
-  
+
       // Make API call inside try block
       const res = await API.createCampainion(formData);
-  
+
       // Check for API response errors
       if (res?.response?.data?.campaign_name) {
         toast.error(res.response.data.campaign_name[0]);
         return; // Stop execution if there's an error
       }
-     console.log("respinse_from_email",res);
+      console.log("respinse_from_email", res);
       toast.success(res?.data?.success || "Campaign created successfully!");
       navigate("/preview", { state: { file: csvFile } });
-  
     } catch (error) {
       console.error("Error submitting form:", error);
-  
+
       // Handle specific error cases
       if (error?.response?.data) {
         // If API returns validation errors
@@ -197,7 +198,7 @@ const Content = ({ placeholder }) => {
       }
     }
   };
-  
+
   // const handleChange = (selectedOption, type) => {
   //   const updatedSelectedOptions = { ...selectedOptions };
   //   if (type === "smtp") {
@@ -246,10 +247,9 @@ const Content = ({ placeholder }) => {
     const fetchContacts = async () => {
       try {
         const response = await API.getContactList();
-      
-        setContacts(response.data.user_contact_files);  
- 
-         
+
+        setContacts(response.data.user_contact_files);
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching contacts:", error);
@@ -259,8 +259,7 @@ const Content = ({ placeholder }) => {
     };
 
     fetchContacts();
-  }, []);  
-  console.log("Contacts", contacts);
+  }, []);
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
       <div className="mb-2">
@@ -269,8 +268,6 @@ const Content = ({ placeholder }) => {
         </div>
       </div>
       <div className="flex flex-col md:flex-row">
-        {/* Left Section: Form */}
-
         {loading ? (
           <div className="loders">
             <div id="loader"></div>
@@ -302,22 +299,23 @@ const Content = ({ placeholder }) => {
               <div className="mt-4 w-full">
                 <label htmlFor="EmailUseTLS">Recipient</label>
                 <Select
-    options={contacts.map(liname => ({
-      value: liname.file_id,
-      label: liname.file_name
-    }))}
-    isMulti
-    value={selectedRecipients} // Use selectedRecipients instead of mapping contacts
-    onChange={(selectedOption) => handleChange(selectedOption, "Recipient")}
-    className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
+                  options={contacts.map((liname) => ({
+                    value: liname.file_id,
+                    label: liname.file_name,
+                  }))}
+                  isMulti
+                  value={selectedRecipients} // Use selectedRecipients instead of mapping contacts
+                  onChange={(selectedOption) =>
+                    handleChange(selectedOption, "Recipient")
+                  }
+                  className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
       focus:border-blue-500 transition-colors duration-300 appearance-none 
       focus:outline-none focus:ring-0"
-    id="Recipient"
-    name="Recipient"
-    styles={customStyles}
-    placeholder="Recipient"
-  />
-
+                  id="Recipient"
+                  name="Recipient"
+                  styles={customStyles}
+                  placeholder="Recipient"
+                />
               </div>
 
               <div className="flex mt-4">
@@ -329,7 +327,7 @@ const Content = ({ placeholder }) => {
                     name="display_name"
                     value={details.display_name}
                     onChange={(e) =>
-                      setDetails({ ...details,  display_name: e.target.value })
+                      setDetails({ ...details, display_name: e.target.value })
                     }
                     className="block w-full mt-1 border-[1px] border-[#93C3FD] 
                 rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
@@ -345,7 +343,7 @@ const Content = ({ placeholder }) => {
                     name="campaign_name"
                     value={details?.campaign_name}
                     onChange={(e) =>
-                      setDetails({ ...details,    campaign_name: e.target.value })
+                      setDetails({ ...details, campaign_name: e.target.value })
                     }
                     className="block w-full mt-1 border-[1px] border-[#93C3FD] 
                 rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
@@ -362,7 +360,6 @@ const Content = ({ placeholder }) => {
                   name="secondsInput"
                   min="1"
                   max="59"
-                  
                   step="1"
                   onInput={(e) => {
                     let value = e.target.value;
@@ -371,7 +368,10 @@ const Content = ({ placeholder }) => {
                       value = 60;
                     }
                     // Ensure it's a number and within the allowed range
-                    setDetails({ ...details, delay_seconds: Math.max(1, Math.min(60, Number(value))) });
+                    setDetails({
+                      ...details,
+                      delay_seconds: Math.max(1, Math.min(60, Number(value))),
+                    });
                   }}
                   value={details.delay_seconds}
                   // onChange={(e) =>
@@ -399,21 +399,21 @@ const Content = ({ placeholder }) => {
                 />
               </div>
               <div className="" onClick={saveEnteredDetails}>
-        <Editing
-          setSelectedTemplate={setSelectedTemplate}
-          setModalOpen={setModalOpen}
-        />
-      </div>
+                <Editing
+                  setSelectedTemplate={setSelectedTemplate}
+                  setModalOpen={setModalOpen}
+                />
+              </div>
 
-              <button type="submit" className="text-4xl mt-3">
-               Submit
-
+              <button
+                type="submit"
+                className="bg-[#3B82F6] text-white border-[#3B82F6] rounded-md p-2 text-lg font-semibold mt-3 w-[30%]"
+              >
+                Submit
               </button>
             </form>
           </div>
         )}
-
-        {/* Right Section: Mobile Preview */}
         <div className="w-full md:w-1/2 p-2">
           <div
             className="fromRight__section___YhH13 max-h-[500px] overflow-auto"
@@ -474,7 +474,7 @@ const Content = ({ placeholder }) => {
                       <div className="iphoneBody__row___l1wvy">
                         <div className="iphoneRight__block___TZEte">
                           <div className="iphoneRight__header___K9nS0">
-                            <span
+                            <p
                               className="dynamic_name_container___y3O2E sib-typo_text--bold sib-typo_text_size--lg"
                               style={{
                                 color:
@@ -486,7 +486,7 @@ const Content = ({ placeholder }) => {
                                     .map((opt) => opt.label)
                                     .join(", ")
                                 : "Sender"}
-                            </span>
+                            </p>
                           </div>
 
                           <span
@@ -495,24 +495,32 @@ const Content = ({ placeholder }) => {
                               color: "var(--sib-color_content-primary,#1f2d3d)",
                             }}
                           >
-                            {/* { contacts ?  contacts : "Recipient"} */}
+                            {/* {selectedRecipients} */}
                           </span>
 
-                          <span
+                          <p
                             className="dynamic_subject_container___SyG68 sib-typo_text--bold sib-typo_text_size--md"
                             style={{
                               color: "var(--sib-color_content-primary,#1f2d3d)",
                             }}
                           >
-                            {details.displayName || "Message subject..."}
-                          </span>
+                            {details.display_name || "Display Name"}
+                          </p>
                           <p
-                            className="dynamic_previewtext_para___U9WMr sib-typo_text--regular sib-typo_text_size--md"
+                            className="dynamic_subject_container___SyG68 sib-typo_text--bold sib-typo_text_size--md"
                             style={{
                               color: "var(--sib-color_content-primary,#1f2d3d)",
                             }}
                           >
-                            {details.subject || "Your preview text"}
+                            {details?.campaign_name || "Campaign Name"}
+                          </p>
+                          <p
+                            className="dynamic_subject_container___SyG68 sib-typo_text--bold sib-typo_text_size--md"
+                            style={{
+                              color: "var(--sib-color_content-primary,#1f2d3d)",
+                            }}
+                          >
+                            {details.subject || "Subject"}
                           </p>
                         </div>
                       </div>
@@ -529,14 +537,6 @@ const Content = ({ placeholder }) => {
           </div>
         </div>
       </div>
-
-   
-
-      {/* <div className="mt-5 text-right pb-3">
-        <button type="submit" className="preview-button">
-          Submit
-        </button>
-      </div> */}
 
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
