@@ -163,7 +163,7 @@ const Content = ({ placeholder }) => {
       formData.append("delay_seconds", details.delay_seconds);
       formData.append("uploaded_file_name", details.uploaded_file_key);
       formData.append("contact_list", details.contact_list);
-      formData.append("name",details.uploaded_file_key)
+      formData.append("name",details.campaign_name)
       // Append each SMTP ID separately
       if (Array.isArray(details.smtp_server_ids)) {
         details.smtp_server_ids.forEach((id) => {
@@ -183,7 +183,7 @@ const Content = ({ placeholder }) => {
       }
       console.log("respinse_from_email", res);
       toast.success(res?.data?.success || "Campaign created successfully!");
-      navigate("/preview", { state: { file: csvFile } });
+      navigate("/preview");
     } catch (error) {
       console.error("Error submitting form:", error);
 

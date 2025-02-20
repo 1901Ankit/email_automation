@@ -152,6 +152,7 @@ const Contact = () => {
     const fetchContacts = async () => {
       try {
         const response = await API.getContactList();
+        console.log("response_from_contact",response.data.user_contact_files);
         setContacts(response.data.user_contact_files);
         setLoading(false);
       } catch (error) {
