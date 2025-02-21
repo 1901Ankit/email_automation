@@ -59,13 +59,18 @@ const Template = ({ placeholder }) => {
           <h1 className="text-3xl font-bold uppercase">Templates</h1>
 
           <select
-            className="px-4 py-2 rounded-md cursor-pointer text-start bg-white border-[1px] border-blue-500 text-gray-800 
-          focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0 appearance-none"
+            className="px-4 py-2 rounded-lg cursor-pointer bg-white border border-blue-500 text-gray-800 
+  focus:border-blue-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 
+  shadow-md hover:shadow-lg appearance-none"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
             {categories.map((category, index) => (
-              <option key={index} value={category}>
+              <option
+                key={index}
+                value={category}
+                className="bg-white text-gray-900"
+              >
                 {category}
               </option>
             ))}
@@ -127,6 +132,9 @@ const Template = ({ placeholder }) => {
                   </div>
                 ))}
               </div>
+
+
+              
             </div>
           ))}
         </div>
