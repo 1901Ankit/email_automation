@@ -304,7 +304,7 @@ const Content = ({ placeholder }) => {
                     label: liname.file_name,
                   }))}
                   isMulti
-                  value={selectedRecipients} // Use selectedRecipients instead of mapping contacts
+                  value={selectedRecipients} 
                   onChange={(selectedOption) =>
                     handleChange(selectedOption, "Recipient")
                   }

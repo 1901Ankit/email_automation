@@ -4,12 +4,30 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import * as API from "../../api/user";
 import { toast, Toaster } from 'react-hot-toast';
 import Select from "react-select";
+import { FiPlus } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import { Dialog } from "@headlessui/react";
+import { toast } from "react-toastify";
 import { FiPlus } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
 import * as SMTPAPI from "../../api/smtp";
 import Editing from "../../component/templatedit";
 const MangeCampaigns = () => {
+  const [campaigns, setCampaigns] = useState([]);
+  const [contactLists, setContactLists] = useState({});
+  const [isEditModel, setIsEditModel] = useState(false);
+  const navigate = useNavigate();
+  const [details, setDetails] = useState({
+    display_name: "John Doe",
+    campaign_name: "Sample Campaign",
+    delay_seconds: 5,
+    subject: "Welcome Email",
+  });
+
+  const [options, setOptions] = useState({
+    smtps: [],
+  });
   const [campaigns, setCampaigns] = useState([])
   const [contactLists, setContactLists] = useState({});
   const [isEditModel, setIsEditModel] = useState(false);
@@ -389,8 +407,6 @@ const MangeCampaigns = () => {
       return;
     }
 
-    console.log("id_For_Delete", id);
-
     try {
       const res = await API.deleteCampigns(id);
 
@@ -483,10 +499,33 @@ const MangeCampaigns = () => {
               className="text-gray-400 hover:text-gray-500 transition-colors"
               aria-label="Close dialog"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-6 w-6"
+              >
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
+            </button>
+          </div> */}
+
+          <div className="flex justify-around items-center mt-5">
+            <h3 className="font-bold text-xl text-center flex-1">
+              Edit Campaign Details
+            </h3>
+            <button
+              onClick={() => setIsEditModel(false)}
+              className="text-gray-500 hover:text-red-600 transition p-2"
+            >
+              <FaTimes size={20} />
             </button>
           </div>
 
@@ -694,7 +733,7 @@ const MangeCampaigns = () => {
         </Dialog.Panel>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
-export default MangeCampaigns
+export default MangeCampaigns;
