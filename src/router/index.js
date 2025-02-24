@@ -104,7 +104,7 @@ const Router = () => {
             element={token ? <Content /> : <Navigate to="/" replace />}
           />
           <Route
-            path="/preview"
+            path="/preview/:id"
             element={token ? <Preview /> : <Navigate to="/" replace />}
           />
           <Route
