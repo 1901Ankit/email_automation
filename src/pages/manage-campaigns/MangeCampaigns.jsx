@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+ 
 import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
+ 
 
 import * as API from "../../api/user";
 import { toast, Toaster } from 'react-hot-toast';
@@ -8,6 +10,11 @@ import { FiPlus } from "react-icons/fi";
  
 import { useNavigate } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
+ 
+// import { toast } from "react-toastify";
+// import { FiPlus } from 'react-icons/fi';
+// import { useNavigate } from 'react-router-dom';
+// import { Dialog } from '@headlessui/react'
  
 import * as SMTPAPI from "../../api/smtp";
 import Editing from "../../component/templatedit";

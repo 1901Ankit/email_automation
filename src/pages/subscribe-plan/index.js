@@ -1,17 +1,61 @@
 import React, { useState } from "react";
+import { initiatePayment } from "../../api/payment";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Subscribe = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleDummyPhonePePayment = () => {
-    const phonePeURL =
-      "https://mercury-uat.phonepe.com/transact?merchantId=MUID123&transactionId=TXN123&amount=10000&callbackUrl=https://yourwebsite.com/payment-success";
-    window.open(phonePeURL, "_blank");
+  const handlePayment = async (plan) => {
+    try {
+      setLoading(true);
+      setSelectedPlan(plan);
+
+      // Generate a unique transaction ID
+      const transactionId = `TXN_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+
+      // Prepare payment data
+      const paymentData = {
+        transactionId,
+        name: "John Doe",
+        amount: getPlanAmount(plan.name),
+        mobile: "9768686859",
+        plan_name: plan.name,
+        address_line1: "Line1 street MG road, Building, sight, park",
+        address_line2: "new park, old park, medium railway station",
+        city: "3rd class city",
+        state: "tier 3 state",
+        zip_code: "123456",
+        country: "India"
+      };
+
+      const response = await initiatePayment(paymentData);
+
+      if (response.data && response.data.redirect_url) {
+        // Open PhonePe payment page in new window
+        window.location.href = response.data.redirect_url;
+      } else {
+        toast.error("Failed to initiate payment");
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      toast.error(error.response?.data?.error || "Payment initiation failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handlePayment = (plan) => {
-    setSelectedPlan(plan);
-    handleDummyPhonePePayment();
+  // Helper function to get plan amount in numbers
+  const getPlanAmount = (planName) => {
+    const amounts = {
+      "Basic": 149,
+      "Standard": 300,
+      "Premium": 499,
+      "Elite": 999
+    };
+    return amounts[planName] || 0;
   };
 
   return (
@@ -81,9 +125,11 @@ const Subscribe = () => {
                 <button
                   type="button"
                   onClick={() => handlePayment(plan)}
-                  className="font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer inline-flex items-center bg-[#3B82F6]"
+                  disabled={loading}
+                  className={`font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer inline-flex items-center ${loading ? 'bg-gray-400' : 'bg-[#3B82F6]'
+                    }`}
                 >
-                  BUY
+                  {loading ? "Processing..." : "BUY"}
                 </button>
               </div>
             </div>
