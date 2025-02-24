@@ -251,7 +251,11 @@ const handleSaveTemplate=()=>{
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
             {categories.map((category, index) => (
-              <option key={index} value={category}>
+              <option
+                key={index}
+                value={category}
+                className="bg-white text-gray-900"
+              >
                 {category}
               </option>
             ))}
@@ -318,6 +322,9 @@ const handleSaveTemplate=()=>{
                   </div>
                 ))}
               </div>
+
+
+              
             </div>
           ))}
         </div>
