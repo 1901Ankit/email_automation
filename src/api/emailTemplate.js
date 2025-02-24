@@ -12,4 +12,7 @@ export const editHtmlTemplate = (htmlFile, id) =>
   API.put(`/uploaded-files/update/${id}/`, htmlFile);
 // export const deleteHtmlTemplates=(id) =>API.delete(`/smtp-servers/delete/${id}/`);
 
+export const getUserSavedTemplates = ( ) =>
+  API.get("/uploaded-files/");
+
 export default API;
