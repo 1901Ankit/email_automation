@@ -135,8 +135,8 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
         Logged-in Devices
       </h1>
 
-      <div className="flex flex-nowrap overflow-x-auto pricing mt-10">
-        {devices?.map((item, index) => {
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pricing">
+      {devices?.map((item, index) => {
           const { device_name, system_info } = item;
 
           const systemInfo = system_info?.split(","); // Split the system_info string by commas

@@ -45,16 +45,16 @@ const Sidebar = () => {
     {
       name: "Template",
       path: "/template",
-      icon: <LuLayoutTemplate  style={{ fontSize: "18px" }} />,
-    },
-    {
-      name: "Campaigns",
-      path: "/detail",
-      icon: <BiMessageAltDetail style={{ fontSize: "18px" }} />,
+      icon: <LuLayoutTemplate style={{ fontSize: "18px" }} />,
     },
     {
       name: "Manage  Campaigns",
       path: "/manage-campaigns",
+      icon: <BiMessageAltDetail style={{ fontSize: "18px" }} />,
+    },
+    {
+      name: "Campaigns",
+      path: "/detail",
       icon: <BiMessageAltDetail style={{ fontSize: "18px" }} />,
     },
 
