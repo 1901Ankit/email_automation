@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaTimes } from "react-icons/fa";
 
 import * as API from "../../api/user";
 import { toast, Toaster } from 'react-hot-toast';
@@ -7,27 +7,13 @@ import Select from "react-select";
 import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
-import { toast } from "react-toastify";
-import { FiPlus } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
-import { Dialog } from '@headlessui/react'
+// import { toast } from "react-toastify";
+// import { FiPlus } from 'react-icons/fi';
+// import { useNavigate } from 'react-router-dom';
+// import { Dialog } from '@headlessui/react'
 import * as SMTPAPI from "../../api/smtp";
 import Editing from "../../component/templatedit";
 const MangeCampaigns = () => {
-  const [campaigns, setCampaigns] = useState([]);
-  const [contactLists, setContactLists] = useState({});
-  const [isEditModel, setIsEditModel] = useState(false);
-  const navigate = useNavigate();
-  const [details, setDetails] = useState({
-    display_name: "John Doe",
-    campaign_name: "Sample Campaign",
-    delay_seconds: 5,
-    subject: "Welcome Email",
-  });
-
-  const [options, setOptions] = useState({
-    smtps: [],
-  });
   const [campaigns, setCampaigns] = useState([])
   const [contactLists, setContactLists] = useState({});
   const [isEditModel, setIsEditModel] = useState(false);
