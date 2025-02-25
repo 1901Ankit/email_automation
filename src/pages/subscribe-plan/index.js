@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { initiatePayment } from "../../api/payment";
+import { initiatePayment, verifyPayment, upgradePlan } from "../../api/payment";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -58,6 +58,22 @@ const Subscribe = () => {
     return amounts[planName] || 0;
   };
 
+  const handleUpgrade = async (plan) => {
+    try {
+      const res = await upgradePlan({plan_name:plan.name})
+      console.log(res);
+      if (res.data) {
+        toast.success("Plan upgraded successfully");
+      }
+      else {
+        toast.error("Failed to upgrade plan");
+      }
+    }
+    catch (error) {
+      console.error("Error upgrading plan:", error);
+      toast.error(error.response?.data?.error || "Failed to upgrade plan");
+    }
+  }
   return (
     <div className="container-fluid mx-auto pt-28 pb-10 px-4 max-h-[100vh] overflow-auto">
       <div className="p-2">
@@ -132,6 +148,15 @@ const Subscribe = () => {
                   {loading ? "Processing..." : "BUY"}
                 </button>
               </div>
+              <button
+                type="button"
+                onClick={() => handleUpgrade(plan)}
+                disabled={loading}
+                className={`font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[70px] mx-auto w-fit cursor-pointer text-center mt-1 ${loading ? 'bg-gray-400' : 'bg-green-500'
+                  }`}
+              >
+                {loading ? "Processing..." : "Upgrade"}
+              </button>
             </div>
           </div>
         ))}
