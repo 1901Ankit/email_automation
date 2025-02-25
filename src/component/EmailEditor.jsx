@@ -23,6 +23,7 @@ const EmailEditor = ({
 
     useEffect(() => {
         const getHTMLtemplate = async () => {
+          
             if (!selectedTemplatedDetails) return;
             try {
                 const response = await fetch(selectedTemplatedDetails.file_url);

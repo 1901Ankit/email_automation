@@ -4,23 +4,25 @@ import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import * as API from "../../api/user";
 import Select from "react-select";
 import { FiPlus } from "react-icons/fi";
+ 
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Dialog } from "@headlessui/react";
+ 
+// import { toast } from "react-toastify";
+// import { FiPlus } from 'react-icons/fi';
+// import { useNavigate } from 'react-router-dom';
+// import { Dialog } from '@headlessui/react'
+ 
 import * as SMTPAPI from "../../api/smtp";
 import Editing from "../../component/templatedit";
+import { IoSendOutline } from "react-icons/io5";
 const MangeCampaigns = () => {
-  const [campaigns, setCampaigns] = useState([]);
+ 
+  const [campaigns, setCampaigns] = useState([])
   const [contactLists, setContactLists] = useState({});
   const [isEditModel, setIsEditModel] = useState(false);
   const navigate = useNavigate();
-  const [details, setDetails] = useState({
-    display_name: "John Doe",
-    campaign_name: "Sample Campaign",
-    delay_seconds: 5,
-    subject: "Welcome Email",
-  });
-
   const [currentCampaignId, setCurrentCampaignId] = useState(null);
   const [selectedSmtps, setSelectedSmtps] = useState([]);
   const [contactOptions, setContactOptions] = useState([]);
@@ -440,6 +442,25 @@ const MangeCampaigns = () => {
     }
   };
 
+  const onSend = async (id) => {
+    try {
+      const formdata = new FormData();
+      formdata.append("campaign_id", id);
+  
+      const res = await SMTPAPI.sendEmail(formdata);
+  
+      if (res?.status === 200) {
+        toast.success("Email sent successfully!");
+        console.log("RES_FROM_SEND", res);
+      } else {
+        toast.error(res?.data?.message || "Failed to send email. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast.error(error?.response?.data?.message || "An unexpected error occurred.");
+    }
+  };
+
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
       <div className="flex items-center justify-between">
@@ -510,7 +531,10 @@ const MangeCampaigns = () => {
                     >
                       <FaTrash size={18} />
                     </button>
-                  </td>
+                    <button className="text-green-600 hover:text-red-800 transition" onClick={() => onSend(comp?.id)}>
+                  <IoSendOutline size={18}/>
+                  </button>
+                </td>
                 </tr>
               ))}
             </tbody>

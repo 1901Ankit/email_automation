@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
+
 import { FaEdit } from "react-icons/fa";
 import {
   EditorState,
@@ -10,12 +11,13 @@ import { Editor } from "react-draft-wysiwyg";
 import JoditEditor from "jodit-react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import * as sendEmailAPI from "../../api/sendEmail";
+import * as SMTPAPI from "../../api/smtp";
 import html2canvas from "html2canvas";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Rightside from "../../component/rightsidebar";
 import * as TokenAPI from "../../api/user_profile";
-
+import * as API from "../../api/user";
 const Preview = ({ placeholder }) => {
   const editor = useRef(null);
   const location = useLocation();
@@ -37,7 +39,10 @@ const Preview = ({ placeholder }) => {
   const [details, setDetails] = useState({});
   const [options, setOptions] = useState({ smtps: [] });
   const [file, setFile] = useState(null);
-
+  const [showData, setShowData]= useState({});
+  const [showContactDetails,setShowContactDetails]=useState({});
+const params= useParams();
+console.log("Params_From_react", params);
   const config = useMemo(
     () => ({
       readonly: false,
@@ -118,33 +123,53 @@ const Preview = ({ placeholder }) => {
   }, []);
 
   useEffect(() => {
-    console.log("location.state", location.state);
-    if (location.state && location.state.file) {
-      setFile(location.state.file);
-    } else {
+    // console.log("location.state", location.state);
+    // if (location.state && location.state.file) {
+    //   setFile(location.state.file);
+    // } else {
      
-      setFile(null);
-      navigate("/detail", { replace: true });
-    }
-    setDetails(JSON.parse(sessionStorage.getItem("details")));
-    setOptions(JSON.parse(sessionStorage.getItem("options")));
-    const fileData = JSON.parse(sessionStorage.getItem("csv"));
+    //   setFile(null);
+    //   navigate("/detail", { replace: true });
+    // }
+    // setDetails(JSON.parse(sessionStorage.getItem("details")));
+    // setOptions(JSON.parse(sessionStorage.getItem("options")));
+    // const fileData = JSON.parse(sessionStorage.getItem("csv"));
 
-    const selectedHTMLFile = async () => {
-      try {
-        const response = await fetch(
-          `https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(
-            sessionStorage.getItem("key")
-          )}`
-        );
-        const html = await response.text();
-        setHTMLtemplate(html);
-      } catch (error) {}
-    };
-    selectedHTMLFile();
-    const formData = new FormData();
-    formData.append("file", fileData);
+    // const selectedHTMLFile = async () => {
+    //   try {
+    //     const response = await fetch(
+    //       `https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(
+    //         sessionStorage.getItem("key")
+    //       )}`
+    //     );
+    //     const html = await response.text();
+    //     setHTMLtemplate(html);
+    //   } catch (error) {}
+    // };
+    // selectedHTMLFile();
+    // const formData = new FormData();
+    // formData.append("file", fileData);
+  const getContactDetails= async(id)=>{
+     try {
+      const res= await API.getSingleContactList(id);
+      setShowContactDetails(res.data);
+     } catch (error) {
+       console.log("Error",error);
+     }
+  }
 
+  const getCampaignDataFromParams= async ()=>{
+       try {
+        const res= await API.getSingleCampigns(params?.id);
+        getContactDetails(res.data.contact_list_id);
+        setShowData(res.data);
+        console.log("Getting data from Response", res);
+       } catch (error) {
+        console.log("Errr", error);
+       }
+  }
+  getCampaignDataFromParams();
+ 
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1400);
@@ -167,29 +192,52 @@ const Preview = ({ placeholder }) => {
     setContent(blocks);
     closeModal();
   };
-  const handleSendEmail = async () => {
+  // const handleSendEmail = async () => {
+  //   setIsLoading(true);
+  //   const formData = new FormData();
+
+  //   options?.smtps?.forEach((element) => {
+  //     formData.append("smtp_server_ids", Number(element.value));
+  //   });
+  //   formData.append("delay_seconds", details.delay_seconds);
+  //   formData.append("subject", details.subject);
+  //   formData.append(
+  //     "uploaded_file_key",
+  //     JSON.parse(sessionStorage.getItem("key"))
+  //   );
+  //   formData.append("display_name", details.displayName);
+  //   formData.append("email_list", file);
+
+  //   try {
+  //     const response = await sendEmailAPI.sendEmail(formData);
+  //     console.log("response", response);
+  //     toast.success("Email sent successfully");
+  //   } catch (error) {
+  //     toast.error(
+  //       error.response.data.message || "Upgrade now for enhanced features"
+  //     );
+  //   }
+  //   setIsLoading(false);
+  // };
+  
+  const   onhandleSendEmail = async () => {
     setIsLoading(true);
-    const formData = new FormData();
-
-    options?.smtps?.forEach((element) => {
-      formData.append("smtp_server_ids", Number(element.value));
-    });
-    formData.append("delay_seconds", details.delay_seconds);
-    formData.append("subject", details.subject);
-    formData.append(
-      "uploaded_file_key",
-      JSON.parse(sessionStorage.getItem("key"))
-    );
-    formData.append("display_name", details.displayName);
-    formData.append("email_list", file);
-
     try {
-      const response = await sendEmailAPI.sendEmail(formData);
-      toast.success("Email sent successfully");
+      const formdata = new FormData();
+      formdata.append("campaign_id", showData?.id);
+      
+      const res = await SMTPAPI.sendEmail(formdata);
+     console.log("res_after_sendibg",res);
+      if (res?.status === 200) {
+        toast.success("Email sent successfully!");
+        console.log("RES_FROM_SEND", res);
+       
+      } else {
+        toast.error(res?.data?.message || "Failed to send email. Please try again.");
+      }
     } catch (error) {
-      toast.error(
-        error.response.data.message || "Upgrade now for enhanced features"
-      );
+      console.error("Error sending email:", error);
+      toast.error(error.response.data.error || "An unexpected error occurred.");
     }
     setIsLoading(false);
   };
@@ -220,7 +268,7 @@ const Preview = ({ placeholder }) => {
                     type="text"
                     id=""
                     name="fromEmail"
-                    value={details.displayName}
+                    value={showData.display_name}
                     className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
                     readOnly
                   />
@@ -231,7 +279,7 @@ const Preview = ({ placeholder }) => {
                     type="text"
                     id="subject"
                     name="subject"
-                    value={details.subject}
+                    value={showData.subject}
                     className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
                     readOnly
                   />
@@ -245,9 +293,10 @@ const Preview = ({ placeholder }) => {
                     type="text"
                     id="SMTPS"
                     name="SMTPS"
-                    value={options?.smtps
-                      ?.map((sender) => sender.label)
-                      .join(", ")}
+                    value={showContactDetails.file_name}
+                    // value={options?.smtps
+                    //   ?.map((sender) => sender.label)
+                    //   .join(", ")}
                     className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
                     readOnly
                   />
@@ -267,7 +316,7 @@ const Preview = ({ placeholder }) => {
               <div className="w-full mt-4">
                 <label htmlFor="content">UPLOADED FILE </label>
                 <input
-                  value={file.name}
+                  value={showData.name}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
                   readOnly
                 />
@@ -282,17 +331,25 @@ const Preview = ({ placeholder }) => {
                         <label htmlFor="content">CONTENT</label>
 
                         <div className="absolute h-full w-full overflow-y-auto">
-                          <div
-                            dangerouslySetInnerHTML={{ __html: HTMLtemplate }}
-                            className="w-full h-full"
-                          />
+                              
+                    <iframe 
+        src={showData?.file_url}
+        title="Email Template"
+        width="60%" 
+        height="400px"
+        style={{
+          border: '1px solid #ddd',
+          borderRadius: '4px',
+          backgroundColor: '#fff'
+        }}
+      />
                         </div>
                       </div>
                     </div>
                     <div className="button-container mt-3 pb-6">
                       <button
                         disabled={isLoading}
-                        onClick={handleSendEmail}
+                        onClick={onhandleSendEmail}
                         type="button"
                         className="preview-button"
                       >

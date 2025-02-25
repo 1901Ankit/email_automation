@@ -183,16 +183,17 @@ const Content = ({ placeholder }) => {
       }
       console.log("respinse_from_email", res);
       toast.success(res?.data?.success || "Campaign created successfully!");
-      navigate("/preview");
+      navigate(`/preview/${res.data.campaign_id}`);
     } catch (error) {
       console.error("Error submitting form:", error);
-
+      toast.error(error.response.data.error);
       // Handle specific error cases
       if (error?.response?.data) {
         // If API returns validation errors
         Object.values(error.response.data).forEach((errMsg) => {
           toast.error(errMsg[0]); // Show all errors in toast
         });
+
       } else {
         toast.error("Something went wrong! Please try again.");
       }
