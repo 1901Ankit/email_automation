@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { FaEdit, FaTrash, FaTimes } from "react-icons/fa";
+ 
+import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
+ 
 
 import * as API from "../../api/user";
 import { toast, Toaster } from 'react-hot-toast';
 import Select from "react-select";
 import { FiPlus } from "react-icons/fi";
+ 
 import { useNavigate } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
+ 
 // import { toast } from "react-toastify";
 // import { FiPlus } from 'react-icons/fi';
 // import { useNavigate } from 'react-router-dom';
 // import { Dialog } from '@headlessui/react'
+ 
 import * as SMTPAPI from "../../api/smtp";
 import Editing from "../../component/templatedit";
+import { IoSendOutline } from "react-icons/io5";
 const MangeCampaigns = () => {
+ 
   const [campaigns, setCampaigns] = useState([])
   const [contactLists, setContactLists] = useState({});
   const [isEditModel, setIsEditModel] = useState(false);
@@ -419,6 +426,25 @@ const MangeCampaigns = () => {
     }
   };
 
+  const onSend = async (id) => {
+    try {
+      const formdata = new FormData();
+      formdata.append("campaign_id", id);
+  
+      const res = await SMTPAPI.sendEmail(formdata);
+  
+      if (res?.status === 200) {
+        toast.success("Email sent successfully!");
+        console.log("RES_FROM_SEND", res);
+      } else {
+        toast.error(res?.data?.message || "Failed to send email. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast.error(error?.response?.data?.message || "An unexpected error occurred.");
+    }
+  };
+
   return (
     <div className='container-fluid pt-24 max-h-[100vh] overflow-auto'>
       <Toaster />
@@ -463,6 +489,9 @@ const MangeCampaigns = () => {
                   <button className="text-red-600 hover:text-red-800 transition" onClick={() => onDelete(comp?.id)}>
                     <FaTrash size={18} />
                   </button>
+                  <button className="text-green-600 hover:text-red-800 transition" onClick={() => onSend(comp?.id)}>
+                  <IoSendOutline size={18}/>
+                  </button>
                 </td>
               </tr>
             ))}
@@ -476,32 +505,7 @@ const MangeCampaigns = () => {
         className="fixed inset-0 flex items-center justify-center bg-black/70 z-50 p-4 overflow-y-auto"
       >
         <Dialog.Panel className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-[95%] max-w-xl transform transition-all duration-300 ease-in-out">
-          <div className="px-6 py-5 border-b dark:border-gray-700 flex items-center justify-between">
-            <Dialog.Title className="text-xl font-bold text-gray-900 dark:text-white">
-              {currentCampaignId ? 'Edit Campaign' : 'Create Campaign'}
-            </Dialog.Title>
-            <button
-              onClick={() => setIsEditModel(false)}
-              className="text-gray-400 hover:text-gray-500 transition-colors"
-              aria-label="Close dialog"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-6 w-6"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div> */}
+           
 
           <div className="flex justify-around items-center mt-5">
             <h3 className="font-bold text-xl text-center flex-1">
