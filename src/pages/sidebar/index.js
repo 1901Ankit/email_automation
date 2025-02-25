@@ -45,7 +45,7 @@ const Sidebar = () => {
     {
       name: "Template",
       path: "/template",
-      icon: <LuLayoutTemplate  style={{ fontSize: "18px" }} />,
+      icon: <LuLayoutTemplate style={{ fontSize: "18px" }} />,
     },
     {
       name: "Campaigns",
@@ -106,6 +106,7 @@ const Sidebar = () => {
             },
           }
         );
+        console.log(res)
 
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
@@ -115,6 +116,8 @@ const Sidebar = () => {
         setIsAuthenticated(false);
         navigate("/");
       } catch (error) {
+        console.log(error);
+        
         toast.error(error.response.data.message);
       }
     } else {
@@ -145,9 +148,8 @@ const Sidebar = () => {
 
       <div
         className={`bg-gray-100 h-full shadow-lg fixed md:static transition-all duration-300 sidebar z-10
-      ${
-        isMobileMenuOpen ? "w-60" : "w-0 md:w-52"
-      } overflow-hidden md:overflow-visible`}
+      ${isMobileMenuOpen ? "w-60" : "w-0 md:w-52"
+          } overflow-hidden md:overflow-visible`}
       >
         <ul className="space-y-2 sidebar-menu">
           {tabs.map((tab, index) => (
@@ -155,11 +157,10 @@ const Sidebar = () => {
               key={index}
               onClick={() => handleTabChange(index)}
               className={`flex items-center gap-4 cursor-pointer p-2 rounded-lg transition-all font-semibold text-base
-              ${
-                activeTabIndex === index
+              ${activeTabIndex === index
                   ? "bg-[#3B82F6] text-white"
                   : "hover:bg-gray-200"
-              }`}
+                }`}
             >
               <span className="text-xl">{tab.icon}</span>
               <span className="">{tab.name}</span>{" "}
