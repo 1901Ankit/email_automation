@@ -25,7 +25,7 @@ const User_profile = () => {
           },
           user: localStorage.getItem("id"),
         });
-
+         console.log("Uset", response);
         if (response.data) {
           setUserData(response.data);
         } else {

@@ -103,11 +103,12 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
           },
         }
       );
-
+console.log("Handle_Dd",res);
       toast.success("Device removed successfully");
       if (id == localStorage.getItem("device_id")) {
         localStorage.clear();
         sessionStorage.clear();
+       
         navigate("/");
         return;
       }

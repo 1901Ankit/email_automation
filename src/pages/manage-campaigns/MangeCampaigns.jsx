@@ -427,22 +427,26 @@ const MangeCampaigns = () => {
   };
 
   const onSend = async (id) => {
-    try {
-      const formdata = new FormData();
-      formdata.append("campaign_id", id);
+        
+    navigate(`/preview/${id}`)
+     
+
+    // try {
+    //   const formdata = new FormData();
+    //   formdata.append("campaign_id", id);
   
-      const res = await SMTPAPI.sendEmail(formdata);
+    //   const res = await SMTPAPI.sendEmail(formdata);
   
-      if (res?.status === 200) {
-        toast.success("Email sent successfully!");
-        console.log("RES_FROM_SEND", res);
-      } else {
-        toast.error(res?.data?.message || "Failed to send email. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error sending email:", error);
-      toast.error(error?.response?.data?.message || "An unexpected error occurred.");
-    }
+    //   if (res?.status === 200) {
+    //     toast.success("Email sent successfully!");
+    //     console.log("RES_FROM_SEND", res);
+    //   } else {
+    //     toast.error(res?.data?.message || "Failed to send email. Please try again.");
+    //   }
+    // } catch (error) {
+    //   console.error("Error sending email:", error);
+    //   toast.error(error?.response?.data?.message || "An unexpected error occurred.");
+    // }
   };
 
   return (
