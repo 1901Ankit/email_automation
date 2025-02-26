@@ -71,9 +71,10 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
       formData.append("otp", enteredOtp);
 
       const res = await UserAPI.logoutOTP(formData);
-
+       
       if (res.data.success) {
         toast.success("OTP verified! Logging out...");
+        localStorage.setItem("access_token",res.data.access_token)
         await handleLogoutDevice(selectedDeviceId);
       } else {
         toast.error("Invalid OTP, please try again!");
@@ -95,11 +96,12 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
           },
         }
       );
-
+console.log("Handle_Dd",res);
       toast.success("Device removed successfully");
       if (id == localStorage.getItem("device_id")) {
         localStorage.clear();
         sessionStorage.clear();
+       
         navigate("/");
         return;
       }
