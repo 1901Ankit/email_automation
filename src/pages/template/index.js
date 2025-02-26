@@ -206,9 +206,9 @@ const Template = ({ placeholder }) => {
               {/* Dropdown - Only Show When "All Templates" is Selected */}
               {selectedteptab == "All Templates" && (
                 <select
-                  className="px-4 py-2 w-auto text-center rounded-md cursor-pointer bg-white border-[1px] 
-        border-blue-500 text-gray-800 focus:border-blue-500 transition-colors duration-300 
-        focus:outline-none focus:ring-0 appearance-none"
+                  className="px-3 w-auto py-2 text-center rounded-md cursor-pointer bg-white border-[1px] 
+         border-blue-500 text-blue-500 focus:border-blue-500 transition-colors duration-300 justify-center
+                focus:outline-none focus:ring-0 appearance-none items-center "
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
                 >
@@ -216,7 +216,7 @@ const Template = ({ placeholder }) => {
                     <option
                       key={index}
                       value={category}
-                      className="bg-white text-gray-900"
+                      className="bg-white text-gray-900 items-center justify-center px-5"
                     >
                       {category}
                     </option>

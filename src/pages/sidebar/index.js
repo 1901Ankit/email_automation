@@ -58,11 +58,11 @@ const Sidebar = () => {
       icon: <BiMessageAltDetail style={{ fontSize: "18px" }} />,
     },
 
-    {
-      name: "Preview",
-      path: "/preview",
-      icon: <VscPreview style={{ fontSize: "18px" }} />,
-    },
+    // {
+    //   name: "Preview",
+    //   path: "/preview",
+    //   icon: <VscPreview style={{ fontSize: "18px" }} />,
+    // },
 
     {
       name: "Log out",

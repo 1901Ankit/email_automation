@@ -14,7 +14,9 @@ const Subscribe = () => {
       setSelectedPlan(plan);
 
       // Generate a unique transaction ID
-      const transactionId = `TXN_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const transactionId = `TXN_${Date.now()}_${Math.random()
+        .toString(36)
+        .slice(2)}`;
 
       // Prepare payment data
       const paymentData = {
@@ -28,7 +30,7 @@ const Subscribe = () => {
         city: "3rd class city",
         state: "tier 3 state",
         zip_code: "123456",
-        country: "India"
+        country: "India",
       };
 
       const response = await initiatePayment(paymentData);
@@ -50,30 +52,28 @@ const Subscribe = () => {
   // Helper function to get plan amount in numbers
   const getPlanAmount = (planName) => {
     const amounts = {
-      "Basic": 149,
-      "Standard": 300,
-      "Premium": 499,
-      "Elite": 999
+      Basic: 149,
+      Standard: 300,
+      Premium: 499,
+      Elite: 999,
     };
     return amounts[planName] || 0;
   };
 
   const handleUpgrade = async (plan) => {
     try {
-      const res = await upgradePlan({plan_name:plan.name})
+      const res = await upgradePlan({ plan_name: plan.name });
       console.log(res);
       if (res.data) {
         toast.success("Plan upgraded successfully");
-      }
-      else {
+      } else {
         toast.error("Failed to upgrade plan");
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error upgrading plan:", error);
       toast.error(error.response?.data?.error || "Failed to upgrade plan");
     }
-  }
+  };
   return (
     <div className="container-fluid mx-auto pt-28 pb-10 px-4 max-h-[100vh] overflow-auto">
       <div className="p-2">
@@ -137,25 +137,27 @@ const Subscribe = () => {
                   ))}
                 </ul>
               </div>
-              <div className="button-contain mt-4">
+              <div className="button-contain">
                 <button
                   type="button"
                   onClick={() => handlePayment(plan)}
                   disabled={loading}
-                  className={`font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer inline-flex items-center ${loading ? 'bg-gray-400' : 'bg-[#3B82F6]'
-                    }`}
+                  className={`font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer inline-flex items-center ${
+                    loading ? "bg-gray-400" : "bg-[#3B82F6]"
+                  }`}
                 >
-                  {loading ? "Processing..." : "BUY"}
+                  {loading ? "Processing..." : "Buy Now"}
                 </button>
               </div>
               <button
                 type="button"
                 onClick={() => handleUpgrade(plan)}
                 disabled={loading}
-                className={`font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[70px] mx-auto w-fit cursor-pointer text-center mt-1 ${loading ? 'bg-gray-400' : 'bg-green-500'
-                  }`}
+                className={`font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] mt-3 cursor-pointer inline-flex items-center  ${
+                  loading ? "bg-gray-400" : "bg-green-500"
+                }`}
               >
-                {loading ? "Processing..." : "Upgrade"}
+                {loading ? "Processing..." : "Upgrade Plan "}
               </button>
             </div>
           </div>

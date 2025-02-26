@@ -26,7 +26,8 @@ const Login = () => {
   const [show2fa, setShow2fa] = useState(false);
   const [password, setPassword] = useState("");
   const [number, setNumber] = useState("");
-  const [otp, setOtp] = useState(new Array(6).fill(""));
+  const otpLength = 6; // Define the OTP length
+  const [otp, setOtp] = useState(new Array(otpLength).fill(""));
   const [errors, setErrors] = useState({});
   const [showNumberField, setShowNumberField] = useState(false);
   const [showOtpField, setShowOtpField] = useState(false);
@@ -126,50 +127,50 @@ const Login = () => {
     }
     return newErrors;
   };
-   // Update these functions to properly handle the toggle between sign-up and sign-in
+  // Update these functions to properly handle the toggle between sign-up and sign-in
 
-const handleSignUpClick = () => {
-  // Set the main toggle state
-  setIsSignUp(true);
-  
-  // Reset all form states
-  setShowNumberField(false);
-  setShowOtpField(false);
-  setShow2fa(false);
-  
-  // Reset all form data
-  SetUsername("");
-  setEmail("");
-  setPassword("");
-  setOtp(new Array(6).fill(""));
-  setErrors({});
-  
-  // Make sure the right forms are visible
-  setShowSignupFields(true);
-  setShowSigninFields(false);
-  setShowResetFields(false);
-};
+  const handleSignUpClick = () => {
+    // Set the main toggle state
+    setIsSignUp(true);
 
-const handleSignInClick = () => {
-  // Set the main toggle state
-  setIsSignUp(false);
-  
-  // Reset all form states
-  setShowNumberField(false);
-  setShowOtpField(false);
-  setShow2fa(false);
-  
-  // Reset all form data
-  setSignInEmail("");
-  setSignInPassword("");
-  setOtp(new Array(6).fill(""));
-  setSignInErrors({});
-  
-  // Make sure the right forms are visible
-  setShowSignupFields(false);
-  setShowSigninFields(true);
-  setShowResetFields(false);
-};
+    // Reset all form states
+    setShowNumberField(false);
+    setShowOtpField(false);
+    setShow2fa(false);
+
+    // Reset all form data
+    SetUsername("");
+    setEmail("");
+    setPassword("");
+    setOtp(new Array(6).fill(""));
+    setErrors({});
+
+    // Make sure the right forms are visible
+    setShowSignupFields(true);
+    setShowSigninFields(false);
+    setShowResetFields(false);
+  };
+
+  const handleSignInClick = () => {
+    // Set the main toggle state
+    setIsSignUp(false);
+
+    // Reset all form states
+    setShowNumberField(false);
+    setShowOtpField(false);
+    setShow2fa(false);
+
+    // Reset all form data
+    setSignInEmail("");
+    setSignInPassword("");
+    setOtp(new Array(6).fill(""));
+    setSignInErrors({});
+
+    // Make sure the right forms are visible
+    setShowSignupFields(false);
+    setShowSigninFields(true);
+    setShowResetFields(false);
+  };
   const handleSignIn = async (e) => {
     e.preventDefault();
 
@@ -259,27 +260,18 @@ const handleSignInClick = () => {
   // otp
   const handleOtpChange = (e, index) => {
     const { value } = e.target;
+    if (!/^\d?$/.test(value)) return; // Allow only numbers
+
     const otpCopy = [...otp];
     otpCopy[index] = value;
     setOtp(otpCopy);
-    if (value && index < otp.length - 1) {
-      const nextInput = document.querySelector(
-        `.otp-input:nth-of-type(${index + 2})`
-      );
-      if (nextInput) {
-        nextInput.focus();
-      }
-    }
 
-    if (!value && index > 0) {
-      const prevInput = document.querySelector(
-        `.otp-input:nth-of-type(${index})`
-      );
-      if (prevInput) {
-        prevInput.focus();
-      }
+    // Move to the next input if a digit is entered
+    if (value && index < otpLength - 1) {
+      document.getElementById(`otp-input-${index + 1}`).focus();
     }
   };
+
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
@@ -388,6 +380,26 @@ const handleSignInClick = () => {
   // modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
+
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      document.getElementById(`otp-input-${index - 1}`).focus();
+    }
+  };
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData.getData("text").trim();
+    if (!/^\d+$/.test(pasteData)) return;
+
+    const pasteArray = pasteData.slice(0, otpLength).split("");
+    setOtp([...pasteArray, ...new Array(otpLength - pasteArray.length).fill("")]);
+
+    // Focus on the last filled input
+    document.getElementById(`otp-input-${Math.min(pasteArray.length, otpLength) - 1}`)?.focus();
+  };
+
   return (
     <>
       <div className="container-fluid head p-0">
@@ -506,40 +518,28 @@ const handleSignInClick = () => {
                       An OTP has been sent to your email.
                     </h1>
                     <p className="otpverif">Please enter the OTP to verify.</p>
-
-                    <div className="otp-input-wrapper mt-4">
+                    <div className="otp-input-wrapper mt-4 flex gap-2">
                       {Array.from({ length: 6 }).map((_, index) => (
                         <input
                           key={index}
+                          id={`otp-input-${index}`}
                           maxLength="1"
                           pattern="[0-9]*"
                           autoComplete="off"
-                          className="otp-input"
+                          className="otp-input w-12 h-12 text-center border border-black rounded"
                           type="text"
                           value={otp[index] || ""}
                           onChange={(e) => handleOtpChange(e, index)}
                           onFocus={(e) => e.target.select()}
+                          onKeyDown={(e) => handleKeyDown(e, index)}
+                          onPaste={handlePaste}
                         />
                       ))}
-                      <svg
-                        viewBox="0 0 240 1"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <line
-                          x1="0"
-                          y1="0"
-                          x2="240"
-                          y2="0"
-                          stroke="#3e3e3e"
-                          strokeWidth="5"
-                          strokeDasharray="44,22"
-                        />
-                      </svg>
                     </div>
                   </div>
                   {errors.otp && <span className="error">{errors.otp}</span>}
                   {showNumberField && (
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between  w-full">
                       <button
                         className="bg-[#000]  text-[14px] text-white px-4 py-2 rounded-2xl	 transition-colors duration-300 mt-3"
                         type="submit"
@@ -692,7 +692,7 @@ const handleSignInClick = () => {
                     </h1>
                     <p className="otpverif">Please enter the OTP to verify.</p>
 
-                    <div className="otp-input-wrapper mt-4">
+                    {/* <div className="otp-input-wrapper mt-4">
                       {Array.from({ length: 6 }).map((_, index) => (
                         <input
                           key={index}
@@ -720,6 +720,24 @@ const handleSignInClick = () => {
                           strokeDasharray="44,22"
                         />
                       </svg>
+                    </div> */}
+                            <div className="otp-input-wrapper mt-4 flex gap-2">
+                      {Array.from({ length: 6 }).map((_, index) => (
+                        <input
+                          key={index}
+                          id={`otp-input-${index}`}
+                          maxLength="1"
+                          pattern="[0-9]*"
+                          autoComplete="off"
+                          className="otp-input w-12 h-12 text-center border border-black rounded"
+                          type="text"
+                          value={otp[index] || ""}
+                          onChange={(e) => handleOtpChange(e, index)}
+                          onFocus={(e) => e.target.select()}
+                          onKeyDown={(e) => handleKeyDown(e, index)}
+                          onPaste={handlePaste}
+                        />
+                      ))}
                     </div>
                   </div>
 
@@ -848,7 +866,7 @@ const handleSignInClick = () => {
         {/* Modal Component */}
         {isModalOpen && loggedInDevices.length > 0 && (
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg shadow-lg p-8 w-[60%] ">
+            <div className="bg-white rounded-lg shadow-lg md:p-8 p-0 w-full md:w-[70%] ">
               <Manage
                 signInEmail={signInEmail}
                 newDeviceInfo={deviceInfo}

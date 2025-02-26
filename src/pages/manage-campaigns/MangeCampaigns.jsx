@@ -31,6 +31,13 @@ const MangeCampaigns = () => {
   const [options, setOptions] = useState({
     smtps: [],
   });
+  const [details, setDetails] = useState({
+    display_name: "",
+    campaign_name: "",
+    delay_seconds: 5,
+    subject: "",
+    uploaded_file_name:"",
+  });
 
   // State for contact lists
   const [contacts, setContacts] = useState([]);

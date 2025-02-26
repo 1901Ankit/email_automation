@@ -15,8 +15,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   const [devices, setDevice] = useState(null);
   const [showOtpModal, setShowOtpModal] = useState(false);
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+  const otpLength = 6; // Define length safely
+  const [otp, setOtp] = useState(new Array(otpLength).fill(""));  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -51,10 +51,18 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   };
 
   const handleOtpChange = (e, index) => {
+    const value = e.target.value;
+    if (!/^[0-9]?$/.test(value)) return;
+  
     let newOtp = [...otp];
-    newOtp[index] = e.target.value;
+    newOtp[index] = value;
     setOtp(newOtp);
+  
+    if (value && index < otp.length - 1) {
+      document.getElementById(`otp-input-${index + 1}`).focus();
+    }
   };
+  
 
   const handleVerifyOtp = async () => {
     try {
@@ -129,14 +137,32 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
     });
   };
 
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      document.getElementById(`otp-input-${index - 1}`).focus();
+    }
+  };
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData.getData("text").trim();
+    if (!/^\d+$/.test(pasteData)) return; 
+    const pasteArray = pasteData.slice(0, otpLength).split("");
+    setOtp(pasteArray.concat(new Array(otpLength - pasteArray.length).fill(""))); 
+    const lastFilledIndex = pasteArray.length - 1;
+    if (lastFilledIndex >= 0) {
+      document.getElementById(`otp-input-${lastFilledIndex}`).focus();
+    }
+  };
+
+
   return (
-    <div className="container-fluid mx-auto px-4 max-h-[100vh] overflow-auto">
+    <div className="container-fluid mx-auto px-4 max-h-[100vh] overflow-auto py-2">
       <h1 className="text-3xl font-bold uppercase mt-28 p-3">
         Logged-in Devices
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pricing">
-      {devices?.map((item, index) => {
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pricing">
+        {devices?.map((item, index) => {
           const { device_name, system_info } = item;
 
           const systemInfo = system_info?.split(","); // Split the system_info string by commas
@@ -203,7 +229,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
             <p className="text-gray-600 text-sm">
               Please enter the OTP to verify.
             </p>
-            <div className="flex justify-center space-x-2 mt-4">
+            {/* <div className="flex justify-center space-x-2 mt-4">
               {otp.map((digit, index) => (
                 <input
                   key={index}
@@ -216,7 +242,26 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
                   onChange={(e) => handleOtpChange(e, index)}
                 />
               ))}
-            </div>
+            </div> */}
+         <div className="otp-input-wrapper mt-4 flex gap-2">
+    {otp.map((digit, index) => (
+      <input
+        key={index}
+        id={`otp-input-${index}`}
+        maxLength="1"
+        pattern="[0-9]*"
+        autoComplete="off"
+        className="otp-input w-12 h-12 text-center border border-gray-300 rounded"
+        type="text"
+        value={digit}
+        onChange={(e) => handleOtpChange(e, index)}
+        onKeyDown={(e) => handleKeyDown(e, index)}
+        onPaste={handlePaste} // 👈 OTP paste support added
+
+      />
+    ))}
+  </div>
+
             <button
               onClick={handleVerifyOtp}
               className="bg-[#3B82F6] text-white font-bold py-2 px-4 rounded-md mt-4"
