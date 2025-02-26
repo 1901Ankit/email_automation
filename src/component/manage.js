@@ -58,6 +58,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
 
   const handleVerifyOtp = async () => {
     try {
+      debugger;
       const enteredOtp = otp.join("");
       let system_info = devices.map((device) => {
         if (device.device_id == selectedDeviceId) {
@@ -71,11 +72,17 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
       formData.append("otp", enteredOtp);
 
       const res = await UserAPI.logoutOTP(formData);
-       
+      console.log(res.data);
+
+
       if (res.data.success) {
         toast.success("OTP verified! Logging out...");
-        localStorage.setItem("access_token",res.data.access_token)
-        await handleLogoutDevice(selectedDeviceId);
+          localStorage.setItem("id", res.data.user_id);
+          localStorage.setItem("device_id", res.data.device_id);
+          localStorage.setItem("user", signInEmail);
+          localStorage.setItem("access_token", res.data.access_token);
+          localStorage.setItem("refresh_token", res.data.refresh_token);
+          navigate("/home");
       } else {
         toast.error("Invalid OTP, please try again!");
       }
