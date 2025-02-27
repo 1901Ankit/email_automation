@@ -6,20 +6,15 @@ import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getdaterange } from "../api/emailTemplate";
-// import EmailStats from "./emailstats";
 
 const Barchart = () => {
   Chart.register(...registerables, ChartDataLabels);
 
   const [startDate, setStartDate] = useState(new Date("2025-02-10"));
   const [endDate, setEndDate] = useState(new Date("2025-02-16"));
-  const [chartData, setChartData] = useState({
-    labels: [],
-    datasets: [],
-  });
+  const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [loading, setLoading] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-
   const [emailStats, setEmailStats] = useState({
     successful: 0,
     failed: 0,
@@ -32,13 +27,11 @@ const Barchart = () => {
       const end_date = dayjs(endDate).format("YYYY-MM-DD");
 
       setLoading(true);
-
       try {
         const response = await getdaterange(start_date, end_date);
         console.log(response);
 
         const apiData = response.data;
-
         const allDates = [];
         let currentDate = dayjs(startDate);
         const endDateObj = dayjs(endDate);
@@ -51,7 +44,6 @@ const Barchart = () => {
         const formattedLabels = allDates.map((date) =>
           dayjs(date).format("DD MMM")
         );
-
         const successfulSendsData = allDates.map((date) => {
           const index = apiData.labels.indexOf(date);
           return index !== -1 ? apiData.successful_sends[index] : 0;
@@ -61,12 +53,7 @@ const Barchart = () => {
         const successful = successfulSendsData.reduce((a, b) => a + b, 0);
         const failed = apiData.failed_sends.reduce((a, b) => a + b, 0);
         const total = successful + failed;
-
-        // Save stats to localStorage
-        const stats = { successful, failed, total };
-        localStorage.setItem("emailStats", JSON.stringify(stats));
-
-        setEmailStats(stats);
+        setEmailStats({ successful, failed, total });
 
         setChartData({
           labels: formattedLabels,
@@ -97,14 +84,6 @@ const Barchart = () => {
     }
   }, [startDate, endDate, isClicked]);
 
-  useEffect(() => {
-    // Load data from localStorage if available
-    const savedStats = localStorage.getItem("emailStats");
-    if (savedStats) {
-      setEmailStats(JSON.parse(savedStats));
-    }
-  }, []);
-
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -112,21 +91,14 @@ const Barchart = () => {
       legend: {
         position: "top",
         labels: {
-          font: {
-            size: 14,
-            weight: "bold",
-            color: "#333",
-          },
+          font: { size: 14, weight: "bold", color: "#333" },
         },
       },
       datalabels: {
         anchor: "end",
         align: "end",
         formatter: (value) => value,
-        font: {
-          size: 12,
-          weight: "bold",
-        },
+        font: { size: 12, weight: "bold" },
         color: "#000",
       },
     },
@@ -134,29 +106,17 @@ const Barchart = () => {
       x: {
         beginAtZero: true,
         grid: { display: false },
-        ticks: {
-          autoSkip: false,
-          font: { size: 12 },
-          color: "#555",
-        },
+        ticks: { autoSkip: false, font: { size: 12 }, color: "#555" },
       },
       y: {
         beginAtZero: true,
         max: 31,
         grid: { color: "#ddd" },
-        ticks: {
-          stepSize: 1,
-          font: { size: 12 },
-          color: "#555",
-        },
+        ticks: { stepSize: 1, font: { size: 12 }, color: "#555" },
       },
     },
     elements: {
-      bar: {
-        barPercentage: 0.9,
-        barThickness: 30,
-        borderRadius: 2,
-      },
+      bar: { barPercentage: 0.9, barThickness: 30, borderRadius: 2 },
     },
   };
 
@@ -171,31 +131,25 @@ const Barchart = () => {
           <label className="block text-sm font-medium text-gray-700">
             Start Date
           </label>
-          <div className="relative">
-            <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              dateFormat="yyyy-MM-dd"
-              className="border p-2 rounded-md w-full"
-            />
-          </div>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            dateFormat="yyyy-MM-dd"
+            className="border p-2 rounded-md w-full"
+          />
         </div>
         <div className="w-full md:w-auto">
           <label className="block text-sm font-medium text-gray-700">
             End Date
           </label>
-          <div className="relative">
-            <DatePicker
-              selected={endDate}
-              onChange={(date) => setEndDate(date)}
-              dateFormat="yyyy-MM-dd"
-              className="border p-2 rounded-md w-full"
-            />
-          </div>
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            dateFormat="yyyy-MM-dd"
+            className="border p-2 rounded-md w-full"
+          />
         </div>
       </div>
-
-      {/* Get Button */}
       <div className="text-center">
         <button
           onClick={() => setIsClicked(true)}
@@ -219,11 +173,9 @@ const Barchart = () => {
           >
             <path d="M463 192H315.9L271.2 58.6C269 52.1 262.9 48 256 48s-13 4.1-15.2 10.6L196.1 192H48c-8.8 0-16 7.2-16 16 0 .9.1 1.9.3 2.7.2 3.5 1.8 7.4 6.7 11.3l120.9 85.2-46.4 134.9c-2.3 6.5 0 13.8 5.5 18 2.9 2.1 5.6 3.9 9 3.9 3.3 0 7.2-1.7 10-3.6l118-84.1 118 84.1c2.8 2 6.7 3.6 10 3.6 3.4 0 6.1-1.7 8.9-3.9 5.6-4.2 7.8-11.4 5.5-18L352 307.2l119.9-86 2.9-2.5c2.6-2.8 5.2-6.6 5.2-10.7 0-8.8-8.2-16-17-16z"></path>
           </svg>
-          The end date cannot exceed the current date to ensure accurate and
-          up-to-date data reporting.
+          The end date cannot exceed the current date for accurate reporting.
         </p>
       </div>
-
       {loading ? (
         <div className="text-center py-4">Loading...</div>
       ) : (

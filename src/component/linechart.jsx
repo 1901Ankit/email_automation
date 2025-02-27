@@ -1,48 +1,71 @@
 import React, { useEffect, useState } from "react";
-import { Doughnut } from "react-chartjs-2"; // Change Pie to Doughnut
+import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getEmailList } from "../api/emailTemplate";
+
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-const Linechart = (props) => {
-  const [chartData, setChartData] = useState({
-    labels: ["Failed Sends", "Successful Sends"],
-    datasets: [],
-  });
-  const [totalSends, setTotalSends] = useState({
+const Linechart = ({ total_emails }) => {
+  const [emailStats, setEmailStats] = useState({
     successful_sends: 0,
     failed_sends: 0,
+    total_sends: 0,
   });
+
+  const [chartData, setChartData] = useState({
+    labels: ["Failed Sends", "Successful Sends"],
+    datasets: [
+      {
+        label: "Email Sends",
+        data: [0, 0, 0],
+        backgroundColor: ["#ce464f", "#46bf5a"],
+        borderColor: ["#ce464f", "#46bf5a"],
+        borderWidth: 1,
+      },
+    ],
+  });
+
+  useEffect(() => {
+    const storedStats = JSON.parse(localStorage.getItem("emailStats"));
+    if (storedStats) {
+      setEmailStats(storedStats);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getEmailList(props.total_emails);
+        const response = await getEmailList(total_emails);
         const apiData = response.data;
-        setTotalSends({
+
+        setEmailStats({
           successful_sends: apiData.successful_sends,
           failed_sends: apiData.failed_sends,
+          total_sends: apiData.total_sends,
         });
-        const updatedChartData = {
-          labels: ["Failed", "Successful"],
+
+        localStorage.setItem("emailStats", JSON.stringify(apiData));
+
+        setChartData({
+          labels: ["Failed Sends", "Successful Sends"],
           datasets: [
             {
               label: "Email Sends",
               data: [apiData.failed_sends, apiData.successful_sends],
-              backgroundColor: ["#ce464f", "#46bf5a"],
-              borderColor: ["#ce464f", "#46bf5a"],
+              backgroundColor: ["#ce464f", "#46bf5a", "#f0ad4e"],
+              borderColor: ["#ce464f", "#46bf5a", "#f0ad4e"],
               borderWidth: 1,
             },
           ],
-        };
-        setChartData(updatedChartData);
+        });
       } catch (error) {
         console.error("Error fetching data from API", error);
       }
     };
+
     fetchData();
-  }, [props.total_emails]);
+  }, [total_emails]);
 
   const options = {
     responsive: true,
@@ -64,8 +87,10 @@ const Linechart = (props) => {
           weight: "bold",
         },
         formatter: (value, context) => {
-          const label = context.chart.data.labels[context.dataIndex];
-          return `${label}: ${value}`;
+          if (context.dataIndex < chartData.labels.length) {
+            return `${chartData.labels[context.dataIndex]}: ${value}`;
+          }
+          return value;
         },
       },
     },
@@ -73,17 +98,8 @@ const Linechart = (props) => {
 
   return (
     <div className="container w-full mx-auto p-4">
-      {/* Doughnut Chart */}
-      <div className="relative w-full h-[400px] ">
-        <Doughnut
-          data={chartData}
-          options={options}
-          className=""
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
-        />
+      <div className="relative w-full h-[400px]">
+        <Doughnut data={chartData} options={options} />
       </div>
     </div>
   );

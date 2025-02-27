@@ -3,7 +3,6 @@ import { initiatePayment, verifyPayment, upgradePlan } from "../../api/payment";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAllUserProfile } from "../../api/user_profile";
-
 const Subscribe = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [loadingStates, setLoadingStates] = useState({});
