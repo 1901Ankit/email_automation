@@ -42,7 +42,6 @@ const Template = ({ placeholder }) => {
     selectedCategory === "All"
       ? groupedTemplates
       : { [selectedCategory]: groupedTemplates[selectedCategory] || [] };
-
   const handleModalSave = async () => {
     try {
       const htmlContent = finalTemplate;
@@ -294,20 +293,20 @@ const Template = ({ placeholder }) => {
           <div key={""} className="bg-white p-6 shadow-lg rounded-lg ">
             {/* Flex Layout for Templates */}
 
-            <div className="flex flex-wrap justify-between gap-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className=" flex-wrap justify-between  grid grid-cols-1 md:grid-cols-2 gap-8">
               {allsavedTemp?.map((template) => (
                 <div
                   key={template.id}
-                  className="relative w-full  h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300"
+                  className="relative w-full h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 overflow-y-auto"
                   onClick={() => EditHelper(template)}
                 >
                   {/* Template Preview */}
-                  <div className="absolute h-full w-full overflow-y-auto">
+                  <div className=" w-full overflow-auto">
                     <iframe
                       src={template.file_url}
                       title="Email Template"
                       width="100%"
-                      height="600px"
+                      height="400vh"
                       style={{
                         border: "1px solid #ddd",
                         borderRadius: "4px",
@@ -326,10 +325,10 @@ const Template = ({ placeholder }) => {
 
                   {/* Button with Template Title */}
                   <button
-                    type="button"
-                    className="absolute bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
-        text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
-                  >
+              type="button"
+              className="relative bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
+              text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
+            >
                     {template.name}
                   </button>
                 </div>

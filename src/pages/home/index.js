@@ -21,14 +21,14 @@ const Home = () => {
   }, []);
 
   const emailData = [
-    { id: 1, title: "Total Emails", count: emailStats.total, image: grph },
+    { id: 1, title: "Total Emails", count: emailStats.total_emails, image: grph },
     {
       id: 2,
       title: "Successful Emails",
-      count: emailStats.successful,
+      count: emailStats.successful_sends,
       image: people,
     },
-    { id: 3, title: "Failed Emails", count: emailStats.failed, image: cube },
+    { id: 3, title: "Failed Emails", count: emailStats.failed_sends, image: cube },
   ];
 
   return (
