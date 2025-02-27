@@ -78,7 +78,7 @@ const Contact = () => {
           Email: contact.data.Email,
           firstName: contact.data.firstName,
           lastName: contact.data.lastName,
-          company: contact.data.companyName,
+          companyName: contact.data.companyName,
         },
       })),
     };
@@ -165,7 +165,7 @@ const Contact = () => {
   const containerRef = useRef(null);
   const addNew = () => {
     setEditingContacts([
-      ...editingContacts,
+      
       { data: { firstName: "", lastName: "", Email: "", companyName: "" } },
     ]);
     setTimeout(() => {
@@ -194,7 +194,7 @@ const Contact = () => {
       <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
         <div className="mb-2">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold uppercase">Contact Setup</h1>
+            <h1 className="text-xl md:text-3xl font-bold uppercase">Contact Setup</h1>
             <button
               className="bg-[#3B82F6] text-white border-[#3B82F6] rounded-md p-2 text-lg font-semibold"
               type="button"

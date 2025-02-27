@@ -39,10 +39,10 @@ const Preview = ({ placeholder }) => {
   const [details, setDetails] = useState({});
   const [options, setOptions] = useState({ smtps: [] });
   const [file, setFile] = useState(null);
-  const [showData, setShowData]= useState({});
-  const [showContactDetails,setShowContactDetails]=useState({});
-const params= useParams();
-console.log("Params_From_react", params);
+  const [showData, setShowData] = useState({});
+  const [showContactDetails, setShowContactDetails] = useState({});
+  const params = useParams();
+  console.log("Params_From_react", params);
   const config = useMemo(
     () => ({
       readonly: false,
@@ -127,7 +127,7 @@ console.log("Params_From_react", params);
     // if (location.state && location.state.file) {
     //   setFile(location.state.file);
     // } else {
-     
+
     //   setFile(null);
     //   navigate("/detail", { replace: true });
     // }
@@ -149,27 +149,27 @@ console.log("Params_From_react", params);
     // selectedHTMLFile();
     // const formData = new FormData();
     // formData.append("file", fileData);
-  const getContactDetails= async(id)=>{
-     try {
-      const res= await API.getSingleContactList(id);
-      setShowContactDetails(res.data);
-     } catch (error) {
-       console.log("Error",error);
-     }
-  }
+    const getContactDetails = async (id) => {
+      try {
+        const res = await API.getSingleContactList(id);
+        setShowContactDetails(res.data);
+      } catch (error) {
+        console.log("Error", error);
+      }
+    };
 
-  const getCampaignDataFromParams= async ()=>{
-       try {
-        const res= await API.getSingleCampigns(params?.id);
+    const getCampaignDataFromParams = async () => {
+      try {
+        const res = await API.getSingleCampigns(params?.id);
         getContactDetails(res.data.contact_list_id);
         setShowData(res.data);
         console.log("Getting data from Response", res);
-       } catch (error) {
+      } catch (error) {
         console.log("Errr", error);
-       }
-  }
-  getCampaignDataFromParams();
- 
+      }
+    };
+    getCampaignDataFromParams();
+
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1400);
@@ -219,21 +219,22 @@ console.log("Params_From_react", params);
   //   }
   //   setIsLoading(false);
   // };
-  
-  const   onhandleSendEmail = async () => {
+
+  const onhandleSendEmail = async () => {
     setIsLoading(true);
     try {
       const formdata = new FormData();
       formdata.append("campaign_id", showData?.id);
-      
+
       const res = await SMTPAPI.sendEmail(formdata);
-     console.log("res_after_sendibg",res);
+      console.log("res_after_sendibg", res);
       if (res?.status === 200) {
         toast.success("Email sent successfully!");
         console.log("RES_FROM_SEND", res);
-       
       } else {
-        toast.error(res?.data?.message || "Failed to send email. Please try again.");
+        toast.error(
+          res?.data?.message || "Failed to send email. Please try again."
+        );
       }
     } catch (error) {
       console.error("Error sending email:", error);
@@ -259,7 +260,7 @@ console.log("Params_From_react", params);
           </div>
         ) : (
           <div className="container flex">
-            <form className="w-[70%]">
+            <form className="w-[70%] p-0">
               <h1 className="text-3xl font-bold ">Preview Campaigns</h1>
               <div className="flex mt-4">
                 <div className="w-full me-6">
@@ -288,11 +289,11 @@ console.log("Params_From_react", params);
 
               <div className="flex mt-4">
                 <div className="w-full">
-                  <label htmlFor="fromEmail">SMTPS LIST </label>
+                  <label htmlFor="fromEmail">Contact LIST </label>
                   <input
                     type="text"
-                    id="SMTPS"
-                    name="SMTPS"
+                    id="Contact"
+                    name="Contact"
                     value={showContactDetails.file_name}
                     // value={options?.smtps
                     //   ?.map((sender) => sender.label)
@@ -316,11 +317,10 @@ console.log("Params_From_react", params);
               <div className="w-full mt-4">
                 <label htmlFor="content">UPLOADED FILE </label>
                 <input
-                  value={showData.name}
+                  value={showData.uploaded_file_name}
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
                   readOnly
                 />
-                
               </div>
 
               <div className="container-fluid p-0">
@@ -331,18 +331,17 @@ console.log("Params_From_react", params);
                         <label htmlFor="content">CONTENT</label>
 
                         <div className="absolute h-full w-full overflow-y-auto">
-                              
-                    <iframe 
-        src={showData?.file_url}
-        title="Email Template"
-        width="60%" 
-        height="400px"
-        style={{
-          border: '1px solid #ddd',
-          borderRadius: '4px',
-          backgroundColor: '#fff'
-        }}
-      />
+                          <iframe
+                            src={showData?.file_url}
+                            title="Email Template"
+                            width="60%"
+                            height="400px"
+                            style={{
+                              border: "1px solid #ddd",
+                              borderRadius: "4px",
+                              backgroundColor: "#fff",
+                            }}
+                          />
                         </div>
                       </div>
                     </div>

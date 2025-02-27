@@ -4,8 +4,8 @@ import { templates } from "../../lib/data";
 import JoditEditor from "jodit-react";
 import * as templateAPI from "../../api/emailTemplate";
 import { IoArrowBack } from "react-icons/io5";
-import { toast, Toaster } from "react-hot-toast";
 import { Dialog } from "@headlessui/react";
+import { toast } from "react-toastify";
 
 const CategoryTemplates = () => {
   const { category } = useParams();
@@ -69,7 +69,7 @@ const CategoryTemplates = () => {
 
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
-      <Toaster />
+
 
       <div className="flex flex-col gap-6 mb-8">
         <h1 className="text-xl md:text-3xl font-bold uppercase">
