@@ -23,7 +23,15 @@ const Contact = () => {
   const [loading, setLoading] = useState(true);
   const [editingContacts, setEditingContacts] = useState([]);
   const [isModalEDitOpen, setIsModalEditOpen] = useState(false);
-  const [selectedFileId, setSelectedFileId] = useState(null);
+  const [selectedFileId, setSelectedFileId] = useState(null);;
+ const [initialContact,setInitialContact]= useState([]);
+ const [originalContacts, setOriginalContacts] = useState([]);
+
+ // When opening the edit modal, store the initial contacts
+ useEffect(() => {
+   setOriginalContacts(JSON.parse(JSON.stringify(editingContacts))); // Deep copy to avoid reference issues
+ }, [editingContacts.length]); // Update only when contacts are loaded
+ 
   const HandleFileData = (data) => {
     setFileData(data);
   };
@@ -31,6 +39,8 @@ const Contact = () => {
     setSelectedFileId(file_id);
     try {
       const response = await API.getSingleContactList(file_id);
+      console.log("jjj", response.data.contacts);
+       setInitialContact(response.data.contacts);
       setEditingContacts(response.data.contacts);
       setIsModalEditOpen(true);
     } catch (error) {
@@ -43,8 +53,26 @@ const Contact = () => {
     setEditingContacts(updatedContacts);
   };
   const handleSaveEdit = async () => {
+    // Identify changed or newly added contacts
+    const updatedContacts = editingContacts.filter((contact, index) => {
+      const original = originalContacts[index] || {};
+      return (
+        !original || // New contact
+        contact.data.Email !== original.data?.Email ||
+        contact.data.firstName !== original.data?.firstName ||
+        contact.data.lastName !== original.data?.lastName ||
+        contact.data.companyName !== original.data?.companyName
+      );
+    });
+  
+    if (updatedContacts.length === 0) {
+      toast.info("No changes to update.");
+      return;
+    }
+    console.log("updated", updatedContacts);
+   
     const formattedContacts = {
-      contacts: editingContacts.map((contact) => ({
+      contacts: updatedContacts.map((contact) => ({
         ...(contact.id ? { id: contact.id } : {}),
         data: {
           Email: contact.data.Email,
@@ -54,6 +82,7 @@ const Contact = () => {
         },
       })),
     };
+    
     try {
       const res = await axios.put(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/contact-update/${selectedFileId}/`,
@@ -71,13 +100,11 @@ const Contact = () => {
         window.location.reload();
       }, 1500);
     } catch (error) {
-      console.error(
-        "Error updating contacts:",
-        error.response?.data || error.message
-      );
+      console.error("Error updating contacts:", error.response?.data || error.message);
       toast.error("Failed to update contacts.");
     }
   };
+  
   const handleDelete = async (file_id) => {
     try {
       const res = await API.deleteSingleContactList(file_id);
@@ -470,7 +497,7 @@ const Contact = () => {
                           {contact?.data?.lastName}
                         </td>
                         <td className="px-6 py-3 text-xs text-gray-500 text-center border">
-                          {contact?.data?.companyName}
+                          {contact?.data?.company}
                         </td>
                       </tr>
                     ))}
