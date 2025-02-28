@@ -44,7 +44,7 @@ const Home = () => {
               {emailData.map((item) => (
                 <div
                   key={item.id}
-                  className={`p-6 rounded-2xl shadow-xl ${
+                  className={`p-3 rounded-2xl shadow-xl ${
                     item.id === 1
                       ? "bg-blue-100 text-blue-600"
                       : item.id === 2
@@ -56,7 +56,7 @@ const Home = () => {
                     <h2 className="text-2xl font-semibold text-gray-700">
                       {item.title}
                     </h2>
-                    <img src={item.image} alt={item.title} className="w-16" />
+                    <img src={item.image} alt={item.title} className="w-10" />
                   </div>
                   <h3 className="text-3xl font-bold">{item.count}</h3>
                 </div>
