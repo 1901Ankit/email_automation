@@ -33,6 +33,11 @@ const Sidebar = () => {
       icon: <RiSendPlaneFill style={{ fontSize: "18px" }} />,
     },
     {
+      name: "Subject",
+      path: "/subject",
+      icon: <IoMdContacts style={{ fontSize: "18px" }} />,
+    },
+    {
       name: "Contact",
       path: "/contact",
       icon: <IoMdContacts style={{ fontSize: "18px" }} />,

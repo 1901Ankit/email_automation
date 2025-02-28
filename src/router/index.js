@@ -25,6 +25,7 @@ import CategoryTemplates from "../pages/template/cateogorytemp";
 import Privacy from "../pages/subfooter/privacy";
 import Terms_condition from "../pages/subfooter/terms";
 import MangeCampaigns from "../pages/manage-campaigns/MangeCampaigns";
+import Subject from "../pages/subject";
 const Router = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -106,6 +107,10 @@ const Router = () => {
           <Route
             path="/preview/:id"
             element={token ? <Preview /> : <Navigate to="/" replace />}
+          />
+          <Route
+            path="/subject"
+            element={token ? <Subject /> : <Navigate to="/" replace />}
           />
           <Route
             path="/contact"

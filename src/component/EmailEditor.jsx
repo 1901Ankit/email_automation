@@ -39,6 +39,7 @@ const EmailEditor = ({
 
   const handleImageClickEditorOpen = () => {
     setIsEditorOpen(true);
+    
   };
   const handleUpdateTemplate = async () => {
     try {
