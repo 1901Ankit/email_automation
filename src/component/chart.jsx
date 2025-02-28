@@ -108,11 +108,12 @@ const Barchart = () => {
         grid: { display: false },
         ticks: { autoSkip: false, font: { size: 12 }, color: "#555" },
       },
+
       y: {
         beginAtZero: true,
-        max: 31,
+        max: 20,
         grid: { color: "#ddd" },
-        ticks: { stepSize: 1, font: { size: 12 }, color: "#555" },
+        ticks: { stepSize: 2, font: { size: 12 }, color: "#555" },
       },
     },
     elements: {
