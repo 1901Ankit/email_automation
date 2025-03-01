@@ -19,7 +19,7 @@ const Subject = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [nameInput, setNameInput] = useState("");
   const [csvFile, setCsvFile] = useState(null);
-  const [contacts, setContacts] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingContacts, setEditingContacts] = useState([]);
   const [isModalEDitOpen, setIsModalEditOpen] = useState(false);
@@ -27,21 +27,17 @@ const Subject = () => {
   const [initialContact, setInitialContact] = useState([]);
   const [originalContacts, setOriginalContacts] = useState([]);
 
-  // When opening the edit modal, store the initial contacts
-  useEffect(() => {
-    setOriginalContacts(JSON.parse(JSON.stringify(editingContacts))); // Deep copy to avoid reference issues
-  }, [editingContacts.length]); // Update only when contacts are loaded
-
+ 
   const HandleFileData = (data) => {
     setFileData(data);
   };
   const handleEdit = async (file_id) => {
     setSelectedFileId(file_id);
     try {
-      const response = await API.getSingleContactList(file_id);
-      console.log("jjj", response.data.contacts);
-      setInitialContact(response.data.contacts);
-      setEditingContacts(response.data.contacts);
+      const response = await API.getSingleSubjectList(file_id);
+      console.log("jjj_for_Edit", response);
+      setInitialContact(response.data.data.data ? response.data.data.data : response.data.data);
+      setEditingContacts(response.data.data.data?response.data.data.data:response.data.data);
       setIsModalEditOpen(true);
     } catch (error) {
       console.error("Error fetching contacts:", error);
@@ -49,44 +45,50 @@ const Subject = () => {
   };
   const handleChange = (index, field, value) => {
     const updatedContacts = [...editingContacts];
-    updatedContacts[index].data[field] = value;
+    updatedContacts[index][field] = value;
     setEditingContacts(updatedContacts);
   };
   const handleSaveEdit = async () => {
-    // Identify changed or newly added contacts
+    console.log("editingContacts", editingContacts);
     const updatedContacts = editingContacts.filter((contact, index) => {
-      const original = originalContacts[index] || {};
-      return (
-        !original || // New contact
-        contact.data.Email !== original.data?.Email ||
-        contact.data.firstName !== original.data?.firstName ||
-        contact.data.lastName !== original.data?.lastName ||
-        contact.data.companyName !== original.data?.companyName
-      );
+      const original = originalContacts[index];
+      
+      // For new contacts (no corresponding original)
+      if (!original) return true;
+      
+      // For existing contacts, check if Subject changed
+      return contact.Subject !== original.Subject;
     });
-
+    console.log("updatedContacts", updatedContacts);
     if (updatedContacts.length === 0) {
       toast.info("No changes to update.");
       return;
     }
     console.log("updated", updatedContacts);
-
-    const formattedContacts = {
-      contacts: updatedContacts.map((contact) => ({
-        ...(contact.id ? { id: contact.id } : {}),
-        data: {
-          Email: contact.data.Email,
-          firstName: contact.data.firstName,
-          lastName: contact.data.lastName,
-          companyName: contact.data.companyName,
-        },
-      })),
+    const formattedData = {
+      rows: updatedContacts.map(contact => {
+        // For contacts with an id (existing contacts that were updated)
+        if (contact.id) {
+          return {
+            id: contact.id,
+            Subject: contact.Subject
+          };
+        } 
+        // For new contacts (without id)
+        else {
+          return {
+            Subject: contact.Subject
+          };
+        }
+      })
     };
-
+ 
+ 
+ 
     try {
       const res = await axios.put(
-        `${process.env.REACT_APP_BACKEND_BASE_URL}/contact-update/${selectedFileId}/`,
-        formattedContacts,
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/subject-file/${selectedFileId}/rows/`,
+         formattedData ,
         {
           headers: {
             "Content-Type": "application/json",
@@ -94,8 +96,10 @@ const Subject = () => {
           },
         }
       );
+      console.log("res_from_subjects_update", res);
       setIsModalEditOpen(false);
       toast.success("Contacts updated successfully!");
+      setOriginalContacts(JSON.parse(JSON.stringify(editingContacts)));
       setTimeout(() => {
         window.location.reload();
       }, 1500);
@@ -109,8 +113,23 @@ const Subject = () => {
   };
 
   const handleDelete = async (file_id) => {
+    console.log("file_id", file_id);
     try {
-      const res = await API.deleteSingleContactList(file_id);
+      const res = await API.deleteSingleSubjectList(file_id);
+      console.log("res_from_Deleting_subjects_all", res);
+      toast.success(res.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    } catch (error) {
+      toast.error("Failed to delete contact.");
+    }
+  };
+  const handleDeleteRow = async (row_id) => {
+  
+    try {
+      const res = await API.deleteSingleSubjectListRow(selectedFileId,row_id);
+      console.log("res_from_Deleting_subjects_all", res);
       toast.success(res.data.message);
       setTimeout(() => {
         window.location.reload();
@@ -121,7 +140,8 @@ const Subject = () => {
   };
   const handleCsvPreview = async (file_id) => {
     try {
-      const res = await API.getSingleContactList(file_id);
+      const res = await API.getSingleSubjectList(file_id);
+      console.log("res_from_subjects_preview", res);
       setPreviewData(res.data);
     } catch (error) {}
     
@@ -131,6 +151,7 @@ const Subject = () => {
     setIsCsvPreviewOpen(false);
   };
   const handleFileChange = (e) => {
+    console.log("file", e.target.files[0]);
     setCsvFile(e.target.files[0]);
   };
   const handleSave = async () => {
@@ -152,8 +173,9 @@ const Subject = () => {
     formData.append("name", nameInput);
     formData.append("csv_file", csvFile);
     try {
-      const response = await API.uploadContacts(formData);
-      if (response.ok) {
+      const response = await API.uploadSubjects(formData);
+      console.log("respnse", response);
+      if (response.status===201) {
         toast.success("File uploaded successfully!");
         setTimeout(() => {
           closeModal();
@@ -168,9 +190,12 @@ const Subject = () => {
   };
   const containerRef = useRef(null);
   const addNew = () => {
-    setEditingContacts([
-      { data: { subject: "" } },
-    ]);
+    
+      setEditingContacts([
+        ...editingContacts, // Keep existing contacts
+        { Subject: "" }  // Simplified structure
+      ]);
+  
     setTimeout(() => {
       if (containerRef.current) {
         containerRef.current.scrollTop = containerRef.current.scrollHeight;
@@ -179,18 +204,18 @@ const Subject = () => {
   };
 
   useEffect(() => {
-    const fetchContacts = async () => {
+    const fetchSubjects = async () => {
       try {
-        const response = await API.getContactList();
-        console.log("response_from_contact", response.data.user_contact_files);
-        setContacts(response.data.user_contact_files);
+        const response = await API.getSubjectList();
+        // console.log("response_from_subject", response.data);
+        setSubjects(response.data.subject_file_list);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching contacts:", error);
         setLoading(false);
       }
     };
-    fetchContacts();
+    fetchSubjects();
   }, []);
   return (
     <>
@@ -203,7 +228,7 @@ const Subject = () => {
               type="button"
               onClick={openModal}
             >
-              Import Contact
+              Import Subjecs
             </button>
           </div>
         </div>
@@ -213,14 +238,14 @@ const Subject = () => {
               <thead className="bg-[#3B82F6] text-white">
                 <tr>
                   <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
-                    S No
+                   Id
                   </th>
                   <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
                     List Name
                   </th>
-                  <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
+                  {/* <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
                     Number of Subject
-                  </th>
+                  </th> */}
                   <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
                     Creation Date
                   </th>
@@ -230,36 +255,36 @@ const Subject = () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-50 divide-y divide-gray-200">
-                {contacts?.map((item, index) => (
+                {subjects?.map((item, index) => (
                   <tr key={index}>
                     <td className="px-6 py-4 text-xs text-gray-500 border text-center">
-                      {index + 1}
+                      {item.id}
                     </td>
                     <td className="px-6 py-4 text-xs text-gray-500 border text-center truncate">
-                      {item?.file_name || "N/A"}
+                      {item?.name || "N/A"}
                     </td>
-                    <td className="px-6 py-4 text-xs text-gray-500 border text-center">
+                    {/* <td className="px-6 py-4 text-xs text-gray-500 border text-center">
                       {item?.contacts?.length || 0}
-                    </td>
+                    </td> */}
                     <td className="px-6 py-4 text-xs text-gray-500 border text-center">
-                      {item?.created_at || "N/A"}
+                      {item?.uploaded_at || "N/A"}
                     </td>
                     <td className="px-6 py-4 text-xs text-gray-500 border flex items-center justify-center space-x-2">
                       <button
                         className="text-blue-500 hover:text-blue-700"
-                        onClick={() => handleEdit(item?.file_id)}
+                        onClick={() => handleEdit(item.id)}
                       >
                         <FaEdit className="text-lg" />
                       </button>
                       <button
                         className="text-red-500 hover:text-red-700"
-                        onClick={() => handleDelete(item?.file_id)}
+                        onClick={() => handleDelete(item.id)}
                       >
                         <FaTrash className="text-lg" />
                       </button>
                       <button
                         className="text-black hover:text-gray-700"
-                        onClick={() => handleCsvPreview(item?.file_id)}
+                        onClick={() => handleCsvPreview(item.id)}
                       >
                         <FaEye className="text-lg" />
                       </button>
@@ -275,7 +300,7 @@ const Subject = () => {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 max-h-[100vh] overflow-auto">
             <div className="bg-white rounded-lg shadow-lg w-full md:w-8/12 p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold">Import Contacts</h2>
+                <h2 className="text-xl font-bold">Import Subjects</h2>
                 <button
                   className="text-black font-bold text-4xl rounded-md bg-white p-1 w-8 h-8 flex items-center justify-center"
                   onClick={closeModal}
@@ -371,18 +396,38 @@ const Subject = () => {
               </div>
 
               <div className="max-h-80 overflow-y-auto" ref={containerRef}>
-                <h2 className="text-lg font-semibold mb-2">Subject</h2>
                 <div className="overflow-x-auto">
                   <table className="w-full border border-gray-300 text-sm md:text-base">
+                    <thead className="bg-gray-200">
+                      <tr>
+                        <th className="px-4 py-2 border">Subject</th>
+                       
+                      </tr>
+                    </thead>
                     <tbody>
                       {editingContacts?.map((contact, index) => (
                         <tr key={index} className="text-center">
-                          <td className="px-4 py-2 border text-left">
-                            <p className="text-sm md:text-base font-medium text-gray-700">
-                              {contact?.data?.subject || "No Subject"}
-                            </p>
-                          </td>
-                        </tr>
+                        {/* Subject Input Field */}
+                        <td className="px-2 py-2 border w-4/5">
+                          <input
+                            type="text"
+                            value={contact?.Subject || ""}
+                            onChange={(e) => handleChange(index, "Subject", e.target.value)}
+                            className="border p-2 w-full text-sm md:text-base"
+                          />
+                        </td>
+                      
+                        {/* Delete Button */}
+                        <td className="px-2 py-2 border w-1/5">
+                          <button
+                            className="text-red-500 hover:text-red-700 p-1"
+                            onClick={() => handleDeleteRow(contact.id)}
+                          >
+                            <FaTrash className="text-lg" />
+                          </button>
+                        </td>
+                      </tr>
+                      
                       ))}
                     </tbody>
                   </table>
@@ -430,10 +475,10 @@ const Subject = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {previewData?.contacts?.map((contact, index) => (
+                    {previewData?.data?.data?.map((contact, index) => (
                       <tr key={index}>
                         <td className="px-6 py-3 text-xs text-gray-500 text-center border">
-                          {contact?.data?.subject || "No Subject"}
+                          {contact.Subject || "No Subject"}
                         </td>
                       </tr>
                     ))}
