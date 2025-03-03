@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import logo from "../../assests/image/wishi.png";
 import people from "../../assests/image/support.webp";
-import baner from "../../assests/image/about-banner.png";
+import blue from "../../assests/image/banner/blue.png";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Footerfile from "../../component/footerfile";
 const Landing = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -33,7 +34,8 @@ const Landing = () => {
 
           <Link
             to="/auth"
-            className="md:hidden px-4 py-2 bg-blue-600 text-white rounded-lg no-underline">
+            className="md:hidden px-4 py-2 bg-blue-600 text-white rounded-lg no-underline"
+          >
             Login
           </Link>
 
@@ -86,9 +88,9 @@ const Landing = () => {
         )}
       </div>
       {/* Banner Section */}
-      <div className="relative h-[200px] md:h-[300px]">
-        <img src={baner} className="w-full h-full object-cover" alt="Banner" />
-        <div className="absolute inset-0 bg-black opacity-25"></div>
+      <div className="relative h-[200px] md:h-[500px]">
+        <img src={blue} className="w-full h-full object-cover" alt="Banner" />
+        {/* <div className="absolute inset-0 bg-black opacity-25"></div>
         <div className="absolute inset-0 flex items-center justify-center text-center p-4">
           <div className="container">
             <div className="row">
@@ -99,8 +101,10 @@ const Landing = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
+
+      <Footerfile />
     </div>
   );
 };

@@ -26,6 +26,7 @@ import Privacy from "../pages/subfooter/privacy";
 import Terms_condition from "../pages/subfooter/terms";
 import MangeCampaigns from "../pages/manage-campaigns/MangeCampaigns";
 import Subject from "../pages/subject";
+import Landing from "../pages/landingpage";
 const Router = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -90,7 +91,7 @@ const Router = () => {
         {shouldShowHeader && <Header />}
         {isProtectedRoute(location.pathname) && <Sidebar />}
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/reset_password/:uidID/:token" element={<Login />} />
           <Route
             path="/home"
