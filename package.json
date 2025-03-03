@@ -39,6 +39,7 @@
     "react-select": "^5.8.0",
     "react-toastify": "^10.0.5",
     "sanitize-html": "^2.14.0",
+    "swiper": "^11.2.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
