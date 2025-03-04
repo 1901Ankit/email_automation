@@ -17,7 +17,7 @@ const Content = ({ placeholder }) => {
     display_name: "",
     subject: "",
     delay_seconds: 0,
-    contact_list: null, // Changed from array to single value
+    contact_list: 0, // Changed from array to single value
     smtp_server_ids: [],
     campaign_name: "", // Fixed spelling
     uploaded_file_key: "",
@@ -29,8 +29,11 @@ const Content = ({ placeholder }) => {
   const [finalTemplate, setFinalTemplate] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({
     smtps: [],
+    recipients: null, // Single selection for recipients
+    subjects: null,
   });
-
+    
+  const [subjects, setSubjects] = useState([])
   const [contacts, setContacts] = useState([]);
   const [csvFile, setCsvFile] = useState();
 
@@ -55,34 +58,58 @@ const Content = ({ placeholder }) => {
   );
   const [selectedRecipients, setSelectedRecipients] = useState([]); // Add this
 
+  // const handleChange = (selectedOption, type) => {
+  //   console.log("selectedOptions", selectedOption);
+  //   console.log("type", type);
+  //   const updatedSelectedOptions = { ...selectedOptions };
+
+  //   if (type === "smtp") {
+  //     updatedSelectedOptions.smtps = selectedOption;
+  //     console.log("uppppp", updatedSelectedOptions);
+  //     // const smtp_server_ids = smtpOptions.map(smtp => parseInt(smtp.value));
+  //     let smtp_server_ids = updatedSelectedOptions.smtps.map((smtp) =>
+  //       Number(smtp.value)
+  //     );
+  //     setDetails({ ...details, smtp_server_ids: smtp_server_ids });
+  //   } else if (type === "Recipient") {
+  //     updatedSelectedOptions.recipients = selectedOption; // Store recipient selections
+  //     console.log("receipient_id_ext", updatedSelectedOptions);
+  //     setSelectedRecipients(selectedOption); // Update selected recipients state
+  //     let contact_list_ids = updatedSelectedOptions.recipients.map(
+  //       (smtp) => smtp.value
+  //     );
+  //     setDetails({ ...details, contact_list: contact_list_ids[0] });
+  //   }
+
+  //   sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
+
+  //   setSelectedOptions(updatedSelectedOptions);
+  // };
+
   const handleChange = (selectedOption, type) => {
-    console.log("selectedOptions", selectedOption);
+    console.log("selectedOption", selectedOption); // Array of objects for smtp (due to isMulti), single object or null for others
     console.log("type", type);
     const updatedSelectedOptions = { ...selectedOptions };
-
+  
     if (type === "smtp") {
-      updatedSelectedOptions.smtps = selectedOption;
-      console.log("uppppp", updatedSelectedOptions);
-      // const smtp_server_ids = smtpOptions.map(smtp => parseInt(smtp.value));
-      let smtp_server_ids = updatedSelectedOptions.smtps.map((smtp) =>
-        Number(smtp.value)
-      );
+      updatedSelectedOptions.smtps = selectedOption || []; // Directly use the array (or empty array if null)
+      let smtp_server_ids = updatedSelectedOptions.smtps.map((smtp) => smtp.value); // Map values from the array
+      console.log("smtp_server_ids", smtp_server_ids);
       setDetails({ ...details, smtp_server_ids: smtp_server_ids });
     } else if (type === "Recipient") {
-      updatedSelectedOptions.recipients = selectedOption; // Store recipient selections
-      console.log("receipient_id_ext", updatedSelectedOptions);
-      setSelectedRecipients(selectedOption); // Update selected recipients state
-      let contact_list_ids = updatedSelectedOptions.recipients.map(
-        (smtp) => smtp.value
-      );
-      setDetails({ ...details, contact_list: contact_list_ids[0] });
+      updatedSelectedOptions.recipients = selectedOption; // Single recipient (object or null)
+      let contact_id = selectedOption ? selectedOption.value : null;
+      console.log("contact_id", contact_id);
+      setDetails({ ...details, contact_list: contact_id }); // Single contact ID
+    } else if (type === "Subjects") {
+      updatedSelectedOptions.subjects = selectedOption; // Single subject
+      let subject_id = selectedOption ? selectedOption.value : null;
+      setDetails({ ...details, subject: subject_id });
     }
-
+  
     sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
-
     setSelectedOptions(updatedSelectedOptions);
   };
-
   useEffect(() => {
     const loadData = async () => {
       const smtpResponse = await SMTPAPI.getAllSMTPs({
@@ -130,7 +157,20 @@ const Content = ({ placeholder }) => {
     }
     sessionStorage.setItem("options", JSON.stringify(selectedOptions));
   };
-
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await API.getSubjectList();
+        console.log("response_from_subject", response.data);
+        setSubjects(response.data.subject_file_list);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+        setLoading(false);
+      }
+    };
+    fetchSubjects();
+  }, []);
   const handleModalSave = async () => {
     if (emailEditorRef.current?.editor) {
       emailEditorRef.current.editor.exportHtml((data) => {
@@ -152,19 +192,20 @@ const Content = ({ placeholder }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+console.log("details",details)
     try {
-      details.uploaded_file_key = JSON.parse(sessionStorage.getItem("key"));
+      details.uploaded_file_key = JSON.parse(sessionStorage.getItem("tempId"));
 
       const formData = new FormData();
       formData.append("campaign_name", details.campaign_name);
       formData.append("display_name", details.display_name);
-      formData.append("subject", details.subject);
+      formData.append("subject_file", details.subject);
       formData.append("delay_seconds", details.delay_seconds);
-      formData.append("uploaded_file_name", details.uploaded_file_key);
+      formData.append("uploaded_file", details.uploaded_file_key);
       formData.append("contact_list", details.contact_list);
       formData.append("name",details.campaign_name)
       // Append each SMTP ID separately
+   console.log("smtp_server_ids",details.smtp_server_ids)
       if (Array.isArray(details.smtp_server_ids)) {
         details.smtp_server_ids.forEach((id) => {
           formData.append("smtp_server_ids", id);
@@ -172,16 +213,18 @@ const Content = ({ placeholder }) => {
       } else {
         console.error("smtp_server_ids is not an array");
       }
-
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
       // Make API call inside try block
       const res = await API.createCampainion(formData);
-
+      console.log("respinse_from_email", res);
       // Check for API response errors
       if (res?.response?.data?.campaign_name) {
         toast.error(res.response.data.campaign_name[0]);
         return; // Stop execution if there's an error
       }
-      console.log("respinse_from_email", res);
+  
       toast.success(res?.data?.success || "Campaign created successfully!");
       navigate(`/preview/${res.data.campaign_id}`);
     } catch (error) {
@@ -277,47 +320,42 @@ const Content = ({ placeholder }) => {
           <div className="container-fluid p-2">
             <form onSubmit={handleSubmit} className="p-0">
               <div className="flex ">
-                <div className="w-full">
-                  <label htmlFor="EmailUseTLS"> Sender</label>
-                  <Select
-                    options={options.smtps}
-                    isMulti
-                    value={selectedOptions.smtps}
-                    onChange={(selectedOption) =>
-                      handleChange(selectedOption, "smtp")
-                    }
-                    className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md  pl-2
-                 focus:border-blue-500 transition-colors duration-300 appearance-none 
-                 focus:outline-none focus:ring-0"
-                    id="Smtphost"
-                    name="Smtphost"
-                    styles={customStyles}
-                    placeholder="Sender"
-                  />
-                </div>
+              <div className="w-full">
+  <label htmlFor="Smtphost">Sender</label>
+  <Select
+    options={options.smtps} // Assuming this is an array like [{ value: "1", label: "SMTP 1" }, ...]
+    isMulti
+    value={selectedOptions.smtps} // Should be an array of selected options
+    onChange={(selectedOption) => handleChange(selectedOption, "smtp")}
+    className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
+      focus:border-blue-500 transition-colors duration-300 appearance-none 
+      focus:outline-none focus:ring-0"
+    id="Smtphost"
+    name="Smtphost"
+    styles={customStyles}
+    placeholder="Select Sender(s)"
+  />
+</div>
               </div>
 
               <div className="mt-4 w-full">
-                <label htmlFor="EmailUseTLS">Recipient</label>
-                <Select
-                  options={contacts.map((liname) => ({
-                    value: liname.file_id,
-                    label: liname.file_name,
-                  }))}
-                  isMulti
-                  value={selectedRecipients} 
-                  onChange={(selectedOption) =>
-                    handleChange(selectedOption, "Recipient")
-                  }
-                  className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
+  <label htmlFor="Recipient">Recipient</label>
+  <Select
+    options={contacts.map((liname) => ({
+      value: liname.file_id,
+      label: liname.file_name,
+    }))}
+    value={selectedOptions.recipients || null} // Single value or null
+    onChange={(selectedOption) => handleChange(selectedOption, "Recipient")}
+    className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
       focus:border-blue-500 transition-colors duration-300 appearance-none 
       focus:outline-none focus:ring-0"
-                  id="Recipient"
-                  name="Recipient"
-                  styles={customStyles}
-                  placeholder="Recipient"
-                />
-              </div>
+    id="Recipient"
+    name="Recipient"
+    styles={customStyles}
+    placeholder="Select Recipient"
+  />
+</div>
 
               <div className="flex mt-4">
                 <div className="w-full ">
@@ -385,20 +423,28 @@ const Content = ({ placeholder }) => {
                 />
               </div>
 
-              <div className="w-full mt-4  me-6">
-                <label htmlFor="Subject">Subject</label>
-                <input
-                  type="text"
-                  id="Subject"
-                  name="subject"
-                  value={details.subject}
-                  onChange={(e) =>
-                    setDetails({ ...details, subject: e.target.value })
-                  }
-                  className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2
-               focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
-                />
-              </div>
+ 
+               
+              <div className="mt-4 w-full">
+  <label htmlFor="EmailUseTLS">Subject</label>
+  <Select
+    options={subjects.map((liname) => ({
+      value: liname.id,
+      label: liname.name,
+    }))}
+    value={selectedOptions.subjects || null} // Ensure single value or null
+    onChange={(selectedOption) =>
+      handleChange(selectedOption, "Subjects")
+    }
+    className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
+      focus:border-blue-500 transition-colors duration-300 appearance-none 
+      focus:outline-none focus:ring-0"
+    id="Recipient"
+    name="Recipient"
+    styles={customStyles}
+    placeholder="Recipient"
+  />
+</div>
               <div className="" onClick={saveEnteredDetails}>
                 <Editing
                   setSelectedTemplate={setSelectedTemplate}
