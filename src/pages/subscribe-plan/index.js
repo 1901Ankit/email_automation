@@ -134,10 +134,13 @@ const Subscribe = () => {
     try {
       setLoadingStates((prev) => ({ ...prev, [plan.name]: true }));
       const res = await upgradePlan({ plan_name: plan.name });
+      console.log(res);
+      
       if (res.data) {
-        toast.success("Plan upgraded successfully");
+        window.location.href = res.data.redirect_url;
+        // toast.success("Plan upgraded successfully");
       } else {
-        toast.error("Failed to upgrade plan");
+        toast.error("Failed to initiate payment to upgrade plan");
       }
     } catch (error) {
       console.error("Error upgrading plan:", error);
