@@ -152,6 +152,10 @@ const Editing = ({ placeholder }) => {
                             "key",
                             JSON.stringify(item.name)
                           );
+                          sessionStorage.setItem(
+                            "tempId",
+                            JSON.stringify(item.id)
+                          );
                           setSelectedTemplateFileName(item.name);
                         }}
                       >

@@ -28,9 +28,12 @@ const MangeCampaigns = () => {
   const [contactOptions, setContactOptions] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [subjects,setSubjects]=useState([]);
   const [options, setOptions] = useState({
     smtps: [],
   });
+  const [subject,setSubject]=useState([]);
+  const [selectedSubjectName,setSelectedSubjectName]=useState(null);
   const [details, setDetails] = useState({
     display_name: "",
     campaign_name: "",
@@ -88,9 +91,9 @@ const MangeCampaigns = () => {
       const formData = new FormData();
       formData.append("name", details.campaign_name);
       formData.append("display_name", details.display_name);
-      formData.append("subject", details.subject);
+      formData.append("subject",  subject.value);
       formData.append("delay_seconds", details.delay_seconds);
-      formData.append("uploaded_file_name", details.uploaded_file_name);
+      formData.append("uploaded_file__id", details.uploaded_file_name);
       formData.append("contact_list_id", campaignData.contact_list_id[0]);
 
       // Append each SMTP ID separately
@@ -228,61 +231,7 @@ const MangeCampaigns = () => {
     }
   };
 
-  // Function to open dialog with pre-filled data (if editing existing campaign)
-  // const openEditDialog = (existingCampaign = null) => {
-  //   if (existingCampaign) {
-  //     setDetails({
-  //       display_name: existingCampaign.display_name || '',
-  //       campaign_name: existingCampaign.campaign_name || '',
-  //       delay_seconds: existingCampaign.delay_seconds || 5,
-  //       subject: existingCampaign.subject || ''
-  //     });
-
-  //     // Set SMTPs if available
-  //     if (existingCampaign.smtps && Array.isArray(existingCampaign.smtps)) {
-  //       const selectedSmtps = existingCampaign.smtps.map(smtpId => {
-  //         // Find the matching SMTP in availableSmtps
-  //         const matchingSmtp = availableSmtps.find(smtp => smtp.value === smtpId);
-  //         return matchingSmtp || { value: smtpId, label: `SMTP ${smtpId}` };
-  //       });
-  //       setOptions({ smtps: selectedSmtps });
-  //     } else {
-  //       setOptions({ smtps: [] });
-  //     }
-
-  //     // Set contact lists if available
-  //     if (existingCampaign.contact_list_id) {
-  //       const contactList = existingCampaign.contact_list_id;
-  //       const matchingContact = availableContacts.find(c => c.file_id === contactList);
-  //       if (matchingContact) {
-  //         setContacts([{ value: matchingContact.file_id, label: matchingContact.file_name }]);
-  //       } else {
-  //         // If contact list not found in available contacts, create a generic entry
-  //         const contactData = contactLists[contactList];
-  //         const contactName = contactData ? contactData.file_name : `List ${contactList}`;
-  //         setContacts([{ value: contactList, label: contactName }]);
-  //       }
-  //     } else {
-  //       setContacts([]);
-  //     }
-
-  //     setCurrentCampaignId(existingCampaign.id);
-  //   } else {
-  //     // Reset form for new campaign
-  //     setDetails({
-  //       display_name: '',
-  //       campaign_name: '',
-  //       delay_seconds: 5,
-  //       subject: ''
-  //     });
-  //     setOptions({
-  //       smtps: []
-  //     });
-  //     setContacts([]);
-  //     setCurrentCampaignId(null);
-  //   }
-  //   setIsEditModel(true);
-  // };
+ 
 
   useEffect(() => {
     async function getAllCampaigns() {
@@ -363,6 +312,8 @@ const MangeCampaigns = () => {
           `List ${campaignData?.contact_list_id}`;
         console.log("File Name:", filename);
 
+        const subjectName= subjects.find((subject)=>subject.value===campaignData.subject_file_id)
+        setSelectedSubjectName(subjectName);
         // Set form details
         setDetails({
           display_name: campaignData.display_name || "",
@@ -471,7 +422,27 @@ const MangeCampaigns = () => {
     //   toast.error(error?.response?.data?.message || "An unexpected error occurred.");
     // }
   };
-
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await API.getSubjectList();
+        console.log("response_from_subject", response.data);
+        const  formatedSubjects = response.data.subject_file_list.map(
+          (file) => ({
+            value: file.id,
+            label: file.name,
+          })
+        );
+        console.log("formatedSubjects",formatedSubjects);
+        setSubjects(formatedSubjects);
+    
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+        
+      }
+    };
+    fetchSubjects();
+  }, []);
   return (
     <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
       <div className="flex items-center justify-between">
@@ -749,31 +720,45 @@ const MangeCampaigns = () => {
                 )}
               </div>
 
-              {/* Subject Line */}
               <div className="space-y-2">
-                <label
-                  htmlFor="email-subject"
-                  className="block text-sm font-medium text-black "
-                >
-                  Subject Line
-                </label>
-                <input
-                  id="email-subject"
-                  type="text"
-                  value={details.subject}
-                  onChange={(e) =>
-                    setDetails({ ...details, subject: e.target.value })
-                  }
-                  className="block w-full px-2 py-2 rounded-lg border border-[#93c3fd] focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors "
-                  placeholder="Enter email subject"
-                  required
-                />
-                {/* {!details.subject && (
-                  <p className="text-xs text-orange-600 mt-1">
-                    Subject line is required
-                  </p>
-                )} */}
-              </div>
+              <label
+                htmlFor="recipient-select"
+                className="block text-sm font-medium text-black "
+              >
+                 Subject
+              </label>
+              <Select
+                inputId="recipient-select"
+                options={subjects}
+                isMulti={false}
+                value={selectedSubjectName}
+                onChange={(selectedContacts) => {
+                   setSubject(selectedContacts);
+                }}
+                className="react-select-container"
+                classNamePrefix="react-select"
+                placeholder="Select contact lists"
+                noOptionsMessage={() => "No contact lists available"}
+                styles={{
+                  control: (base) => ({
+                    ...base,
+                    borderColor: "#93c3fd",
+                    boxShadow: "none",
+                    "&:hover": {
+                      borderColor: "#4f8af7",
+                    },
+                  }),
+                }}
+              />
+              {contacts.length === 0 && (
+                <p className="text-xs text-orange-600 mt-1">
+                  Please select at least one recipient
+                </p>
+              )}
+            </div>
+
+              {/* Subject Line */}
+              
             </div>
 
             <div className="space-y-2">
