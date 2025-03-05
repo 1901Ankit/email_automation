@@ -91,7 +91,7 @@ const Router = () => {
         {shouldShowHeader && <Header />}
         {isProtectedRoute(location.pathname) && <Sidebar />}
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Login />} />
           <Route path="/reset_password/:uidID/:token" element={<Login />} />
           <Route
             path="/home"
