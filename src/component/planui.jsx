@@ -69,7 +69,7 @@ const Plan_ui = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 ">
+    <div className="flex flex-col items-center justify-center min-h-screen p-6" id="planui">
       {/* Header */}
       <h5 className="text-black font-bold text-3xl md:text-4xl mb-10 leading-snug tracking-tight">
         OUR <span className="text-blue-500 mx-2">PLANS</span>
