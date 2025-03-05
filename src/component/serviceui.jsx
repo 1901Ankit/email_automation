@@ -61,7 +61,7 @@ const benefits = [
 
 const Service_ui = () => {
   return (
-    <div className="relative container-fluid py-5 px-4 mx-auto  mt-5">
+    <div className="relative container-fluid py-5 px-4 mx-auto  mt-5" id="serviceui">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
