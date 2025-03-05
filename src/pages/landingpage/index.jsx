@@ -14,13 +14,14 @@ import About_ui from "../../component/aboutui";
 const Landing = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
-  const links = [
-    { name: "Home", url: "/" },
-    { name: "About", url: "/about" },
-    { name: "Our Services", url: "/services" },
-    { name: "Plan", url: "/plan" },
-    { name: "Contact", url: "/Contact" },
-  ];
+  // const links = [
+  //   { name: "Home", url: "/" },
+  //   { name: "About", url: "/about" },
+  //   { name: "Our Services", url: "/services" },
+  //   { name: "Plan", url: "/plan" },
+  //   { name: "Contact", url: "/Contact" },
+  // ];
+
   return (
     <>
       <div className="container-fluid max-h-[100vh] overflow-auto p-0">
@@ -39,30 +40,91 @@ const Landing = () => {
               <img className="w-36 md:w-48" src={logo} alt="Logo" />
             </Link>
 
-            <Link
-              to="/auth"
-              className="md:hidden px-4 py-2 bg-blue-600 text-white rounded-lg no-underline"
-            >
+            <button className="md:hidden px-4 py-2 bg-blue-600 text-white rounded-lg no-underline">
               Login
-            </Link>
+            </button>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-6">
-              {links.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.url}
-                  className="text-black font-medium no-underline hover:text-blue-600"
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <Link
-                to="/auth"
-                className="px-4 py-2 border border-blue-500 text-white rounded-lg bg-blue-500 transition hover:bg-blue-700 no-underline"
+              <button className="text-black font-medium no-underline hover:text-blue-600">
+                Home
+              </button> 
+              <button
+                className="text-black font-medium no-underline hover:text-blue-600"
+                onClick={() => {
+                  const aboutSection = document.getElementById("aboutui");
+                  if (aboutSection) {
+                    aboutSection.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                    setTimeout(() => {
+                      window.scrollBy(0, -100);
+                    }, 300);
+                  }
+                }}
+              >
+                About
+              </button>
+
+              <button
+                className="text-black font-medium no-underline hover:text-blue-600"
+                onClick={() => {
+                  const aboutSection = document.getElementById("serviceui");
+                  if (aboutSection) {
+                    aboutSection.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                    setTimeout(() => {
+                      window.scrollBy(0, -100);
+                    }, 300);
+                  }
+                }}
+              >
+                Our Services
+              </button>
+              <button
+                className="text-black font-medium no-underline hover:text-blue-600"
+                onClick={() => {
+                  const aboutSection = document.getElementById("planui");
+                  if (aboutSection) {
+                    aboutSection.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                    setTimeout(() => {
+                      window.scrollBy(0, -100);
+                    }, 300);
+                  }
+                }}
+              >
+                Plan
+              </button>
+              <button
+                className="text-black font-medium no-underline hover:text-blue-600"
+                onClick={() => {
+                  const aboutSection = document.getElementById("contactui");
+                  if (aboutSection) {
+                    aboutSection.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                    setTimeout(() => {
+                      window.scrollBy(0, -100);
+                    }, 300);
+                  }
+                }}
+              >
+                Contact
+              </button>
+
+              <button
+                className="px-4 py-2 border border-blue-500 text-white rounded-lg bg-blue-500 transition
+               hover:bg-blue-700 no-underline"
               >
                 Login
-              </Link>
+              </button>
 
               {/* Support Icon */}
               <a href="tel:+18002102858">
@@ -74,28 +136,92 @@ const Landing = () => {
           {/* Mobile Menu */}
           {isOpen && (
             <div className="md:hidden bg-white border-t border-gray-200">
-              {links.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.url}
-                  className="block p-4 border-b border-gray-200 hover:bg-gray-100"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
               <Link
-                to="/auth"
-                className="block p-4 text-center bg-blue-600 text-white"
+                to="/"
+                className="block p-4 border-b border-gray-200 hover:bg-gray-100"
                 onClick={() => setIsOpen(false)}
               >
-                Login
+                Home
               </Link>
+              <button
+                to="/about"
+                className="block p-4 border-b border-gray-200 hover:bg-gray-100"
+                onClick={() => {
+                  const aboutSection = document.getElementById("aboutui");
+                  if (aboutSection) {
+                    aboutSection.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                    setTimeout(() => {
+                      window.scrollBy(0, -100);
+                    }, 300);
+                  }
+                }}
+              >
+                About
+              </button>
+              <button
+                to="/services"
+                className="block p-4 border-b border-gray-200 hover:bg-gray-100"
+                onClick={() => {
+                  const aboutSection = document.getElementById("serviceui");
+                  if (aboutSection) {
+                    aboutSection.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                    setTimeout(() => {
+                      window.scrollBy(0, -100);
+                    }, 300);
+                  }
+                }}
+              >
+                Our Services
+              </button>
+              <button
+                to="/plan"
+                className="block p-4 border-b border-gray-200 hover:bg-gray-100"
+                onClick={() => {
+                  const aboutSection = document.getElementById("planui");
+                  if (aboutSection) {
+                    aboutSection.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                    setTimeout(() => {
+                      window.scrollBy(0, -100);
+                    }, 300);
+                  }
+                }}
+              >
+                Plan
+              </button>
+              <button
+                to="/contact"
+                className="block p-4 border-b border-gray-200 hover:bg-gray-100"
+                onClick={() => {
+                  const aboutSection = document.getElementById("contactui");
+                  if (aboutSection) {
+                    aboutSection.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                    setTimeout(() => {
+                      window.scrollBy(0, -100);
+                    }, 300);
+                  }
+                }}
+              >
+                Contact
+              </button>
+
+           
             </div>
           )}
         </div>
         {/* Banner Section */}
-        <div className="relative h-[200px] md:h-[430px]">
+        <div className="relative h-[100%] md:h-[450px]">
           {/* Background Image */}
           <img
             src={blue}
@@ -104,15 +230,14 @@ const Landing = () => {
           />
 
           {/* Content */}
-          <div className="relative z-10 flex items-center justify-center h-full w-full">
-            <div className="container px-4">
+          <div className= "relative z-10 flex items-center justify-center h-full w-full">
+            <div className="container px-0 md:px-4">
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-                {/* Text Content (4 Columns on Small Screens & Above) */}
                 <div className="sm:col-span-7 text-center text-white px-4">
-                  <h1 className="mb-6 font-extrabold text-start text-xl md:text-5xl w-9/12">
-                    THE NEW GO -TO EMAIL PLATFORM{" "}
+                  <h1 className="mb-6 font-extrabold text-start text-3xl md:text-5xl md:w-9/12 w-full">
+                    THE NEW GO -TO EMAIL PLATFORM
                   </h1>
-                  <p className="w-9/12 text-justify">
+                  <p className="md:w-9/12 w-full text-justify">
                     We provide you with RERA registration, RERA consultancy,
                     RERA implementation, RERA complaints and many more other
                     services.
@@ -131,7 +256,7 @@ const Landing = () => {
                       <span>About us </span>
                     </button>
                   </div>
-                  <p className="w-9/12 text-justify mt-3">
+                  <p className="md:w-9/12 w-full text-justify mt-3 ">
                     We provide you with RERA registration, RERA consultancy,
                     RERA implementation.
                   </p>
@@ -142,7 +267,7 @@ const Landing = () => {
                   <div className="absolute inset-0 flex items-center justify-between">
                     <img
                       src={girl2}
-                      className=" w-[95%] object-cover animate-[spin_12s_linear_infinite] "
+                      className=" w-[80%] object-cover animate-[spin_12s_linear_infinite] "
                       alt="Girl2"
                       style={{
                         marginLeft: "90px",

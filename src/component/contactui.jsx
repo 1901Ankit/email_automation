@@ -3,7 +3,7 @@ import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 
 const Contactui = () => {
   return (
-    <div className="container mx-auto mt-5 px-4 md:px-20">
+    <div className="container mx-auto mt-5 px-4 md:px-20" id="contactui">
       <div className="flex flex-wrap mb-4">
         <div className="w-full sm:w-1/2 pr-8">
           <div>
