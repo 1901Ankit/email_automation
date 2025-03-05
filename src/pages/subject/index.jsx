@@ -140,9 +140,9 @@ const Subject = () => {
   };
   const handleCsvPreview = async (file_id) => {
     try {
-      const res = await API.getSingleSubjectList(file_id);
-      console.log("res_from_subjects_preview", res);
-      setPreviewData(res.data);
+      const response = await API.getSingleSubjectList(file_id);
+      // console.log("res_from_subjects_preview", res);
+      setPreviewData(response.data.data.data?response.data.data.data:response.data.data);
     } catch (error) {}
     
     setIsCsvPreviewOpen(true);
@@ -475,7 +475,7 @@ const Subject = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {previewData?.data?.data?.map((contact, index) => (
+                    {previewData?.map((contact, index) => (
                       <tr key={index}>
                         <td className="px-6 py-3 text-xs text-gray-500 text-center border">
                           {contact.Subject || "No Subject"}

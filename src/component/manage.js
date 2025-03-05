@@ -11,7 +11,8 @@ import * as DeviceAPI from "../api/user_profile";
 import * as UserAPI from "../api/user";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-
+ 
+import { ChevronUp, LogOut } from "lucide-react";
 const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   const [devices, setDevice] = useState(null);
   const [showOtpModal, setShowOtpModal] = useState(false);
@@ -179,51 +180,54 @@ console.log("Handle_Dd",res);
           const operatingSystem = systemInfo?.[1] || "Unknown OS";
           const loginDate = systemInfo?.[2] || "Unknown Date";
           const loginTime = systemInfo?.[3] || "Unknown Time";
-
+     
           return (
             <div
-              key={index}
-              className="flex-shrink-0 min-w-[230px] px-2 max-h-[100vh] overflow-auto"
-            >
-              <div className="box relative flex flex-col h-full justify-start bg-white p-2 shadow-custom rounded-md border-t-4 border-b-4 border-[#3B82F6] shadow-md shadow-[#3B82F6]/70">
-                {localStorage.getItem("device_id") == item.device_id && (
-                  <span className="absolute text-sm text-green-500 font-semibold">
-                    Current
-                  </span>
-                )}
+  key={index}
+  className="flex-shrink-0 min-w-[230px] px-2 max-h-[100vh] overflow-auto"
+>
+  <div className="border border-blue-300 rounded-lg p-4 w-full max-w-md mx-auto bg-white shadow-md">
+    <div className="flex items-center justify-between space-x-4">
+      {/* Device Icon & Info */}
+      <div className="flex items-center space-x-3">
+        <div className="relative w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full shadow-md">
+          <img
+            src="https://cdn.pixabay.com/photo/2016/04/13/14/27/google-chrome-1326908_1280.png" // Replace with actual icon path
+            alt="Device Icon"
+            className="w-10 h-10 object-contain"
+          />
+        </div>
 
-                <div>
-                  <h3 className="text-lg font-semibold text-center">
-                    Device {index + 1}
-                  </h3>
-                  <ol className="mt-3 text-gray-700 space-y-1 text-sm">
-                    <li>
-                      <strong>Browser Name:</strong> {browserName}
-                    </li>
-                    <li>
-                      <strong>Operating System:</strong> {operatingSystem}
-                    </li>
-                    <li>
-                      <strong>Login Date:</strong> {loginDate}
-                    </li>
-                    <li>
-                      <strong>Login Time:</strong> {loginTime}
-                    </li>
-                  </ol>
-                </div>
+        <div className="p-2">
+          <div className="flex items-center space-x-2">
+            <span className="font-semibold text-gray-800">{operatingSystem}</span>
+            {localStorage.getItem("device_id") == item.device_id && (
+              <span className="bg-blue-100 text-blue-600 text-xs font-medium px-2 py-0.5 rounded-md">
+                Current
+              </span>
+            )}
+          </div>
+          <div className="mt-1 space-y-1">
+            <p className="text-sm text-gray-600">{browserName}</p>
+            <p className="text-sm text-gray-600">{item.device_name}</p>
+            <p className="text-sm text-gray-600">{loginDate} at {loginTime}</p>
+          </div>
+        </div>
+      </div>
 
-                <div className="flex-grow"></div>
-                <div className="mt-2 flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => handleLogoutClick(item.device_id)}
-                    className="font-montserrat text-[#f7fff7] border-none rounded-lg py-1 px-3 cursor-pointer inline-flex items-center bg-[#3B82F6]"
-                  >
-                    Logout
-                  </button>
-                </div>
-              </div>
-            </div>
+      {/* Logout Button */}
+      <div className="flex flex-col items-center space-y-2">
+        <button
+          onClick={() => handleLogoutClick(item.device_id)}
+          className="p-2 rounded-full text-red-500 hover:bg-red-100 transition duration-200"
+        >
+          <LogOut className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
           );
         })}
       </div>

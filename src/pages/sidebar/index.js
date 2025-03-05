@@ -51,7 +51,7 @@ const Sidebar = () => {
       name: "Template",
       path: "/template",
       icon: <LuLayoutTemplate style={{ fontSize: "18px" }} />,
-    },
+    },  
     {
       name: "Manage  Campaigns",
       path: "/manage-campaigns",

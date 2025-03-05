@@ -26,4 +26,5 @@ export const getAllCampigns= ()=>API.get("/campaigns-list/");
 export const deleteCampigns= (id)=>API.delete(`/campaigns/${id}/`)
 export const getSingleCampigns= (id)=>API.get(`/campaigns/${id}/`)
 export const  updateCampaign= (id,data)=>API.put(`/campaigns/${id}/`,data);
+export const sendEnquiry = (data) => API.post("/enquiry/", data);
 export default API;
