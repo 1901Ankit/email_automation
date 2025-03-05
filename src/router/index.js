@@ -47,34 +47,34 @@ const Router = () => {
       navigate("/");
     }
   };
-  useEffect(() => {
-    const refreshToken = localStorage.getItem("refresh_token");
-    if (refreshToken !== "") {
-      isTokenBlackListed();
-    }
-  }, [location.pathname]);
+  // useEffect(() => {
+  //   const refreshToken = localStorage.getItem("refresh_token");
+  //   if (refreshToken !== "") {
+  //     isTokenBlackListed();
+  //   }
+  // }, [location.pathname]);
 
-  useEffect(() => {
-    if (!token) {
-      if (location.pathname.startsWith("/reset_password")) {
-        sessionStorage.clear();
-        localStorage.clear();
-      } else {
-        sessionStorage.clear();
-        localStorage.clear();
-        navigate("/");
-      }
-    }
-  }, [token, navigate, location.pathname]);
-  useEffect(() => {
-    if (
-      token &&
-      (location.pathname === "/" ||
-        location.pathname.startsWith("/reset_password"))
-    ) {
-      navigate("/home");
-    }
-  }, [token, location.pathname, navigate]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     if (location.pathname.startsWith("/reset_password")) {
+  //       sessionStorage.clear();
+  //       localStorage.clear();
+  //     } else {
+  //       sessionStorage.clear();
+  //       localStorage.clear();
+  //       navigate("/");
+  //     }
+  //   }
+  // }, [token, navigate, location.pathname]);
+  // useEffect(() => {
+  //   if (
+  //     token &&
+  //     (location.pathname === "/" ||
+  //       location.pathname.startsWith("/reset_password"))
+  //   ) {
+  //     navigate("/home");
+  //   }
+  // }, [token, location.pathname, navigate]);
 
   const isProtectedRoute = (path) => {
     return (
@@ -157,6 +157,7 @@ const Router = () => {
           />
           <Route path="/404" element={<Errorpage />} />
           <Route path="*" element={<Errorpage />} />
+          <Route path="/auth" element={<Login/>} />
         </Routes>
       </div>
     </>

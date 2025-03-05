@@ -3,16 +3,13 @@ import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 
 import * as API from "../../api/user";
 import Select from "react-select";
-import { FiPlus } from "react-icons/fi";
+ 
  
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Dialog } from "@headlessui/react";
  
-// import { toast } from "react-toastify";
-// import { FiPlus } from 'react-icons/fi';
-// import { useNavigate } from 'react-router-dom';
-// import { Dialog } from '@headlessui/react'
+ 
  
 import * as SMTPAPI from "../../api/smtp";
 import Editing from "../../component/templatedit";
@@ -43,7 +40,7 @@ const MangeCampaigns = () => {
   });
 
   // State for contact lists
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(null);
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -70,13 +67,14 @@ const MangeCampaigns = () => {
 
   // Function to handle saving the form
   const handleSaveChanges = async () => {
+    console.log("details", details);
     const isValid =
-      details.display_name &&
-      details.campaign_name &&
-      details.subject &&
-      details.delay_seconds >= 0 &&
-      options.smtps.length > 0 &&
-      contacts.length > 0;
+      details.display_name  ||
+      details.campaign_name  ||
+      details.subject  ||
+      details.delay_seconds >= 0 ||  
+      options.smtps.length > 0  ||
+      details.contact_list_id
 
     if (isValid) {
       const campaignData = {
@@ -85,16 +83,16 @@ const MangeCampaigns = () => {
         delay_seconds: details.delay_seconds,
         subject: details.subject,
         smtps: options.smtps.map((smtp) => smtp.value),
-        contact_list_id: contacts.map((contact) => contact.value),
+        contact_list_id:  details.contact_list_id,
       };
-      console.log("campainen", campaignData);
+      console.log("ck", campaignData);
       const formData = new FormData();
       formData.append("name", details.campaign_name);
       formData.append("display_name", details.display_name);
       formData.append("subject",  subject.value);
       formData.append("delay_seconds", details.delay_seconds);
       formData.append("uploaded_file__id", details.uploaded_file_name);
-      formData.append("contact_list_id", campaignData.contact_list_id[0]);
+      formData.append("contact_list_id", campaignData.contact_list_id);
 
       // Append each SMTP ID separately
       if (Array.isArray(campaignData.smtps)) {
@@ -112,7 +110,7 @@ const MangeCampaigns = () => {
           // Update existing campaign
           try {
             const response = await updateCampaign(currentCampaignId, formData);
-
+console.log("response",response)
             if (response && response.data) {
               console.log("Response Data:", response.data);
               toast.success("Campaign updated successfully");
@@ -167,7 +165,7 @@ const MangeCampaigns = () => {
         toast.error(error.response?.data?.message || "Failed to save campaign");
       }
     } else {
-      toast.error("Please complete all required fields correctly");
+      toast.error("Please make Change at lease on field to update the campaign");
     }
   };
 
@@ -211,6 +209,7 @@ const MangeCampaigns = () => {
   const updateCampaign = async (id, data) => {
     try {
       const response = await API.updateCampaign(id, data);
+      console.log("response_updated",response)
       return response;
     } catch (error) {
       console.error("Error updating campaign:", error);
@@ -405,22 +404,7 @@ const MangeCampaigns = () => {
     navigate(`/preview/${id}`)
      
 
-    // try {
-    //   const formdata = new FormData();
-    //   formdata.append("campaign_id", id);
-  
-    //   const res = await SMTPAPI.sendEmail(formdata);
-  
-    //   if (res?.status === 200) {
-    //     toast.success("Email sent successfully!");
-    //     console.log("RES_FROM_SEND", res);
-    //   } else {
-    //     toast.error(res?.data?.message || "Failed to send email. Please try again.");
-    //   }
-    // } catch (error) {
-    //   console.error("Error sending email:", error);
-    //   toast.error(error?.response?.data?.message || "An unexpected error occurred.");
-    // }
+    
   };
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -498,7 +482,7 @@ const MangeCampaigns = () => {
                       : "Loading..."}
                   </td>
                   <td className="border border-gray-400 px-4 py-2">
-                    {comp.name}
+                    {comp.uploaded_file_id}
                   </td>
                   <td className="px-4 py-2 flex gap-10">
                     <button
@@ -603,9 +587,10 @@ const MangeCampaigns = () => {
               <Select
                 inputId="recipient-select"
                 options={contactOptions}
-                isMulti
+                isMulti={false}
                 value={contacts}
                 onChange={(selectedContacts) => {
+                  setDetails({ ...details, contact_list_id: selectedContacts.value });
                   setContacts(selectedContacts);
                 }}
                 className="react-select-container"
@@ -623,11 +608,7 @@ const MangeCampaigns = () => {
                   }),
                 }}
               />
-              {contacts.length === 0 && (
-                <p className="text-xs text-orange-600 mt-1">
-                  Please select at least one recipient
-                </p>
-              )}
+              
             </div>
 
             {/* Display Name */}
@@ -734,6 +715,7 @@ const MangeCampaigns = () => {
                 value={selectedSubjectName}
                 onChange={(selectedContacts) => {
                    setSubject(selectedContacts);
+                   setDetails({...details , subject: selectedContacts.value})
                 }}
                 className="react-select-container"
                 classNamePrefix="react-select"
@@ -750,11 +732,7 @@ const MangeCampaigns = () => {
                   }),
                 }}
               />
-              {contacts.length === 0 && (
-                <p className="text-xs text-orange-600 mt-1">
-                  Please select at least one recipient
-                </p>
-              )}
+               
             </div>
 
               {/* Subject Line */}
@@ -782,14 +760,7 @@ const MangeCampaigns = () => {
             <button
               className="px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md transition-all font-medium flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleSaveChanges}
-              disabled={
-                !details.display_name ||
-                !details.campaign_name ||
-                !details.subject ||
-                details.delay_seconds < 0 ||
-                options.smtps.length === 0 ||
-                contacts.length === 0
-              }
+              
               type="button"
             >
               {currentCampaignId ? "Update Campaign" : "Save Campaign"}
