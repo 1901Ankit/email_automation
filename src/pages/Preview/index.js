@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import Rightside from "../../component/rightsidebar";
 import * as TokenAPI from "../../api/user_profile";
 import * as API from "../../api/user";
+import * as templateAPI from "../../api/emailTemplate";
 const Preview = ({ placeholder }) => {
   const editor = useRef(null);
   const location = useLocation();
@@ -33,6 +34,8 @@ const Preview = ({ placeholder }) => {
     failed_sends: 0,
     email_statuses: [],
   });
+   const [templates, setTemplates] = useState([]);
+     const [subjects, setSubjects] = useState([]);
   const [content, setContent] = useState(``);
   const [isLoading, setIsLoading] = useState(false);
   const [HTMLtemplate, setHTMLtemplate] = useState(null);
@@ -40,6 +43,8 @@ const Preview = ({ placeholder }) => {
   const [options, setOptions] = useState({ smtps: [] });
   const [file, setFile] = useState(null);
   const [showData, setShowData] = useState({});
+ const [templateName, setTemplateName] = useState();
+ const [ subjectName, setSubjectName] = useState();
   const [showContactDetails, setShowContactDetails] = useState({});
   const params = useParams();
   console.log("Params_From_react", params);
@@ -50,7 +55,7 @@ const Preview = ({ placeholder }) => {
     }),
     [placeholder]
   );
-
+ 
   const isTokenBlackListed = async (user) => {
     const formData = new FormData();
     formData.append("refresh_token", localStorage.getItem("refresh_token"));
@@ -122,61 +127,72 @@ const Preview = ({ placeholder }) => {
     };
   }, []);
 
-  useEffect(() => {
-    // console.log("location.state", location.state);
-    // if (location.state && location.state.file) {
-    //   setFile(location.state.file);
-    // } else {
+  // First useEffect: Fetch data
+useEffect(() => {
+  const fetchUserAllSavedTemplate = async () => {
+    try {
+      const response = await templateAPI.getSavedEmailTemplates();
+      console.log("responsee_temp", response);
+      setTemplates(response.data);
+    } catch (error) {
+      console.log("Error fetching templates", error);
+    }
+  };
+   
+      const fetchSubjects = async () => {
+        try {
+          const response = await API.getSubjectList();
+          // console.log("response_from_subject", response.data);
+          setSubjects(response.data.subject_file_list);
+         
+        } catch (error) {
+          console.error("Error fetching contacts:", error);
+        
+        }
+      };
+ 
+   
 
-    //   setFile(null);
-    //   navigate("/detail", { replace: true });
-    // }
-    // setDetails(JSON.parse(sessionStorage.getItem("details")));
-    // setOptions(JSON.parse(sessionStorage.getItem("options")));
-    // const fileData = JSON.parse(sessionStorage.getItem("csv"));
+  const getContactDetails = async (id) => {
+    try {
+      const res = await API.getSingleContactList(id);
+      setShowContactDetails(res.data);
+    } catch (error) {
+      console.log("Error fetching contact details", error);
+    }
+  };
 
-    // const selectedHTMLFile = async () => {
-    //   try {
-    //     const response = await fetch(
-    //       `https://emailbulkshoot.s3.amazonaws.com/${JSON.parse(
-    //         sessionStorage.getItem("key")
-    //       )}`
-    //     );
-    //     const html = await response.text();
-    //     setHTMLtemplate(html);
-    //   } catch (error) {}
-    // };
-    // selectedHTMLFile();
-    // const formData = new FormData();
-    // formData.append("file", fileData);
-    const getContactDetails = async (id) => {
-      try {
-        const res = await API.getSingleContactList(id);
-        setShowContactDetails(res.data);
-      } catch (error) {
-        console.log("Error", error);
-      }
-    };
+  const getCampaignDataFromParams = async () => {
+    try {
+      const res = await API.getSingleCampigns(params?.id);
+      getContactDetails(res.data.contact_list_id);
+      setShowData(res.data);
+    } catch (error) {
+      console.log("Error fetching campaign data", error);
+    }
+  };
 
-    const getCampaignDataFromParams = async () => {
-      try {
-        const res = await API.getSingleCampigns(params?.id);
-        getContactDetails(res.data.contact_list_id);
-        setShowData(res.data);
-        console.log("Getting data from Response", res);
-      } catch (error) {
-        console.log("Errr", error);
-      }
-    };
-    getCampaignDataFromParams();
+  const fetchData = async () => {
+    await fetchUserAllSavedTemplate();
+    await      fetchSubjects();
+    await getCampaignDataFromParams();
+    setLoading(false);
+  };
 
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1400);
+  fetchData();
+}, [params?.id]);
 
-    return () => clearTimeout(timer);
-  }, []);
-
+// Second useEffect: Filter templates once they’re available
+useEffect(() => {
+  if (showData && templates.length > 0 && subjects.length>0) {
+    const tempname = templates.filter((temp) => temp.id === showData?.uploaded_file_id);
+    const subjname= subjects.filter((sub)=>sub.id===showData?.subject_file_id);
+    setSubjectName(subjname[0]?.name || "");
+    console.log("Filtered tempname in second useEffect", tempname);
+    setTemplateName(tempname[0]?.name || "");
+  }
+  
+}, [templates, showData,subjects]);
   const openModal = () => {
     const blocksFromHTML = ContentState.createFromText(content);
     setEditorState(EditorState.createWithContent(blocksFromHTML));
@@ -220,6 +236,7 @@ const Preview = ({ placeholder }) => {
   //   setIsLoading(false);
   // };
 
+  
   const onhandleSendEmail = async () => {
     setIsLoading(true);
     try {
@@ -280,7 +297,7 @@ const Preview = ({ placeholder }) => {
                     type="text"
                     id="subject"
                     name="subject"
-                    value={showData.subject}
+                    value={subjectName}
                     className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
                     readOnly
                   />
@@ -317,7 +334,8 @@ const Preview = ({ placeholder }) => {
               <div className="w-full mt-4">
                 <label htmlFor="content">UPLOADED FILE </label>
                 <input
-                  value={showData.uploaded_file_name}
+                  value={templateName
+                  }
                   className="block w-full mt-1 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 text-gray-400 focus:border-blue-500 focus:bg-white transition-colors duration-300"
                   readOnly
                 />

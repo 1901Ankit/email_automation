@@ -54,13 +54,13 @@ const Login = () => {
   const { uidID, token } = useParams();
   const location = useLocation();
 
-  useEffect(() => {
-    if (location.pathname.includes("/reset_password")) {
-      setShowResetFields(true);
-      setShowSignupFields(false);
-      setShowSigninFields(false);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location.pathname.includes("/reset_password")) {
+  //     setShowResetFields(true);
+  //     setShowSignupFields(false);
+  //     setShowSigninFields(false);
+  //   }
+  // }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
