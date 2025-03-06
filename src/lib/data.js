@@ -84,355 +84,227 @@ export const templates = [
     id: 3,
     category: "Business",
     html: `
- <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wish Geeks Tech Service</title>
+    <title>Teams Announcement</title>
   </head>
-  <body >
+  <body>
     <table
-      style="width: 100%; max-width: 600px; height: 100%; position: relative; margin: 0 auto;padding: 0;  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); overflow-x: hidden; overflow-y: hidden; overflow-x: hidden;"
+      style="
+        width: 100%;
+        max-width: 600px;
+        background-color: white;
+        border-collapse: collapse;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        margin: 0 auto;
+      "
     >
+      <!-- Header Section -->
+      <tr>
+        <td
+          class="header"
+          style="
+            background-image: url('https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Frame+1010110237.png');
+            background-size: cover;
+            height: 200px;
+            text-align: left;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+            overflow-x: hidden;
+          "
+        >
+          <img
+            src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/techserve+logo.png"
+            alt="Header Image"
+            style="position: absolute; top: 30px; left: 10px; width: 50%; max-width: 250px; border-radius: 5px; z-index: 2;"
+          />
+        </td>
+      </tr>
+
       <tr>
         <td>
-          <table
-            role="presentation"
-            cellpadding="0"
-            cellspacing="0"
-            width="100%"
-            align="center"
-            style="background-color: #fff; width: 100%;"
+          <div
+            style="width: 100%; height: 5px; background-color: rgba(51, 141, 251, 1); margin-top: 4px;"
+          ></div>
+        </td>
+      </tr>
+
+<!-- Image Section -->
+<!-- Image Section -->
+<tr>
+  <td align="center" style="position: relative; display: flex; justify-content: center; align-items: center;">
+    <img
+      align="center"
+      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/cuate.png"
+      alt="Welcome Image"
+      style="width: 50%; max-width: 230px; height: auto; margin-top: -100px; border-radius: 10px; background-color: #fff; position: static; z-index: 2;"
+    />
+  </td>
+</tr>
+
+
+
+<!-- Content Section -->
+<tr>
+  <td
+    class="content"
+    style="text-align: center; color: rgba(51, 141, 251, 1); padding: 0 20px;"
+  >
+    <div
+      class="g-iamg"
+      style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;"
+    >
+      <img
+        src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Ellipse+2670.png"
+        style="max-width: 400px; height: auto; position: relative; margin-top: -170px; z-index: 1;"
+      />
+    </div>
+    <h1
+      style="font-weight: 700; font-size: 3vw; margin-top: -180px; font-family: 'Inter', sans-serif; z-index: 3;"
+    >
+      Team are here!
+    </h1>
+    <p
+      style="font-size: 1vw; margin-bottom: 25px; color: rgba(51, 141, 251, 1); z-index: 3;"
+    >
+      Today you can invite your team to start collaborating on <br> user insights
+    </p>
+  </td>
+</tr>
+
+
+      
+      <!-- Button Section -->
+      <tr>
+        <td
+          class="grow-section"
+          style="display: flex; margin-left: 40px; margin-top: 40px"
+        >
+          <h2
+            style="
+              display: flex;
+              color: rgba(64, 123, 255, 1);
+              font-size: 1.7vw;
+              font-family: 'Inter', sans-serif;
+            "
           >
-            <!-- Header Section -->
-            <tr>
-              <td>
-                <div
-                  style="position: relative; display: flex; flex-direction: row; gap: 10px; max-width: 100%;"
-                >
-                  <!-- Left Side: Image with Logo -->
-                  <div style="flex: 1; position: relative; max-width: 100%">
-                    <img
-                      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/background+image+header.png"
-                      alt=""
-                      style="width: 95%; height:auto; max-width: 100%;"
-                    />
-                    <!-- Logo on top of the left image -->
-                    <img
-                      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/techserve+logo.png"
-                      style="width: 150px; position: absolute; top: 10px; left: 5px;"
-                      alt="Techserve Logo"
-                    />
-                  </div>
+            COME GROW WITH US:
+          </h2>
+        </td>
+      </tr>
 
-                  <!-- Right Side: Image with Text -->
-                  <div style="flex: 1; position: relative; max-width: 100%">
-                    <img
-                      src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/7.png"
-                      alt=""
-                      style="width: 100%; height: auto; margin-top: 7%; max-width: 100%;"
-                    />
-                    <h1
-                      style="margin: 0; font-size: 16px; line-height: 1.2; position: absolute; top: 20%; left: 40px; color: white; font-family: inter, sans-serif;"
-                    >
-                      We're here to fix all your Tech Needs
-                    </h1>
-                  </div>
-                </div>
-              </td>
-            </tr>
+      <!-- Circle Container -->
+      <tr>
+        <td
+          class="circle-container"
+          style="display: flex; justify-content: space-evenly; margin-top: 20px; width: 100%; padding: 0px; flex-wrap: wrap;"
+        >
+          <!-- Circle 1 -->
+          <div
+            class="circle"
+            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px; position: relative;"
+          >
+            <img
+              src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/building+projection.png"
+              alt="Build"
+              style="width: 30%;"
+            />
+            <h4 style="margin-top: 10px; color: #000; font-size: 14px">Build</h4>
+            <p
+              style="font-size: 10px; color: #000; text-align: center; width: 110px; margin-top: -10px;"
+            >
+              Alone we can do so little, together we can do so much.
+            </p>
+          </div>
 
-            <!-- About Us Section -->
-            <tr>
-              <td style="padding: 20px; position: absolute; margin-top: -100px;">
-                <div
-                  style="display: flex; justify-content: space-between; align-items: center; max-width: 100%;"
-                >
-                  <div style="flex: 1">
-                    <img
-                      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Group+1010108067.png"
-                      alt="About Us Image"
-                      style="width: 100%; height: auto; max-width: 100%;"
-                    />
-                  </div>
-                  <!-- Left Side: About Us Text -->
-                  <div style="flex: 1;">
-                    <h2 style="color: #f7f2f2; margin-left: 25px; font-size: 18px; font-family: inter, sans-serif;">
-                      About Us:
-                    </h2>
-                    <p style="color: #666666; line-height: 1.5; font-family: inter, sans-serif;">
-                      We provide expert solutions for a wide range of IT service needs.
-                      From cameras and GPS systems to printers, routers, WiFi networks,
-                      and support for computers and mobile devices, our services ensure
-                      seamless performance for both home and business environments.
-                    </p>
-                  </div>
-                </div>
+          <!-- Circle 2 -->
+          <div
+            class="circle"
+            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px; position: relative;"
+          >
+            <img
+              src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/growing+graph+icon.png"
+              alt="Grow"
+              style="width: 30%;"
+            />
+            <h4 style=" margin-top: 10px; color: #000; font-size: 14px">Grow</h4>
+            <p
+              style="font-size: 10px; color: #000; text-align: center; width: 110px; margin-top: -10px; line-height: 10px;"
+            >
+              Growth, in some curious way, depends on being always in motion.
+            </p>
+          </div>
 
-                   <!-- Below Section (text centered) -->
-                   <div
-                   style="
-                     background-color: #f5f9ff;
-                     text-align: center; /* Centering content inside the div */
-                     height: 80px;
-                     padding: 10px;
-                     width: 47%;
-                     margin-left: 350px;
-                     margin-top: -50px; /* Adds space between the two sections */
-                   "
-                 >
-                   <p
-                     style="
-                       color: #156cd6;
-                       font-size: 15px;
-                       font-weight: bold;
-                     
-                       margin: 0 auto;
-                       text-align: center;
-                       font-family: inter, sans-serif;
-                       padding: 2px;
-                       text-align: right;
-                     "
-                   >
-                     Avail the Services starting from $9.99 Monthly. Get 10%
-                     Discount with membership includes.
-                   </p>
-                 </div>
-              </td>
-            </tr>
+          <!-- Circle 3 -->
+          <div
+            class="circle"
+            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px; position: relative;"
+          >
+            <img
+              src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/monitor+with+small+text+on+the+screen.png"
+              alt="Monitor"
+              style="width: 30%; margin-bottom: 10px;"
+            />
+            <h4 style=" color: #000; font-size: 14px">Monitor</h4>
+            <p
+              style="font-size: 10px; color: #000; text-align: center; width: 110px; margin-top: -10px;"
+            >
+              From visionary leaders to creative minds.
+            </p>
+          </div>
 
-            <!-- Services Icons Section -->
-            <tr>
-              <td>
-                <table
-                  role="presentation"
-                  width="100%"
-                  style="border-radius: 10px; margin-top: 200px; width: 100%;"
-                >
-                  <!-- Main content row with 60% for cards and 40% for image -->
-                  <tr>
-                    <td
-                      style="width: 60%;  padding: 10px;"
-                    >
-                      <!-- <h2
-                        style="color: #4393f7; font-family: inter, sans-serif; text-align: center; font-size: 20px;"
-                      >
-                        Our Services
-                      </h2> -->
-                      <div style="position: relative; width: 400px; margin: 50px auto; padding: 20px; border: 2px solid rgb(208, 211, 212); border-radius: 10px; text-align: center; background-color: #fff;">
-        
-                        <h2 style="position: absolute; top: -15px; left: 50%; font-size: 18px;  transform: translateX(-50%); background-color: #fff; padding: 0 10px; color: #007bff; margin: 0;">Our Services</h2>
-                      <div
-                        style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;"
-                      >
-                        <!-- Service Card 1 -->
-                        <div
-                          style="width: 30%; box-sizing: border-box; max-width: 30%;"
-                        >
-                          <div
-                            style="width: 100%; height: 120px;  background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;"
-                          >
-                            <img
-                              src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/cuate+(1).png"
-                              alt="GPS"
-                              style="width: 60px; height: auto;  margin-top: 30px;"
-                            />
-                            <p
-                              style="margin-top: 8px; font-size: 14px; color: #333; font-family: inter, sans-serif;"
-                            >
-                            Web App Developmemnt
-                            </p>
-                          </div>
-                        </div>
+          <!-- Circle 4 -->
+          <div
+            class="circle"
+            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px; position: relative;"
+          >
+            <img
+              src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Medication+schedule+calendar.png"
+              alt="Schedule"
+              style="width: 40%; margin-bottom: 10px;"
+            />
+            <h4 style=" margin-top: -10px; color: #000; font-size: 14px">Schedule</h4>
+            <p
+              style="font-size: 10px; color: #000; text-align: center; width: 110px; margin-top: -10px;"
+            >
+              Success seems to be connected with action.
+            </p>
+          </div>
+        </td>
+      </tr>
 
-                        <!-- Service Card 2 -->
-                        <div
-                          style="width: 30%; box-sizing: border-box; max-width: 30%;"
-                        >
-                          <div
-                            style="width: 100%; height: 120px;  background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;"
-                          >
-                            <img
-                              src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/amico.png"
-                              alt="Printer"
-                              style="width: 60px; height: auto;  margin-top: 30px;"
-                            />
-                            <p
-                              style="font-size: 14px; color: #333; font-family: inter, sans-serif;"
-                            >
-                              Email Marketing
-                            </p>
-                          </div>
-                        </div>
-
-                        <!-- Service Card 3 -->
-                        <div
-                          style="width: 30%; box-sizing: border-box; max-width: 30%;"
-                        >
-                          <div
-                            style="width: 100%;height: 120px;  background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;"
-                          >
-                            <img
-                              src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/cuate+(2).png"
-                              alt="Alarm"
-                              style="width: 60px; height: auto;  margin-top: 30px;"
-                            />
-                            <p
-                              style="margin-top: 8px; font-size: 14px; color: #333; font-family: inter, sans-serif;"
-                            >
-                            Social Media Marketing
-                            </p>
-                          </div>
-                        </div>
-
-                        <!-- Service Card 4 -->
-                        <div
-                          style="width: 30%; box-sizing: border-box; max-width: 30%;"
-                        >
-                          <div
-                            style="width: 100%; height: 120px;  background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;"
-                          >
-                            <img
-                              src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/rafiki+(1).png"
-                              alt="Computer"
-                              style="width: 60px; height: auto;  margin-top: 30px;"
-                            />
-                            <p
-                              style="margin-top: 8px; font-size: 14px; color: #333; font-family: inter, sans-serif;"
-                            >
-                            UI/UX Design
-                            </p>
-                          </div>
-                        </div>
-                           <!-- Service Card 5 -->
-                           <div
-                           style="width: 30%; box-sizing: border-box; max-width: 30%;"
-                         >
-                           <div
-                             style="width: 100%; height: 120px;  background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;"
-                           >
-                             <img
-                               src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/cuate.png"
-                               alt="Computer"
-                               style="width: 60px; height: auto;  margin-top: 30px;"
-                             />
-                             <p
-                               style=" margin-bottom: 20px; font-size: 14px; color: #333; font-family: inter, sans-serif;"
-                             >
-                             Mobile Application
-                             </p>
-                           </div>
-                         </div>
-                            <!-- Service Card 6 -->
-                        <div
-                        style="width: 30%; box-sizing: border-box; max-width: 30%; "
-                      >
-                        <div
-                          style="width: 100%; height: 120px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;"
-                        >
-                          <img
-                            src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/rafiki.png"
-                            alt="Computer"
-                            style="width: 60px; height: auto;  margin-top: 30px;"
-                          />
-                          <p
-                            style=" font-size: 14px; color: #333; font-family: inter, sans-serif;"
-                          >
-                          SEO Optimization
-                          </p>
-                        </div>
-                      </div>
-                      </div>
-                      </div>
-                    </td>
-
-                    <!-- Image Section 40% width -->
-                    <td style="width: 40%; padding: 10px;">
-                      <img
-                        src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/3.png"
-                        alt="Services Image"
-                        style="width: 100%; height: auto; border-radius: 8px;"
-                      />
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <table role="presentation" width="100%" style="margin-top: 0px;">
-                  <tr>
-                    <td
-                      align="center"
-                      style="display: flex; justify-content: center; margin-top: -2px;"
-                    >
-                      <span
-                        style="background-color: #4393f7; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 10px; margin-bottom: 10px; margin-top: 10px; font-family: inter, sans-serif; white-space: nowrap;"
-                      >
-                        VPN
-                      </span>
-                      <span
-                        style="background-color: #4393f7; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 10px; margin-bottom: 10px; margin-top: 10px; font-family: inter, sans-serif; white-space: nowrap;"
-                      >
-                        Antivirus
-                      </span>
-                      <span
-                        style="background-color: #4393f7; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 10px; margin-bottom: 10px; margin-top: 10px; font-family: inter, sans-serif; white-space: nowrap;"
-                      >
-                        Unlimited Support
-                      </span>
-                      <span
-                        style="background-color: #4393f7; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 10px; margin-bottom: 10px; margin-top: 10px; font-family: inter, sans-serif; white-space: nowrap;"
-                      >
-                        Dedicated Experts
-                      </span>
-                      <span
-                        style="background-color: #4393f7; color: white; padding: 8px 16px; border-radius: 5px; margin-right: 10px; margin-bottom: 10px; margin-top: 10px; font-family: inter, sans-serif; white-space: nowrap;"
-                      >
-                        Discounted Services
-                      </span>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <div
-                  style="width: 100%; background-color: #156cd6; height: 2px; margin-top: -5px;"
-                ></div>
-              </td>
-            </tr>
-
-            <tr>
-              <td
-                style="background-color: #4393f7; color: white; height: 100px; text-align: center;"
-              >
-                <p style="line-height: 3px; font-family: inter, sans-serif;">
-                  support mail-hr@wishgeekstechserve.com
-                </p>
-                <p style="line-height: 3px; font-family: inter, sans-serif;">
-                  Contact Us-8700133076
-                </p>
-                <p style="line-height: 3px; font-family: inter, sans-serif;">
-                  <a
-                    href="#"
-                    style="color: white; text-decoration: underline; font-family: inter, sans-serif;"
-                  >
-                    Unsubscribe
-                  </a>
-                </p>
-              </td>
-            </tr>
-          </table>
+      <!-- Footer Section -->
+      <tr>
+        <td
+          class="footer"
+          style="background-color: rgba(51, 141, 251, 1); text-align: center; padding: 15px 20px; position: relative; color: white; border-radius: 20px 20px 8px 0px; width: 100%; padding-bottom: 20px;"
+        >
+          <p
+            style="margin: 5px 0; font-family: 'Inter', sans-serif; font-size: 14px;"
+          >
+            support mail-hr@wishgeekstechserve.com
+          </p>
+          <p
+            style="margin: 5px 0; font-family: 'Inter', sans-serif; font-size: 14px;"
+          >
+            Contact Us- <strong>8700133076</strong>
+          </p>
+          <a
+            href="#"
+            style="color: white; font-size: 16px; font-weight: 700; font-family: 'Inter', sans-serif; text-decoration: none;"
+            >Unsubscribe</a
+          >
         </td>
       </tr>
     </table>
   </body>
 </html>
+
 
 
       `,
@@ -464,15 +336,15 @@ export const templates = [
           <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/techserve+logo.png" class="logo" style="position: absolute; top: 20px; left: 20px; width: 250px;" />
           <div class="header" style="color: #fff; justify-content: center; text-align: center; align-items: center; font-family: 'Inter', sans-serif; position: absolute;">
             <h1 style="margin-bottom: -10px; margin-top: -130px; margin-left: 100px;">Team are here!</h1>
-            <p style="width: 400px; margin-left: 70px; font-size: 16px;">Today you are invited to start collaborating on your user insight</p>
+            <p style="width: 400px; margin-left: 90px; font-size: 16px;">Today you are invited to start collaborating on your user insight</p>
           </div>
-          <button class="b-button" style="width: 169px; height: 40px; background-color: #338bdf; border-radius: 50px; border: 1px solid white; text-align: center; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; color: white; font-size: 16px; margin-top: -40px; margin-left: 190px; cursor: pointer; position: absolute; z-index: 999;">Invite my team</button>
+          <button class="b-button" style="width: 200px; height: 40px; background-color: #338bdf; border-radius: 50px; border: 1px solid white; text-align: center; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; color: white; font-size: 16px; margin-top: -40px; margin-left: 200px;  position: absolute; z-index: 1; pointer-events: none;">Invite my team</button>
         </td>
       </tr>
 
       <!-- Middle Image Section -->
       <tr>
-        <td class="back-midle" style="background-size: cover; background-position: center; background-repeat: no-repeat; position: relative;">
+        <td class="back-midle" style="background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; ">
           <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Group+1010108043.png" style="width: 595px; height:260px;" />
         </td>
       </tr>
@@ -502,17 +374,17 @@ export const templates = [
           <div  align="center" class="service-card" style="width: 24%; height: 130px; background-color: #ffffff; padding: 5px; border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);  margin: 0;">
             <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/growing+graph+icon.png" alt="Grow" style="width: 40px;" />
             <h3 style="margin: 5px 0; font-size: 16px;">Grow</h3>
-            <p style="margin: 0; font-size: 12px; width: 100px; line-height: 13px;">Growth, in some curious way, depends on being always in motion.</p>
+            <p style="margin: 0; font-size: 12px; width: 120px; line-height: 13px;">Growth, in some curious way, depends on being always in motion.</p>
           </div>
           <div  align="center" class="service-card" style="width: 24%; height: 130px; background-color: #ffffff; padding: 5px; border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);  margin: 0;">
             <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/monitor+with+small+text+on+the+screen.png" alt="Monitor" style="width: 40px;" />
             <h3 style="margin: 5px 0; font-size: 16px;">Monitor</h3>
             <p style="margin: 0; font-size: 12px; width: 100px; line-height: 13px;">From visionary leaders to creative minds.</p>
           </div>
-          <div  align="center" class="service-card" style="width: 24%; height: 130px; background-color: #ffffff; padding: 5px; border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); margin: 0;">
-            <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Medication+schedule+calendar.png" alt="Schedule" style="width: 40px;" />
+          <div  align="center" class="service-card" style="width: 24%; height: 140px; background-color: #ffffff;  border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); margin: 0;">
+            <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Medication+schedule+calendar.png" alt="Schedule" style="width:40px;" />
             <h3 style="margin: 5px 0; font-size: 16px;">Schedule</h3>
-            <p style="margin: 0; font-size: 12px; width: 100px; line-height: 13px;">Success seems to be connected with action.</p>
+            <p style="margin: 0; font-size: 12px; width: 100px; ">Success seems to be connected with action.</p>
           </div>
         </td>
       </tr>
@@ -522,12 +394,13 @@ export const templates = [
         <td class="container" style="background-color: #338dfb; color: white; text-align: center; padding: 15px 20px; position: relative;">
           <p style="font-size: 12px;">support mail-hr@wishgeekstechserve.com</p>
           <p style="font-size: 12px;">Contact Us - <b>8700133076</b></p>
-          <a href="#" style="font-size: 12px;">Unsubscribe</a>
+          <a href="#" style="font-size: 12px; color: #fff;">Unsubscribe</a>
         </td>
       </tr>
     </table>
   </body>
 </html>
+
 
 
       `,
@@ -538,7 +411,7 @@ export const templates = [
     category: "Marketing",
     html: `
 
-    <!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -562,17 +435,35 @@ export const templates = [
 
               <div style="display: flex; justify-content: space-between; width: 80%; margin-bottom: 20px;">
                 <div style="text-align: center; width: 50%;">
-                  <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Group.png" alt="Icon 1" style="width: 40px; height: 40px; margin-bottom: 10px; background-color: #338dfb; padding: 20px; border-radius: 20%;" />
+                  <div style="background-color: #338dfb; border-radius: 10px; width: 60px; height: 60px; margin: 10px auto; display: flex; justify-content: center; align-items: center;">
+                    <img align="center"
+                      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Vector.png"
+                      alt="Onboarding Kit"
+                      style="width: 25px; "
+                    />
+                  </div>
                   <h3 style="font-size: 10px; color: #333;">Company Vision and mission</h3>
                   <p style="font-size: 10px; color: #555; margin-top: 5px; line-height: 13px;">Learn about our mission and values.</p>
                 </div>
                 <div style="text-align: center; width: 50%;">
-                  <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Vector.png" alt="Icon 2" style="width: 40px; height: 40px; margin-bottom: 10px; background-color: #338dfb; padding: 20px; border-radius: 20%;" />
+                  <div style="background-color: #338dfb; border-radius: 10px; width: 60px; height: 60px; margin: 10px auto; display: flex; justify-content: center; align-items: center;">
+                    <img align="center"
+                      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Vector+(1).png"
+                      alt="Onboarding Process"
+                      style="width: 20px;"
+                    />
+                  </div>
                   <h3 style="font-size: 10px; color: #333;">Your Onboarding kits</h3>
                   <p style="font-size: 10px; color: #555; margin-top: 5px; line-height: 13px;">Get all the essential information.</p>
                 </div>
                 <div style="text-align: center; width: 50%;">
-                  <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Vector+(1).png" alt="Icon 3" style="width: 40px; height: 40px; margin-bottom: 10px; background-color: #338dfb; padding: 20px; border-radius: 20%;" />
+                  <div style="background-color: #338dfb; border-radius: 10px; width: 60px; height: 60px; margin: 10px auto; display: flex; justify-content: center; align-items: center;">
+                    <img align="center"
+                      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Group.png"
+                      alt="Company Vision"
+                      style="width: 25px;"
+                    />
+                  </div>
                   <h3 style="font-size: 10px; color: #333;">Onboarding Process</h3>
                   <p style="font-size: 10px; color: #555; margin-top: 5px; line-height: 13px;">Know about our timeline.</p>
                 </div>
@@ -619,6 +510,7 @@ export const templates = [
   </body>
 </html>
 
+
       `,
     title: "Select Template 1 ",
   },
@@ -626,8 +518,7 @@ export const templates = [
     id: 6,
     category: "google",
     html: `
-
-     <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -668,7 +559,7 @@ export const templates = [
           <table style="width: 100%; text-align: center;">
             <tr>
               <td style="padding: 0; width: 32%; text-align: center;">
-                <div style="background-color: #338dfb; border-radius: 10px; width: 60px; height: 60px; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+                <div style="background-color: #338dfb; border-radius: 10px; width: 60px; height: 60px; margin: 10px auto; display: flex; justify-content: center; align-items: center;">
                   <img align="center"
                     src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Vector.png"
                     alt="Onboarding Kit"
@@ -681,7 +572,7 @@ export const templates = [
                 </p>
               </td>
               <td style="padding: 0; width: 32%; text-align: center;">
-                <div style="background-color: #338dfb; border-radius: 10px; width: 60px; height: 60px; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+                <div style="background-color: #338dfb; border-radius: 10px; width: 60px; height: 60px; margin: 10px auto; display: flex; justify-content: center; align-items: center;">
                   <img align="center"
                     src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Vector+(1).png"
                     alt="Onboarding Process"
@@ -690,11 +581,11 @@ export const templates = [
                 </div>
                 <h4 style="font-size: 14px; margin-top: 10px;">Onboarding Process</h4>
                 <p style="font-size: 12px; line-height: 15px; width: 150px; margin: 10px auto;">
-                  Access the infographic about the ultimate's onboarding process and timeline.
+                  Access the infographic about the ultimate's onboarding process.
                 </p>
               </td>
               <td style="padding: 0; width: 32%; text-align: center;">
-                <div style="background-color: #338dfb; border-radius: 10px; width: 60px; height: 60px; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+                <div style="background-color: #338dfb; border-radius: 10px; width: 60px; height: 60px; margin: 10px auto; display: flex; justify-content: center; align-items: center;">
                   <img align="center"
                     src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Group.png"
                     alt="Company Vision"
@@ -775,6 +666,7 @@ export const templates = [
   </body>
 </html>
 
+
       `,
     title: "Select Template 1 ",
   },
@@ -783,7 +675,7 @@ export const templates = [
     category: "google",
     html: `
 
-    <!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -809,7 +701,7 @@ export const templates = [
             role="presentation"
             cellpadding="0"
             cellspacing="0"
-            width="600"
+            width="500"
             align="center"
             style="background-color: #ffffff"
           >
@@ -935,36 +827,36 @@ export const templates = [
           <table style="width: 100%; text-align: center; margin-top: 20px; border-collapse: collapse;">
             <tr>
                 <td style="padding: 10px;">
-                    <div style="width: 120px; height: 120px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;">
-                        <img src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/2.png" alt="GPS" style="width: 60px; height: auto;">
+                    <div style="width: 100px; height: 100px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;">
+                        <img src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/2.png" alt="GPS" style="width: 50px; height: auto;">
                         <p style="margin-top: 8px; font-size: 14px; color: #333;  font-family:inter, sans-serif;">GPS</p>
                     </div>
                    
                 </td>
                 <td style="padding: 10px;">
-                    <div style="width: 120px; height: 120px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: auto; flex-direction: column;">
-                        <img src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/4.png" alt="Printer" style="width: 60px; height: auto;">
+                    <div style="width: 100px; height: 100px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: auto; flex-direction: column;">
+                        <img src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/4.png" alt="Printer" style="width: 40px; height: auto;">
                         <p style="margin-top: 8px; font-size: 14px; color: #333;  font-family:inter, sans-serif;">Printer</p>
                     </div>
                    
                 </td>
                 <td style="padding: 10px;">
-                    <div style="width: 120px; height: 120px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: auto; flex-direction: column;">
-                        <img src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/5.png" alt="Alarm" style="width: 60px; height: auto;">
+                    <div style="width: 100px; height: 100px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: auto; flex-direction: column;">
+                        <img src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/5.png" alt="Alarm" style="width: 50px; height: auto;">
                     <p style="margin-top: 8px; font-size: 14px; color: #333;  font-family:inter, sans-serif;">Alarm</p>
 
                     </div>
                 </td>
                 <td style="padding: 10px;">
-                    <div style="width: 120px; height: 120px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: auto; flex-direction: column;">
-                        <img src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/1.png" alt="Computer" style="width: 60px; height: auto;">
+                    <div style="width: 100px; height: 100px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: auto; flex-direction: column;">
+                        <img src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/1.png" alt="Computer" style="width: 50px; height: auto;">
                         <p style="margin-top: 8px; font-size: 14px; color: #333;  font-family:inter, sans-serif;">Computer</p>
                     </div>
 
                 </td>
                 <td style="padding: 10px;">
-                    <div style="width: 120px; height: 120px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: auto; flex-direction: column;">
-                        <img src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/9.png" alt="Router" style="width: 60px; height: auto;">
+                    <div style="width: 100px; height: 100px; background-color: #eef2ff; border: 2px solid #b5c7f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: auto; flex-direction: column;">
+                        <img src="https://wishgeekstechserve.s3.ap-southeast-2.amazonaws.com/9.png" alt="Router" style="width: 50px; height: auto;">
                         <p style="margin-top: 8px; font-size: 14px; color: #333;  font-family:inter, sans-serif;">Router</p>
                     </div>
 
@@ -994,7 +886,7 @@ export const templates = [
                         style="
                           background-color: #4393f7;
                           color: white;
-                          padding: 8px 16px;
+                          padding: 6px 14px;
                           border-radius: 20px;
                           margin-right: 10px;
                           margin-bottom: 10px;
@@ -1007,7 +899,7 @@ export const templates = [
                         style="
                           background-color: #4393f7;
                           color: white;
-                          padding: 8px 16px;
+                          padding: 6px 12px;
                           border-radius: 20px;
                           margin-right: 10px;
                           margin-bottom: 10px;
@@ -1020,7 +912,7 @@ export const templates = [
                         style="
                           background-color: #4393f7;
                           color: white;
-                          padding: 8px 16px;
+                          padding: 6px 12px;
                           border-radius: 20px;
                           margin-right: 10px;
                           margin-bottom: 10px;
@@ -1033,7 +925,7 @@ export const templates = [
                         style="
                           background-color: #4393f7;
                           color: white;
-                          padding: 8px 16px;
+                          padding: 6px 12px;
                           border-radius: 20px;
                           margin-right: 10px;
                           margin-bottom: 10px;
@@ -1045,8 +937,8 @@ export const templates = [
                       <span
                         style="
                           background-color: #4393f7;
-                          color: white;
-                          padding: 8px 16px;
+                          color:white;
+                          padding: 6px 12px;
                           border-radius: 20px;
                           margin-right: 10px;
                           margin-bottom: 10px;
@@ -1164,22 +1056,21 @@ export const templates = [
             <!-- Footer Section -->
             <tr>
               <td
-                style="
-                  background-color: #4393f7;
-                  color: white;
-
-                  text-align: center;
-               
-        
-                 
-                "
+                style="background-color: #4393f7; color: white; height: 100px; text-align: center;"
               >
-                <p style="line-height: 3px; font-family:inter, sans-serif;">support mail-hr@wishgeekstechserve.com</p>
-                <p style="line-height: 3px; font-family:inter, sans-serif;">Contact Us-8700133076</p>
-                <p style="line-height: 3px; font-family:inter, sans-serif;">
-                  <a href="#" style="color: white; text-decoration: underline; font-family:inter, sans-serif;"
-                    >Unsubscribe</a
+                <p style="line-height: 3px; font-family: inter, sans-serif;">
+                  support mail-hr@wishgeekstechserve.com
+                </p>
+                <p style="line-height: 3px; font-family: inter, sans-serif;">
+                  Contact Us-8700133076
+                </p>
+                <p style="line-height: 3px; font-family: inter, sans-serif;">
+                  <a
+                    href="#"
+                    style="color: white; text-decoration: underline; font-family: inter, sans-serif;"
                   >
+                    Unsubscribe
+                  </a>
                 </p>
               </td>
             </tr>
@@ -1189,6 +1080,7 @@ export const templates = [
     </table>
   </body>
 </html>
+
 
 
       `,
@@ -1207,7 +1099,7 @@ export const templates = [
   </head>
   <body >
     <table
-      style="width: 100%; max-width: 600px; height: 100%; position: relative; margin: 0 auto;padding: 0;  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); overflow-x: hidden; overflow-y: hidden; overflow-x: hidden;"
+      style="width: 100%; max-width: 500px; height: 100%; position: relative; margin: 0 auto;padding: 0;  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); overflow-x: hidden; overflow-y: hidden; overflow-x: hidden;"
     >
       <tr>
         <td>
@@ -1393,7 +1285,7 @@ export const templates = [
                               style="width: 60px; height: auto;  margin-top: 30px;"
                             />
                             <p
-                              style="margin-top: 8px; font-size: 14px; color: #333; font-family: inter, sans-serif;"
+                              style="margin-top: 4px; font-size: 14px; color: #333; font-family: inter, sans-serif;"
                             >
                             Social Media Marketing
                             </p>
@@ -1547,6 +1439,7 @@ export const templates = [
     </table>
   </body>
 </html>
+
 
 
 

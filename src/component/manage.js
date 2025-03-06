@@ -11,13 +11,16 @@ import * as DeviceAPI from "../api/user_profile";
 import * as UserAPI from "../api/user";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
- 
+import { FaChrome, FaFirefox, FaEdge, FaSafari, FaOpera } from "react-icons/fa";
+import { FaBrave } from "react-icons/fa6";
+
 import { ChevronUp, LogOut } from "lucide-react";
 const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   const [devices, setDevice] = useState(null);
   const [showOtpModal, setShowOtpModal] = useState(false);
-  const otpLength = 6; // Define length safely
-  const [otp, setOtp] = useState(new Array(otpLength).fill(""));  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+  const otpLength = 6;
+  const [otp, setOtp] = useState(new Array(otpLength).fill(""));
+  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -54,16 +57,15 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   const handleOtpChange = (e, index) => {
     const value = e.target.value;
     if (!/^[0-9]?$/.test(value)) return;
-  
+
     let newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-  
+
     if (value && index < otp.length - 1) {
       document.getElementById(`otp-input-${index + 1}`).focus();
     }
   };
-  
 
   const handleVerifyOtp = async () => {
     try {
@@ -83,15 +85,14 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
       const res = await UserAPI.logoutOTP(formData);
       console.log(res.data);
 
-
       if (res.data.success) {
         toast.success("OTP verified! Logging out...");
-          localStorage.setItem("id", res.data.user_id);
-          localStorage.setItem("device_id", res.data.device_id);
-          localStorage.setItem("user", signInEmail);
-          localStorage.setItem("access_token", res.data.access_token);
-          localStorage.setItem("refresh_token", res.data.refresh_token);
-          navigate("/home");
+        localStorage.setItem("id", res.data.user_id);
+        localStorage.setItem("device_id", res.data.device_id);
+        localStorage.setItem("user", signInEmail);
+        localStorage.setItem("access_token", res.data.access_token);
+        localStorage.setItem("refresh_token", res.data.refresh_token);
+        navigate("/home");
       } else {
         toast.error("Invalid OTP, please try again!");
       }
@@ -112,12 +113,12 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
           },
         }
       );
-console.log("Handle_Dd",res);
+      console.log("Handle_Dd", res);
       toast.success("Device removed successfully");
       if (id == localStorage.getItem("device_id")) {
         localStorage.clear();
         sessionStorage.clear();
-       
+
         navigate("/");
         return;
       }
@@ -146,6 +147,14 @@ console.log("Handle_Dd",res);
       hour12: true,
     });
   };
+  const browserIcons = {
+    Chrome: <FaChrome className="text-blue-500 text-lg" />,
+    Firefox: <FaFirefox className="text-orange-500 text-lg" />,
+    Edge: <FaEdge className="text-blue-600 text-lg" />,
+    Safari: <FaSafari className="text-gray-500 text-lg" />,
+    Opera: <FaOpera className="text-red-500 text-lg" />,
+    Brave: <FaBrave  className="text-orange-500 text-lg" />,
+  };
 
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
@@ -155,79 +164,87 @@ console.log("Handle_Dd",res);
   const handlePaste = (e) => {
     e.preventDefault();
     const pasteData = e.clipboardData.getData("text").trim();
-    if (!/^\d+$/.test(pasteData)) return; 
+    if (!/^\d+$/.test(pasteData)) return;
     const pasteArray = pasteData.slice(0, otpLength).split("");
-    setOtp(pasteArray.concat(new Array(otpLength - pasteArray.length).fill(""))); 
+    setOtp(
+      pasteArray.concat(new Array(otpLength - pasteArray.length).fill(""))
+    );
     const lastFilledIndex = pasteArray.length - 1;
     if (lastFilledIndex >= 0) {
       document.getElementById(`otp-input-${lastFilledIndex}`).focus();
     }
   };
 
-
   return (
-    <div className="container-fluid mx-auto px-4 max-h-[100vh] overflow-auto py-2">
-      <h1 className="text-3xl font-bold uppercase mt-28 p-3">
-        Logged-in Devices
-      </h1>
+    <div className="container mx-auto px-4 max-h-[100vh] overflow-auto py-2">
+      <h1 className="text-3xl font-bold uppercase  p-3 mt-24">Logged-in Devices</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pricing">
         {devices?.map((item, index) => {
           const { device_name, system_info } = item;
 
-          const systemInfo = system_info?.split(","); // Split the system_info string by commas
+          const systemInfo = system_info?.split(",");
           const browserName = systemInfo?.[0] || "Unknown Browser";
           const operatingSystem = systemInfo?.[1] || "Unknown OS";
           const loginDate = systemInfo?.[2] || "Unknown Date";
           const loginTime = systemInfo?.[3] || "Unknown Time";
-     
+
           return (
             <div
-  key={index}
-  className="flex-shrink-0 min-w-[230px] px-2 max-h-[100vh] overflow-auto"
->
-  <div className="border border-blue-300 rounded-lg p-4 w-full max-w-md mx-auto bg-white shadow-md">
-    <div className="flex items-center justify-between space-x-4">
-      {/* Device Icon & Info */}
-      <div className="flex items-center space-x-3">
-        <div className="relative w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full shadow-md">
-          <img
-            src="https://cdn.pixabay.com/photo/2016/04/13/14/27/google-chrome-1326908_1280.png" // Replace with actual icon path
-            alt="Device Icon"
-            className="w-10 h-10 object-contain"
-          />
-        </div>
+              key={index}
+              className="flex-shrink-0 min-w-[230px] px-2 max-h-[100vh] overflow-auto"
+            >
+              <div className="box flex flex-col justify-between h-full bg-white  shadow-custom rounded-md border-t-8 border-b-8 border-[#3B82F6] shadow-md shadow-[#3B82F6]/90">
+                <div className="flex items-center justify-between space-x-4">
+                  {/* Device Icon & Info */}
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2">
+                      <div className="flex items-center space-x-2">
+                        {browserIcons[browserName] && browserIcons[browserName]}
+                        <span className="text-sm text-gray-600 font-bold">
+                          {operatingSystem}
+                        </span>
+                        {localStorage.getItem("device_id") ==
+                          item.device_id && (
+                          <span className=" text-green-500 text-xs font-bold px-2 py-0.5 rounded-md">
+                            Current
+                          </span>
+                        )}
+                      </div>
 
-        <div className="p-2">
-          <div className="flex items-center space-x-2">
-            <span className="font-semibold text-gray-800">{operatingSystem}</span>
-            {localStorage.getItem("device_id") == item.device_id && (
-              <span className="bg-blue-100 text-blue-600 text-xs font-medium px-2 py-0.5 rounded-md">
-                Current
-              </span>
-            )}
-          </div>
-          <div className="mt-1 space-y-1">
-            <p className="text-sm text-gray-600">{browserName}</p>
-            <p className="text-sm text-gray-600">{item.device_name}</p>
-            <p className="text-sm text-gray-600">{loginDate} at {loginTime}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Logout Button */}
-      <div className="flex flex-col items-center space-y-2">
-        <button
-          onClick={() => handleLogoutClick(item.device_id)}
-          className="p-2 rounded-full text-red-500 hover:bg-red-100 transition duration-200"
-        >
-          <LogOut className="w-5 h-5" />
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
+                      <ol className="mt-3 text-gray-700 space-y-1 text-sm ">
+                        <li className="text-sm text-gray-600 font-bold">
+                          Browser Name:{" "}
+                          <span className="font-medium">{browserName}</span>
+                        </li>
+                        <li className="text-sm text-gray-600 font-bold">
+                          Operating System:{" "}
+                          <span className="font-medium">{operatingSystem}</span>
+                        </li>
+                        <li className="text-sm text-gray-600 font-bold">
+                          Login Date:{" "}
+                          <span className="font-medium">{loginDate}</span>
+                        </li>
+                        <li className="text-sm text-gray-600 font-bold">
+                          Login Time:{" "}
+                          <span className="font-medium">{loginTime}</span>
+                        </li>
+                      </ol>
+                    </div>
+                    {/* Logout Button */}
+                  </div>
+                </div>
+                <div className="flex flex-col items-center space-y-2">
+                  <button
+                    onClick={() => handleLogoutClick(item.device_id)}
+                    className="border border-blue-500 rounded-lg p-2 font-semibold flex items-center justify-center
+                  cursor-pointer bg-[#3A81F4] text-white  mb-2"
+                  >
+                    Logout Devices
+                  </button>
+                </div>
+              </div>
+            </div>
           );
         })}
       </div>
@@ -256,24 +273,23 @@ console.log("Handle_Dd",res);
                 />
               ))}
             </div> */}
-         <div className="otp-input-wrapper mt-4 flex gap-2">
-    {otp.map((digit, index) => (
-      <input
-        key={index}
-        id={`otp-input-${index}`}
-        maxLength="1"
-        pattern="[0-9]*"
-        autoComplete="off"
-        className="otp-input w-12 h-12 text-center border border-gray-300 rounded"
-        type="text"
-        value={digit}
-        onChange={(e) => handleOtpChange(e, index)}
-        onKeyDown={(e) => handleKeyDown(e, index)}
-        onPaste={handlePaste} // 👈 OTP paste support added
-
-      />
-    ))}
-  </div>
+            <div className="otp-input-wrapper mt-4 flex gap-2">
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  id={`otp-input-${index}`}
+                  maxLength="1"
+                  pattern="[0-9]*"
+                  autoComplete="off"
+                  className="otp-input w-12 h-12 text-center border border-gray-300 rounded"
+                  type="text"
+                  value={digit}
+                  onChange={(e) => handleOtpChange(e, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  onPaste={handlePaste} // 👈 OTP paste support added
+                />
+              ))}
+            </div>
 
             <button
               onClick={handleVerifyOtp}

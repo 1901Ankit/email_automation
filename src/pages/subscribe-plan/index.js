@@ -3,6 +3,8 @@ import { initiatePayment, verifyPayment, upgradePlan } from "../../api/payment";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAllUserProfile } from "../../api/user_profile";
+import { SiTicktick } from "react-icons/si";
+
 const Subscribe = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [loadingStates, setLoadingStates] = useState({});
@@ -164,56 +166,65 @@ const Subscribe = () => {
                   {plan.price}
                 </h3>
                 <ul className="list-none mt-4 font-semibold text-[15px] leading-8">
+                  <span className="font-bold text-lg items-start justify-start flex mx-4 mb-2">
+                    Features
+                  </span>
                   {plan.features.map((feature, i) => (
-                    <li key={i}>{feature}</li>
+                    <li key={i} className="flex items-center gap-2">
+                      <SiTicktick className="text-blue-500 text-lg" />
+                      {feature}
+                    </li>
                   ))}
                 </ul>
               </div>
-              <div className="button-contain mt-4">
-                {
-                  // Render buttons based on the current plan state
-                  isCurrentOrPreviousPlan(plan) ? (
+              <div className="button-contain mt-4 w-full">
+                {isCurrentOrPreviousPlan(plan) ? (
+                  <button
+                    type="button"
+                    disabled={true}
+                    className={`font-montserrat ${
+                      userData.plan_name == plan.name
+                        ? "font-bold text-green-500"
+                        : "text-blue-500"
+                    } border ${
+                      userData.plan_name == plan.name
+                        ? "border-green-500"
+                        : "border-blue-500"
+                    } rounded-lg py-[7px] p-2 cursor-not-allowed inline-flex items-center justify-center bg-gray-100 w-full text-sm font-semibold`}
+                  >
+                    {userData.plan_name == plan.name
+                      ? "Active Plan (Current)"
+                      : "Already Active or Upgraded"}
+                  </button>
+                ) : (
+                  <div className="flex justify-center items-center w-full flex-col">
                     <button
                       type="button"
-                      disabled={true}
-                      className={`font-montserrat ${
-                        userData.plan_name == plan.name && "font-bold"
-                      } text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-not-allowed inline-flex items-center bg-gray-400 `}
+                      onClick={() => handlePayment(plan)}
+                      disabled={loadingStates[plan.name]}
+                      className={`font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer block items-center ${
+                        loadingStates[plan.name]
+                          ? "bg-gray-400"
+                          : "bg-[#3B82F6]"
+                      }`}
                     >
-                      {userData.plan_name == plan.name
-                        ? " Activate Plan"
-                        : "Already Active or Upgraded"}
+                      {loadingStates[plan.name] ? "Processing..." : "BUY"}
                     </button>
-                  ) : (
-                    <div className="flex justify-center items-center w-full flex-col">
-                      <button
-                        type="button"
-                        onClick={() => handlePayment(plan)}
-                        disabled={loadingStates[plan.name]}
-                        className={`font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[50px] cursor-pointer block items-center ${
-                          loadingStates[plan.name]
-                            ? "bg-gray-400"
-                            : "bg-[#3B82F6]"
-                        }`}
-                      >
-                        {loadingStates[plan.name] ? "Processing..." : "BUY"}
-                      </button>
 
-                      <button
-                        type="button"
-                        onClick={() => handleUpgrade(plan)}
-                        disabled={loadingStates[plan.name]}
-                        className={`font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[70px] mx-auto w-fit cursor-pointer block text-center mt-1 ${
-                          loadingStates[plan.name]
-                            ? "bg-gray-400"
-                            : "bg-green-500"
-                        }`}
-                      >
-                        {loadingStates[plan.name] ? "Processing..." : "Upgrade"}
-                      </button>
-                    </div>
-                  )
-                }
+                    <button
+                      type="button"
+                      onClick={() => handleUpgrade(plan)}
+                      disabled={loadingStates[plan.name]}
+                      className={`font-montserrat text-[#f7fff7] border-none rounded-[20px] py-[7.5px] px-[70px] mx-auto w-fit cursor-pointer block text-center mt-1 ${
+                        loadingStates[plan.name]
+                          ? "bg-gray-400"
+                          : "bg-green-500"
+                      }`}
+                    >
+                      {loadingStates[plan.name] ? "Processing..." : "Upgrade"}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
