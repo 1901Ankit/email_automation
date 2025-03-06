@@ -91,37 +91,20 @@ export const templates = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Teams Announcement</title>
   </head>
-  <body>
+  <body style="margin: 0; padding: 0; font-family: 'Inter', sans-serif;">
     <table
-      style="
-        width: 100%;
-        max-width: 600px;
-        background-color: white;
-        border-collapse: collapse;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 15px;
-        margin: 0 auto;
-      "
+      style="width: 100%; max-width: 600px; background-color: white; border-collapse: collapse; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); border-radius: 15px; margin: 0 auto;"
     >
       <!-- Header Section -->
       <tr>
         <td
           class="header"
-          style="
-            background-image: url('https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Frame+1010110237.png');
-            background-size: cover;
-            height: 200px;
-            text-align: left;
-            padding: 0;
-            position: relative;
-            z-index: 1;
-            overflow-x: hidden;
-          "
+          style="background-image: url('https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Frame+1010110237.png'); background-size: cover; height: 200px; text-align: left; padding: 0; position: relative; overflow-x: hidden; "
         >
           <img
             src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/techserve+logo.png"
             alt="Header Image"
-            style="position: absolute; top: 30px; left: 10px; width: 50%; max-width: 250px; border-radius: 5px; z-index: 2;"
+            style="position: absolute; top: 30px; left: 10px; width: 50%; max-width: 250px; border-radius: 5px; z-index: 2; "
           />
         </td>
       </tr>
@@ -129,56 +112,51 @@ export const templates = [
       <tr>
         <td>
           <div
-            style="width: 100%; height: 5px; background-color: rgba(51, 141, 251, 1); margin-top: 4px;"
+            style="width: 100%; height: 5px; background-color: rgba(51, 141, 251, 1); margin-top: 4px; "
           ></div>
         </td>
       </tr>
 
-<!-- Image Section -->
-<!-- Image Section -->
-<tr>
-  <td align="center" style="position: relative; display: flex; justify-content: center; align-items: center;">
-    <img
-      align="center"
-      src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/cuate.png"
-      alt="Welcome Image"
-      style="width: 50%; max-width: 230px; height: auto; margin-top: -100px; border-radius: 10px; background-color: #fff; position: static; z-index: 2;"
-    />
-  </td>
-</tr>
+      <!-- Image Section -->
+      <tr>
+        <td align="center" style="position: relative;">
+          <img
+            align="center"
+            src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/cuate.png"
+            alt="Welcome Image"
+            style="width: 50%; max-width: 200px; height: auto; margin-top: -100px; border-radius: 10px; background-color: #fff; z-index: 2; "
+          />
+        </td>
+      </tr>
 
+      <!-- Content Section -->
+      <tr>
+        <td
+          class="content"
+          style="text-align: center; color: rgba(51, 141, 251, 1); padding: 0 20px;"
+        >
+          <div
+            style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: relative;"
+          >
+            <img
+              src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Ellipse+2670.png"
+              style="max-width: 400px; height: auto; margin-top: -170px; "
+            />
+          </div>
+          <h1
+            style="font-weight: 700; font-size: 2vw; margin-top: -180px; font-family: 'Inter', sans-serif; z-index: 99;"
+          >
+            Team are here!
+          </h1>
+          <p
+            style="font-size: 1vw; margin-bottom: 25px; color: rgba(51, 141, 251, 1); z-index: 99;"
+          >
+            Today you can invite your team to start <br /> collaborating on user
+            insights
+          </p>
+        </td>
+      </tr>
 
-
-<!-- Content Section -->
-<tr>
-  <td
-    class="content"
-    style="text-align: center; color: rgba(51, 141, 251, 1); padding: 0 20px;"
-  >
-    <div
-      class="g-iamg"
-      style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;"
-    >
-      <img
-        src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Ellipse+2670.png"
-        style="max-width: 400px; height: auto; position: relative; margin-top: -170px; z-index: 1;"
-      />
-    </div>
-    <h1
-      style="font-weight: 700; font-size: 3vw; margin-top: -180px; font-family: 'Inter', sans-serif; z-index: 3;"
-    >
-      Team are here!
-    </h1>
-    <p
-      style="font-size: 1vw; margin-bottom: 25px; color: rgba(51, 141, 251, 1); z-index: 3;"
-    >
-      Today you can invite your team to start collaborating on <br> user insights
-    </p>
-  </td>
-</tr>
-
-
-      
       <!-- Button Section -->
       <tr>
         <td
@@ -186,12 +164,7 @@ export const templates = [
           style="display: flex; margin-left: 40px; margin-top: 40px"
         >
           <h2
-            style="
-              display: flex;
-              color: rgba(64, 123, 255, 1);
-              font-size: 1.7vw;
-              font-family: 'Inter', sans-serif;
-            "
+            style="color: rgba(64, 123, 255, 1); font-size: 1vw; font-family: 'Inter', sans-serif; display: flex;"
           >
             COME GROW WITH US:
           </h2>
@@ -207,12 +180,12 @@ export const templates = [
           <!-- Circle 1 -->
           <div
             class="circle"
-            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px; position: relative;"
+            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px;"
           >
             <img
               src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/building+projection.png"
               alt="Build"
-              style="width: 30%;"
+              style="width: 25%;"
             />
             <h4 style="margin-top: 10px; color: #000; font-size: 14px">Build</h4>
             <p
@@ -225,14 +198,14 @@ export const templates = [
           <!-- Circle 2 -->
           <div
             class="circle"
-            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px; position: relative;"
+            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px;"
           >
             <img
               src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/growing+graph+icon.png"
               alt="Grow"
-              style="width: 30%;"
+              style="width: 25%;"
             />
-            <h4 style=" margin-top: 10px; color: #000; font-size: 14px">Grow</h4>
+            <h4 style="margin-top: 10px; color: #000; font-size: 14px">Grow</h4>
             <p
               style="font-size: 10px; color: #000; text-align: center; width: 110px; margin-top: -10px; line-height: 10px;"
             >
@@ -243,14 +216,14 @@ export const templates = [
           <!-- Circle 3 -->
           <div
             class="circle"
-            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px; position: relative;"
+            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px;"
           >
             <img
               src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/monitor+with+small+text+on+the+screen.png"
               alt="Monitor"
-              style="width: 30%; margin-bottom: 10px;"
+              style="width: 25%; "
             />
-            <h4 style=" color: #000; font-size: 14px">Monitor</h4>
+            <h4 style="color: #000; font-size: 14px">Monitor</h4>
             <p
               style="font-size: 10px; color: #000; text-align: center; width: 110px; margin-top: -10px;"
             >
@@ -261,14 +234,14 @@ export const templates = [
           <!-- Circle 4 -->
           <div
             class="circle"
-            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px; position: relative;"
+            style="width: 22%; height: 135px; background-color: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0px 4px 10px rgba(51, 141, 251, 0.3); margin-bottom: 20px;"
           >
             <img
               src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/assests+for+Email+Automation/Medication+schedule+calendar.png"
               alt="Schedule"
-              style="width: 40%; margin-bottom: 10px;"
+              style="width: 25%; margin-bottom: 10px;"
             />
-            <h4 style=" margin-top: -10px; color: #000; font-size: 14px">Schedule</h4>
+            <h4 style="margin-top: -10px; color: #000; font-size: 14px">Schedule</h4>
             <p
               style="font-size: 10px; color: #000; text-align: center; width: 110px; margin-top: -10px;"
             >
@@ -285,18 +258,18 @@ export const templates = [
           style="background-color: rgba(51, 141, 251, 1); text-align: center; padding: 15px 20px; position: relative; color: white; border-radius: 20px 20px 8px 0px; width: 100%; padding-bottom: 20px;"
         >
           <p
-            style="margin: 5px 0; font-family: 'Inter', sans-serif; font-size: 14px;"
+            style="margin: 5px 0; font-size: 14px;"
           >
             support mail-hr@wishgeekstechserve.com
           </p>
           <p
-            style="margin: 5px 0; font-family: 'Inter', sans-serif; font-size: 14px;"
+            style="margin: 5px 0; font-size: 14px;"
           >
             Contact Us- <strong>8700133076</strong>
           </p>
           <a
             href="#"
-            style="color: white; font-size: 16px; font-weight: 700; font-family: 'Inter', sans-serif; text-decoration: none;"
+            style="color: white; font-size: 16px; font-weight: 700; text-decoration: none;"
             >Unsubscribe</a
           >
         </td>
@@ -304,6 +277,7 @@ export const templates = [
     </table>
   </body>
 </html>
+
 
 
 

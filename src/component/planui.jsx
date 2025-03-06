@@ -77,7 +77,7 @@ const Plan_ui = () => {
               className="mb-4 w-20 object-contain mx-auto mt-5"
             />
 
-            <h3 className="font-semibold text-xl text-[#338DFB] tracking-wider">
+            <h3 className="font-bold text-2xl text-[#338DFB] tracking-wider">
               {plan.name}
             </h3>
             <p
@@ -92,7 +92,7 @@ const Plan_ui = () => {
               </h4>
             </div>
             <div className="items-start justify-start flex flex-1">
-              <ul className="mt-2 text-left leading-[35px] font-medium min-h-[100px] tracking-wider">
+              <ul className="mt-2 text-left leading-[35px] font-medium min-h-[30px] tracking-wider">
                 {plan.features.map((feature, idx) => (
                   <li key={idx} className="flex items-center">
                     <span className=" mr-2">
