@@ -6,65 +6,42 @@ const Plan_ui = () => {
   const plans = [
     {
       name: "Basic",
-      description: "Starter pack to help you to get started",
-      price: "Free",
-      features: [
-        "Employee directory",
-        "Task management",
-        "Calendar integration",
-        "File storage",
-        "Communication tools",
-        "Reporting and analytics",
-      ],
+      description: "Essential features to get you started.",
+      price: "₹149 / month",
+      features: ["Valid for 30 days", "200 email counts", "Only for 1 device"],
       image: Techserve,
-      recommended: false,
     },
     {
-      name: "Pro",
-      description: "Starter pack to help you get started",
+      name: "Standard",
+      description: "Enhanced tools for growing needs.",
 
-      price: "$20 / month",
+      price: "₹300 / month",
       features: [
-        "Employee directory",
-        "Task management",
-        "Calendar integration",
-        "File storage",
-        "Communication tools",
-        "Reporting and analytics",
+        "Valid for 30 days",
+        "360 +(50 free)emails ",
+        "Only for 3 devices",
+      ],
+      image: Techserve,
+    },
+    {
+      name: "Premium",
+      description: "Advanced solutions for professionals.",
+      price: "₹499 / month",
+      features: [
+        "Valid for 30 days",
+        "600+(90 free) emails",
+        "Only for 5 devices",
       ],
       image: Techserve,
       recommended: true,
     },
     {
-      name: "Basic",
-      description: "Starter pack to help you get started",
-      price: "Free",
-      features: [
-        "Employee directory",
-        "Task management",
-        "Calendar integration",
-        "File storage",
-        "Communication tools",
-        "Reporting and analytics",
-      ],
-      image: Techserve,
-      recommended: false,
-    },
-    {
-      name: "Pro",
-      description: "Starter pack to help you get started",
+      name: "Elite",
+      description: "Premium benefits for ultimate performance.",
 
-      price: "$20 / month",
-      features: [
-        "Employee directory",
-        "Task management",
-        "Calendar integration",
-        "File storage",
-        "Communication tools",
-        "Reporting and analytics",
-      ],
+      price: "₹999 / month",
+      features: ["Valid for 30 days", "Unlimited emails", "Unlimited devices"],
       image: Techserve,
-      recommended: true,
     },
   ];
 
@@ -84,14 +61,12 @@ const Plan_ui = () => {
           <div
             key={index}
             className={`relative rounded-lg shadow-lg p-6 text-center flex flex-col ${
-              plan.recommended
-                ? "bg-[#93C5FD] text-white"
-                : "bg-white text-blue-500"
+              plan.recommended ? "bg-[#f5f9ff] " : "bg-white "
             }`}
           >
             {/* Recommended Badge */}
             {plan.recommended && (
-              <div className="border-b-2 border-white absolute top-0 left-1/2 -translate-x-1/2 bg-[#93C5FD] text-white text-lg font-bold p-2 px-3 rounded-b-md w-full">
+              <div className="border-b-2 border-white absolute top-0 left-1/2 -translate-x-1/2 bg-[#338dfb] text-white text-lg font-bold p-2 px-3 rounded-b-md w-full">
                 Recommended
               </div>
             )}
@@ -99,18 +74,25 @@ const Plan_ui = () => {
             <img
               src={plan.image}
               alt={plan.name}
-              className={`mb-4 w-20 object-contain mx-auto mt-5 ${
-                plan.recommended ? "invert fill-transparent" : ""
-              }`}
+              className="mb-4 w-20 object-contain mx-auto mt-5"
             />
 
-            <h3 className="font-bold text-3xl">{plan.name}</h3>
-            <p className=" text-base text-start p-0">{plan.description}</p>
+            <h3 className="font-semibold text-xl text-[#338DFB] tracking-wider">
+              {plan.name}
+            </h3>
+            <p
+              className=" text-base text-center tracking-wider
+ p-0"
+            >
+              {plan.description}
+            </p>
             <div className="items-start justify-start flex">
-              <h4 className="mt-4 font-bold text-xl ">Features</h4>
+              <h4 className="mt-4 font-semibold text-xl text-[#338DFB] tracking-wider">
+                Features
+              </h4>
             </div>
             <div className="items-start justify-start flex flex-1">
-              <ul className="mt-2 text-left leading-[35px] font-medium min-h-[150px]">
+              <ul className="mt-2 text-left leading-[35px] font-medium min-h-[100px] tracking-wider">
                 {plan.features.map((feature, idx) => (
                   <li key={idx} className="flex items-center">
                     <span className=" mr-2">
@@ -121,9 +103,11 @@ const Plan_ui = () => {
                 ))}
               </ul>
             </div>
-            <h3 className="font-bold  text-xl mt-4">{plan.price}</h3>
+            <h3 className="font-bold text-[#338DFB]  text-3xl mt-4 tracking-wider">
+              {plan.price}
+            </h3>
             <button
-              className="border border-blue-500 rounded-lg p-2 font-semibold flex items-center justify-center
+              className="border-2 border-blue-500 rounded-lg p-2 font-semibold flex items-center justify-center tracking-wider
                   cursor-pointer bg-white text-blue-500 w-full mt-3"
             >
               Get Started
