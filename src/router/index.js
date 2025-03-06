@@ -55,14 +55,17 @@ const Router = () => {
   }, [location.pathname]);
 
   useEffect(() => {
+    console.log("Current pathname:", location.pathname);
+    console.log("Token status:", token);
+
     if (!token) {
       if (location.pathname.startsWith("/reset_password")) {
         sessionStorage.clear();
         localStorage.clear();
-      } else {
+      } else if (location.pathname !== "/login") {
         sessionStorage.clear();
         localStorage.clear();
-        navigate("/");
+        navigate("/login"); // Redirect to /login if not already there
       }
     }
   }, [token, navigate, location.pathname]);
@@ -78,12 +81,13 @@ const Router = () => {
 
   const isProtectedRoute = (path) => {
     return (
-      !["/", "/404"].includes(path) && !path.startsWith("/reset_password/")
+      !["/", "/404", "/login"].includes(path) &&
+      !path.startsWith("/reset_password/")
     );
   };
 
   const shouldShowHeader =
-    !["/", "/reset_password/:uidID/:token"].includes(location.pathname) &&
+    !["/", "/reset_password/:uidID/:token","/login"].includes(location.pathname) &&
     !location.pathname.startsWith("/reset_password");
   return (
     <>
@@ -92,68 +96,69 @@ const Router = () => {
         {isProtectedRoute(location.pathname) && <Sidebar />}
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/reset_password/:uidID/:token" element={<Login />} />
           <Route
             path="/home"
-            element={token ? <Home /> : <Navigate to="/" replace />}
+            element={token ? <Home /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/Textpreview"
-            element={token ? <Textpreview /> : <Navigate to="/" replace />}
+            element={token ? <Textpreview /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/detail"
-            element={token ? <Content /> : <Navigate to="/" replace />}
+            element={token ? <Content /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/preview/:id"
-            element={token ? <Preview /> : <Navigate to="/" replace />}
+            element={token ? <Preview /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/subject"
-            element={token ? <Subject /> : <Navigate to="/" replace />}
+            element={token ? <Subject /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/contact"
-            element={token ? <Contact /> : <Navigate to="/" replace />}
+            element={token ? <Contact /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/smtp"
-            element={token ? <Smtp /> : <Navigate to="/" replace />}
+            element={token ? <Smtp /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/template"
-            element={token ? <Template /> : <Navigate to="/" replace />}
+            element={token ? <Template /> : <Navigate to="/login" replace />}
           />
-           <Route
+          <Route
             path="/manage-campaigns"
-            element={token ? <MangeCampaigns/>  : <Navigate to="/" replace />}
+            element={token ? <MangeCampaigns /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/subscribe-plan"
-            element={token ? <Subscribe /> : <Navigate to="/" replace />}
+            element={token ? <Subscribe /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/user-profile"
-            element={token ? <User_profile /> : <Navigate to="/" replace />}
+            element={token ? <User_profile /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/manage"
-            element={token ? <Manage /> : <Navigate to="/" replace />}
+            element={token ? <Manage /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/template/:category"
             element={
-              token ? <CategoryTemplates /> : <Navigate to="/" replace />
+              token ? <CategoryTemplates /> : <Navigate to="/login" replace />
             }
           />
           <Route
             path="/privacy_policy"
-            element={token ? <Privacy /> : <Navigate to="/" replace />}
+            element={token ? <Privacy /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/terms_condition"
-            element={token ? <Terms_condition /> : <Navigate to="/" replace />}
+            element={token ? <Terms_condition /> : <Navigate to="/login" replace />}
           />
           <Route path="/404" element={<Errorpage />} />
           <Route path="*" element={<Errorpage />} />
