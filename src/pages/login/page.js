@@ -54,13 +54,13 @@ const Login = () => {
   const { uidID, token } = useParams();
   const location = useLocation();
 
-  useEffect(() => {
-    if (location.pathname.includes("/reset_password")) {
-      setShowResetFields(true);
-      setShowSignupFields(false);
-      setShowSigninFields(false);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location.pathname.includes("/reset_password")) {
+  //     setShowResetFields(true);
+  //     setShowSignupFields(false);
+  //     setShowSigninFields(false);
+  //   }
+  // }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -272,7 +272,6 @@ const Login = () => {
     }
   };
 
-
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     const otpValue = otp.join("");
@@ -381,7 +380,6 @@ const Login = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
 
-
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       document.getElementById(`otp-input-${index - 1}`).focus();
@@ -394,10 +392,15 @@ const Login = () => {
     if (!/^\d+$/.test(pasteData)) return;
 
     const pasteArray = pasteData.slice(0, otpLength).split("");
-    setOtp([...pasteArray, ...new Array(otpLength - pasteArray.length).fill("")]);
+    setOtp([
+      ...pasteArray,
+      ...new Array(otpLength - pasteArray.length).fill(""),
+    ]);
 
     // Focus on the last filled input
-    document.getElementById(`otp-input-${Math.min(pasteArray.length, otpLength) - 1}`)?.focus();
+    document
+      .getElementById(`otp-input-${Math.min(pasteArray.length, otpLength) - 1}`)
+      ?.focus();
   };
 
   return (
@@ -721,7 +724,7 @@ const Login = () => {
                         />
                       </svg>
                     </div> */}
-                            <div className="otp-input-wrapper mt-4 flex gap-2">
+                    <div className="otp-input-wrapper mt-4 flex gap-2">
                       {Array.from({ length: 6 }).map((_, index) => (
                         <input
                           key={index}
@@ -789,8 +792,8 @@ const Login = () => {
                 </>
               )}
               {showResetFields && (
-                <form>
-                  <div className="relative mt-3">
+                <form className="w-full">
+                  <div className="relative mt-3 w-full">
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="New Password"
@@ -807,7 +810,7 @@ const Login = () => {
                     </button>
                   </div>
 
-                  <div className="relative mt-3">
+                  <div className="relative mt-3 w-full">
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Confirm Password"

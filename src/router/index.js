@@ -47,37 +47,34 @@ const Router = () => {
       navigate("/");
     }
   };
-  useEffect(() => {
-    const refreshToken = localStorage.getItem("refresh_token");
-    if (refreshToken !== "") {
-      isTokenBlackListed();
-    }
-  }, [location.pathname]);
+  // useEffect(() => {
+  //   const refreshToken = localStorage.getItem("refresh_token");
+  //   if (refreshToken !== "") {
+  //     isTokenBlackListed();
+  //   }
+  // }, [location.pathname]);
 
-  useEffect(() => {
-    console.log("Current pathname:", location.pathname);
-    console.log("Token status:", token);
-
-    if (!token) {
-      if (location.pathname.startsWith("/reset_password")) {
-        sessionStorage.clear();
-        localStorage.clear();
-      } else if (location.pathname !== "/login") {
-        sessionStorage.clear();
-        localStorage.clear();
-        navigate("/login"); // Redirect to /login if not already there
-      }
-    }
-  }, [token, navigate, location.pathname]);
-  useEffect(() => {
-    if (
-      token &&
-      (location.pathname === "/" ||
-        location.pathname.startsWith("/reset_password"))
-    ) {
-      navigate("/home");
-    }
-  }, [token, location.pathname, navigate]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     if (location.pathname.startsWith("/reset_password")) {
+  //       sessionStorage.clear();
+  //       localStorage.clear();
+  //     } else {
+  //       sessionStorage.clear();
+  //       localStorage.clear();
+  //       navigate("/");
+  //     }
+  //   }
+  // }, [token, navigate, location.pathname]);
+  // useEffect(() => {
+  //   if (
+  //     token &&
+  //     (location.pathname === "/" ||
+  //       location.pathname.startsWith("/reset_password"))
+  //   ) {
+  //     navigate("/home");
+  //   }
+  // }, [token, location.pathname, navigate]);
 
   const isProtectedRoute = (path) => {
     return (
@@ -95,7 +92,7 @@ const Router = () => {
         {shouldShowHeader && <Header />}
         {isProtectedRoute(location.pathname) && <Sidebar />}
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/reset_password/:uidID/:token" element={<Login />} />
           <Route
@@ -162,6 +159,7 @@ const Router = () => {
           />
           <Route path="/404" element={<Errorpage />} />
           <Route path="*" element={<Errorpage />} />
+          <Route path="/auth" element={<Login/>} />
         </Routes>
       </div>
     </>

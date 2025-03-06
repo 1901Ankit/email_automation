@@ -48,7 +48,7 @@ const Landing = () => {
             <div className="hidden md:flex items-center space-x-6">
               <button className="text-black font-medium no-underline hover:text-blue-600">
                 Home
-              </button> 
+              </button>
               <button
                 className="text-black font-medium no-underline hover:text-blue-600"
                 onClick={() => {
@@ -215,22 +215,20 @@ const Landing = () => {
               >
                 Contact
               </button>
-
-           
             </div>
           )}
         </div>
         {/* Banner Section */}
-        <div className="relative h-[100%] md:h-[450px]">
+        <div className="relative h-[100vh] md:h-[450px] xl:h-[520px] w-full">
           {/* Background Image */}
           <img
             src={blue}
-            className="absolute inset-0 w-full h-full object-cover z-0"
+            className="absolute inset-0 w-full h-full object-cover object-center"
             alt="Banner"
           />
 
           {/* Content */}
-          <div className= "relative z-10 flex items-center justify-center h-full w-full">
+          <div className="relative z-10 flex items-center justify-center h-full w-full">
             <div className="container px-0 md:px-4">
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
                 <div className="sm:col-span-7 text-center text-white px-4">
@@ -278,7 +276,7 @@ const Landing = () => {
                   {/* Girl (On Top) */}
                   <img
                     src={girl}
-                    className="w-full h-full object-cover relative z-10"
+                    className="w-full  object-cover relative z-10"
                     alt="Girl"
                   />
                 </div>
