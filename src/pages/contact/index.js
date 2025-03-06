@@ -6,7 +6,7 @@ import * as API from "../../api/user";
 import { FiPlus } from "react-icons/fi";
 import axios from "axios";
 import { toast } from "react-toastify";
-import csvfile from "../../assests/image/csvfile.png";
+import csvfile from "../../assests/image/csv/contact.png";
 const Contact = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCsvPreviewOpen, setIsCsvPreviewOpen] = useState(false);
@@ -17,21 +17,23 @@ const Contact = () => {
   const [contactData, setContactData] = useState([]);
   const [csvContacts, setCsvContacts] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
+  const [fileName, setFileName] = useState("");
+
   const [nameInput, setNameInput] = useState("");
   const [csvFile, setCsvFile] = useState(null);
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingContacts, setEditingContacts] = useState([]);
   const [isModalEDitOpen, setIsModalEditOpen] = useState(false);
-  const [selectedFileId, setSelectedFileId] = useState(null);;
- const [initialContact,setInitialContact]= useState([]);
- const [originalContacts, setOriginalContacts] = useState([]);
+  const [selectedFileId, setSelectedFileId] = useState(null);
+  const [initialContact, setInitialContact] = useState([]);
+  const [originalContacts, setOriginalContacts] = useState([]);
 
- // When opening the edit modal, store the initial contacts
- useEffect(() => {
-   setOriginalContacts(JSON.parse(JSON.stringify(editingContacts))); // Deep copy to avoid reference issues
- }, [editingContacts.length]); // Update only when contacts are loaded
- 
+  // When opening the edit modal, store the initial contacts
+  useEffect(() => {
+    setOriginalContacts(JSON.parse(JSON.stringify(editingContacts))); // Deep copy to avoid reference issues
+  }, [editingContacts.length]); // Update only when contacts are loaded
+
   const HandleFileData = (data) => {
     setFileData(data);
   };
@@ -40,7 +42,7 @@ const Contact = () => {
     try {
       const response = await API.getSingleContactList(file_id);
       console.log("jjj", response.data.contacts);
-       setInitialContact(response.data.contacts);
+      setInitialContact(response.data.contacts);
       setEditingContacts(response.data.contacts);
       setIsModalEditOpen(true);
     } catch (error) {
@@ -64,13 +66,13 @@ const Contact = () => {
         contact.data.companyName !== original.data?.companyName
       );
     });
-  
+
     if (updatedContacts.length === 0) {
       toast.info("No changes to update.");
       return;
     }
     console.log("updated", updatedContacts);
-   
+
     const formattedContacts = {
       contacts: updatedContacts.map((contact) => ({
         ...(contact.id ? { id: contact.id } : {}),
@@ -82,7 +84,7 @@ const Contact = () => {
         },
       })),
     };
-    
+
     try {
       const res = await axios.put(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/contact-update/${selectedFileId}/`,
@@ -100,11 +102,14 @@ const Contact = () => {
         window.location.reload();
       }, 1500);
     } catch (error) {
-      console.error("Error updating contacts:", error.response?.data || error.message);
+      console.error(
+        "Error updating contacts:",
+        error.response?.data || error.message
+      );
       toast.error("Failed to update contacts.");
     }
   };
-  
+
   const handleDelete = async (file_id) => {
     try {
       const res = await API.deleteSingleContactList(file_id);
@@ -127,7 +132,16 @@ const Contact = () => {
     setIsCsvPreviewOpen(false);
   };
   const handleFileChange = (e) => {
-    setCsvFile(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setCsvFile(file);
+      setFileName(file.name);
+    }
+  };
+  
+  const handleDeleteFile = () => {
+    setCsvFile(null);
+    setFileName("");
   };
   const handleSave = async () => {
     if (!nameInput || !csvFile) {
@@ -165,7 +179,6 @@ const Contact = () => {
   const containerRef = useRef(null);
   const addNew = () => {
     setEditingContacts([
-      
       { data: { firstName: "", lastName: "", Email: "", companyName: "" } },
     ]);
     setTimeout(() => {
@@ -174,12 +187,12 @@ const Contact = () => {
       }
     }, 100);
   };
- 
+
   useEffect(() => {
     const fetchContacts = async () => {
       try {
         const response = await API.getContactList();
-        console.log("response_from_contact",response.data.user_contact_files);
+        console.log("response_from_contact", response.data.user_contact_files);
         setContacts(response.data.user_contact_files);
         setLoading(false);
       } catch (error) {
@@ -188,13 +201,15 @@ const Contact = () => {
       }
     };
     fetchContacts();
-  }, [ ]);
+  }, []);
   return (
     <>
       <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
         <div className="mb-2">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl md:text-3xl font-bold uppercase">Contact Setup</h1>
+            <h1 className="text-xl md:text-3xl font-bold uppercase">
+              Contact Setup
+            </h1>
             <button
               className="bg-[#3B82F6] text-white border-[#3B82F6] rounded-md p-2 text-lg font-semibold"
               type="button"
@@ -327,6 +342,30 @@ const Contact = () => {
                           </span>
                         </label>
                       </div>
+                      {fileName && (
+                        <div className="file-block flex items-center">
+                          <div className="file-info flex items-center space-x-2">
+                            <span className="material-icons-outlined file-icon">
+                              description
+                            </span>
+                            <span className="file-name">{fileName}</span>
+                          </div>
+                          <div className="items-center justify-between flex gap-2">
+                            {/* <button
+                              type="button"
+                              className="bg-transparent  text-white  rounded-md"
+                            >
+                              <FaEye />
+                            </button> */}
+                            <span
+                              className="material-icons remove-file-icon cursor-pointer ml-4 text-red-500"
+                              onClick={handleDeleteFile}
+                            >
+                              delete
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     <div className="col-sm-6 mt-5 md:mt-0">
                       <div className="flex items-center justify-center">
@@ -497,7 +536,7 @@ const Contact = () => {
                           {contact?.data?.lastName}
                         </td>
                         <td className="px-6 py-3 text-xs text-gray-500 text-center border">
-                          {contact?.data?.company}
+                          {contact?.data?.companyName}
                         </td>
                       </tr>
                     ))}

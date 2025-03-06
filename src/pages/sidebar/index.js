@@ -51,7 +51,7 @@ const Sidebar = () => {
       name: "Template",
       path: "/template",
       icon: <LuLayoutTemplate style={{ fontSize: "18px" }} />,
-    },  
+    },
     {
       name: "Manage  Campaigns",
       path: "/manage-campaigns",
@@ -63,11 +63,7 @@ const Sidebar = () => {
       icon: <BiMessageAltDetail style={{ fontSize: "18px" }} />,
     },
 
-    {
-      name: "Log out",
-      path: "",
-      icon: <AiOutlineLogin style={{ fontSize: "18px" }} />,
-    },
+   
   ];
 
   useEffect(() => {
@@ -88,42 +84,13 @@ const Sidebar = () => {
     return !!localStorage.getItem("access_token");
   }
 
-  const handleTabChange = async (index, subTabPath = null) => {
-    if (index === tabs.length - 1) {
-      try {
-        const authToken = localStorage.getItem("access_token");
-        const res = await axios.post(
-          `${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
-          {
-            refresh: localStorage.getItem("refresh_token"),
-            device_id: localStorage.getItem("device_id"),
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-        console.log(res);
-
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-        localStorage.clear();
-        sessionStorage.clear();
-        toast.success("Logout successfully");
-        setIsAuthenticated(false);
-        navigate("/");
-      } catch (error) {
-        console.log(error);
-
-        toast.error(error.response.data.message);
-      }
+  const handleTabChange = (index, subTabPath = null) => {
+    if (index === tabs.length - 0) {
+      return;
     } else {
       setActiveTabIndex(index);
       navigate(subTabPath || tabs[index].path);
 
-      // 🔥 Close sidebar if on mobile
       if (window.innerWidth < 768) {
         setIsMobileMenuOpen(false);
       }

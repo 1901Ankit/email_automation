@@ -119,12 +119,14 @@ const Landing = () => {
                 Contact
               </button>
 
-              <button
-                className="px-4 py-2 border border-blue-500 text-white rounded-lg bg-blue-500 transition
-               hover:bg-blue-700 no-underline"
-              >
-                Login
-              </button>
+              <a href="/auth">
+                <button
+                  className="px-4 py-2 border border-blue-500 text-white rounded-lg bg-blue-500 transition
+                hover:bg-blue-700 no-underline"
+                >
+                  Login
+                </button>
+              </a>
 
               {/* Support Icon */}
               <a href="tel:+18002102858">

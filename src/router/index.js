@@ -78,20 +78,24 @@ const Router = () => {
 
   const isProtectedRoute = (path) => {
     return (
-      !["/", "/404"].includes(path) && !path.startsWith("/reset_password/")
+      !["/", "/auth", "/404"].includes(path) &&
+      !path.startsWith("/reset_password/")
     );
   };
 
   const shouldShowHeader =
-    !["/", "/reset_password/:uidID/:token"].includes(location.pathname) &&
-    !location.pathname.startsWith("/reset_password");
+    !["/", "/auth", "/reset_password/:uidID/:token"].includes(
+      location.pathname
+    ) && !location.pathname.startsWith("/reset_password");
+
   return (
     <>
       <div className="d-flex">
         {shouldShowHeader && <Header />}
         {isProtectedRoute(location.pathname) && <Sidebar />}
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/auth" element={<Login />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/reset_password/:uidID/:token" element={<Login />} />
           <Route
             path="/home"
@@ -125,9 +129,9 @@ const Router = () => {
             path="/template"
             element={token ? <Template /> : <Navigate to="/" replace />}
           />
-           <Route
+          <Route
             path="/manage-campaigns"
-            element={token ? <MangeCampaigns/>  : <Navigate to="/" replace />}
+            element={token ? <MangeCampaigns /> : <Navigate to="/" replace />}
           />
           <Route
             path="/subscribe-plan"
@@ -157,7 +161,6 @@ const Router = () => {
           />
           <Route path="/404" element={<Errorpage />} />
           <Route path="*" element={<Errorpage />} />
-          <Route path="/auth" element={<Login/>} />
         </Routes>
       </div>
     </>

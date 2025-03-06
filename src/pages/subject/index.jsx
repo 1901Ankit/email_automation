@@ -6,7 +6,7 @@ import * as API from "../../api/user";
 import { FiPlus } from "react-icons/fi";
 import axios from "axios";
 import { toast } from "react-toastify";
-import csvfile from "../../assests/image/csvfile.png";
+import csvfile from "../../assests/image/csv/subject.png";
 const Subject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCsvPreviewOpen, setIsCsvPreviewOpen] = useState(false);
@@ -19,6 +19,7 @@ const Subject = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [nameInput, setNameInput] = useState("");
   const [csvFile, setCsvFile] = useState(null);
+  const [fileName, setFileName] = useState("");
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingContacts, setEditingContacts] = useState([]);
@@ -27,7 +28,6 @@ const Subject = () => {
   const [initialContact, setInitialContact] = useState([]);
   const [originalContacts, setOriginalContacts] = useState([]);
 
- 
   const HandleFileData = (data) => {
     setFileData(data);
   };
@@ -36,8 +36,12 @@ const Subject = () => {
     try {
       const response = await API.getSingleSubjectList(file_id);
       console.log("jjj_for_Edit", response);
-      setInitialContact(response.data.data.data ? response.data.data.data : response.data.data);
-      setEditingContacts(response.data.data.data?response.data.data.data:response.data.data);
+      setInitialContact(
+        response.data.data.data ? response.data.data.data : response.data.data
+      );
+      setEditingContacts(
+        response.data.data.data ? response.data.data.data : response.data.data
+      );
       setIsModalEditOpen(true);
     } catch (error) {
       console.error("Error fetching contacts:", error);
@@ -52,10 +56,10 @@ const Subject = () => {
     console.log("editingContacts", editingContacts);
     const updatedContacts = editingContacts.filter((contact, index) => {
       const original = originalContacts[index];
-      
+
       // For new contacts (no corresponding original)
       if (!original) return true;
-      
+
       // For existing contacts, check if Subject changed
       return contact.Subject !== original.Subject;
     });
@@ -66,29 +70,27 @@ const Subject = () => {
     }
     console.log("updated", updatedContacts);
     const formattedData = {
-      rows: updatedContacts.map(contact => {
+      rows: updatedContacts.map((contact) => {
         // For contacts with an id (existing contacts that were updated)
         if (contact.id) {
           return {
             id: contact.id,
-            Subject: contact.Subject
+            Subject: contact.Subject,
           };
-        } 
+        }
         // For new contacts (without id)
         else {
           return {
-            Subject: contact.Subject
+            Subject: contact.Subject,
           };
         }
-      })
+      }),
     };
- 
- 
- 
+
     try {
       const res = await axios.put(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/subject-file/${selectedFileId}/rows/`,
-         formattedData ,
+        formattedData,
         {
           headers: {
             "Content-Type": "application/json",
@@ -126,9 +128,8 @@ const Subject = () => {
     }
   };
   const handleDeleteRow = async (row_id) => {
-  
     try {
-      const res = await API.deleteSingleSubjectListRow(selectedFileId,row_id);
+      const res = await API.deleteSingleSubjectListRow(selectedFileId, row_id);
       console.log("res_from_Deleting_subjects_all", res);
       toast.success(res.data.message);
       setTimeout(() => {
@@ -141,18 +142,27 @@ const Subject = () => {
   const handleCsvPreview = async (file_id) => {
     try {
       const response = await API.getSingleSubjectList(file_id);
-      // console.log("res_from_subjects_preview", res);
-      setPreviewData(response.data.data.data?response.data.data.data:response.data.data);
+      setPreviewData(
+        response.data.data.data ? response.data.data.data : response.data.data
+      );
     } catch (error) {}
-    
+
     setIsCsvPreviewOpen(true);
   };
   const handleCloseCsvPreview = () => {
     setIsCsvPreviewOpen(false);
   };
   const handleFileChange = (e) => {
-    console.log("file", e.target.files[0]);
-    setCsvFile(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      console.log("file", file);
+      setCsvFile(file);
+      setFileName(file.name);
+    }
+  };
+  const handleDeleteFile = () => {
+    setCsvFile(null);
+    setFileName(""); // Reset file name
   };
   const handleSave = async () => {
     if (!nameInput || !csvFile) {
@@ -175,7 +185,7 @@ const Subject = () => {
     try {
       const response = await API.uploadSubjects(formData);
       console.log("respnse", response);
-      if (response.status===201) {
+      if (response.status === 201) {
         toast.success("File uploaded successfully!");
         setTimeout(() => {
           closeModal();
@@ -190,12 +200,8 @@ const Subject = () => {
   };
   const containerRef = useRef(null);
   const addNew = () => {
-    
-      setEditingContacts([
-        ...editingContacts, // Keep existing contacts
-        { Subject: "" }  // Simplified structure
-      ]);
-  
+    setEditingContacts([...editingContacts, { Subject: "" }]);
+
     setTimeout(() => {
       if (containerRef.current) {
         containerRef.current.scrollTop = containerRef.current.scrollHeight;
@@ -207,7 +213,6 @@ const Subject = () => {
     const fetchSubjects = async () => {
       try {
         const response = await API.getSubjectList();
-        // console.log("response_from_subject", response.data);
         setSubjects(response.data.subject_file_list);
         setLoading(false);
       } catch (error) {
@@ -238,7 +243,7 @@ const Subject = () => {
               <thead className="bg-[#3B82F6] text-white">
                 <tr>
                   <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
-                   Id
+                    Id
                   </th>
                   <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
                     List Name
@@ -326,12 +331,12 @@ const Subject = () => {
                   />
                 </div>
                 <div className="container-fluid">
-                  <div className="row items-center justify-center mt-3">
+                  <div className="row flex items-center justify-center mt-3">
                     <div className="col-sm-6">
                       <div className="flex items-center justify-center">
                         <h1 className="text-3xl font-bold">Upload list</h1>
                       </div>
-                      <div className="drag-file-area ">
+                      <div className="drag-file-area">
                         <span className="material-icons-outlined upload-icon">
                           file_upload
                         </span>
@@ -344,6 +349,7 @@ const Subject = () => {
                               type="file"
                               className="default-file-input file-input"
                               onChange={handleFileChange}
+                              accept=".csv"
                             />
                             <span className="browse-files-text text-center">
                               Browse file
@@ -352,10 +358,36 @@ const Subject = () => {
                           </span>
                         </label>
                       </div>
+
+                      {/* Show file name if a file is uploaded */}
+                      {fileName && (
+                        <div className="file-block flex items-center">
+                          <div className="file-info flex items-center space-x-2">
+                            <span className="material-icons-outlined file-icon">
+                              description
+                            </span>
+                            <span className="file-name">{fileName}</span>
+                          </div>
+                          <div className="items-center justify-between flex gap-2">
+                            {/* <button
+                              type="button"
+                              className="bg-transparent  text-white  rounded-md"
+                            >
+                              <FaEye />
+                            </button> */}
+                            <span
+                              className="material-icons remove-file-icon cursor-pointer ml-4 text-red-500"
+                              onClick={handleDeleteFile}
+                            >
+                              delete
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div className="col-sm-6 mt-5 md:mt-0">
+                    <div className="col-sm-6">
                       <div className="flex items-center justify-center">
-                        <h1 className="text-3xl font-bold">Sample csv</h1>
+                        <h1 className="text-3xl font-bold ">Sample csv</h1>
                       </div>
                       <img
                         src={csvfile}
@@ -401,33 +433,33 @@ const Subject = () => {
                     <thead className="bg-gray-200">
                       <tr>
                         <th className="px-4 py-2 border">Subject</th>
-                       
                       </tr>
                     </thead>
                     <tbody>
                       {editingContacts?.map((contact, index) => (
                         <tr key={index} className="text-center">
-                        {/* Subject Input Field */}
-                        <td className="px-2 py-2 border w-4/5">
-                          <input
-                            type="text"
-                            value={contact?.Subject || ""}
-                            onChange={(e) => handleChange(index, "Subject", e.target.value)}
-                            className="border p-2 w-full text-sm md:text-base"
-                          />
-                        </td>
-                      
-                        {/* Delete Button */}
-                        <td className="px-2 py-2 border w-1/5">
-                          <button
-                            className="text-red-500 hover:text-red-700 p-1"
-                            onClick={() => handleDeleteRow(contact.id)}
-                          >
-                            <FaTrash className="text-lg" />
-                          </button>
-                        </td>
-                      </tr>
-                      
+                          {/* Subject Input Field */}
+                          <td className="px-2 py-2 border w-4/5">
+                            <input
+                              type="text"
+                              value={contact?.Subject || ""}
+                              onChange={(e) =>
+                                handleChange(index, "Subject", e.target.value)
+                              }
+                              className="border p-2 w-full text-sm md:text-base"
+                            />
+                          </td>
+
+                          {/* Delete Button */}
+                          <td className="px-2 py-2 border w-1/5">
+                            <button
+                              className="text-red-500 hover:text-red-700 p-1"
+                              onClick={() => handleDeleteRow(contact.id)}
+                            >
+                              <FaTrash className="text-lg" />
+                            </button>
+                          </td>
+                        </tr>
                       ))}
                     </tbody>
                   </table>
@@ -466,18 +498,16 @@ const Subject = () => {
                 </button>
               </div>
               <div className="overflow-auto max-h-[400px]">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="w-full border border-gray-300 text-sm md:text-base">
                   <thead className="bg-gray-200">
                     <tr>
-                      <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border">
-                        Subject
-                      </th>
+                      <th className="px-4 py-2 border">Subject</th>
                     </tr>
                   </thead>
                   <tbody>
                     {previewData?.map((contact, index) => (
                       <tr key={index}>
-                        <td className="px-6 py-3 text-xs text-gray-500 text-center border">
+                        <td className="px-4 py-2 border w-4/5 text-sm text-gray-500">
                           {contact.Subject || "No Subject"}
                         </td>
                       </tr>
