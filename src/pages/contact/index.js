@@ -7,6 +7,7 @@ import { FiPlus } from "react-icons/fi";
 import axios from "axios";
 import { toast } from "react-toastify";
 import csvfile from "../../assests/image/csv/contact.png";
+import { Download } from "lucide-react";
 const Contact = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCsvPreviewOpen, setIsCsvPreviewOpen] = useState(false);
@@ -29,6 +30,41 @@ const Contact = () => {
   const [initialContact, setInitialContact] = useState([]);
   const [originalContacts, setOriginalContacts] = useState([]);
 
+
+  const downloadCSV = () => {
+    // Your CSV data
+    const csvContent = `Email,firstName,lastName,companyName
+xyz@gmail.com,Mark,Davis,Textiles
+abc@yahoo.com,John,Martin,JP morgan
+jkl@outlook.com,Max,Clovis,AMD texture
+rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and use actual domain
+
+    // Create blob
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    
+    // Create temporary link
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'sample.csv');
+    document.body.appendChild(link);
+    link.click();
+    
+    // Cleanup
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
+  const fetchContacts = async () => {
+    try {
+      const response = await API.getContactList();
+      console.log("response_from_contact", response.data.user_contact_files);
+      setContacts(response.data.user_contact_files);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
+      setLoading(false);
+    }
+  };
   // When opening the edit modal, store the initial contacts
   useEffect(() => {
     setOriginalContacts(JSON.parse(JSON.stringify(editingContacts))); // Deep copy to avoid reference issues
@@ -163,11 +199,13 @@ const Contact = () => {
     formData.append("csv_file", csvFile);
     try {
       const response = await API.uploadContacts(formData);
-      if (response.ok) {
+      console.log("response_from_uploadContact", response);
+      console.log("response_from", response.ok);
+      if (response. status === 201) {
         toast.success("File uploaded successfully!");
         setTimeout(() => {
           closeModal();
-          window.location.reload();
+          fetchContacts();
         }, 1500);
       } else {
         toast.error("Failed to upload file.");
@@ -189,17 +227,7 @@ const Contact = () => {
   };
 
   useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        const response = await API.getContactList();
-        console.log("response_from_contact", response.data.user_contact_files);
-        setContacts(response.data.user_contact_files);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching contacts:", error);
-        setLoading(false);
-      }
-    };
+    
     fetchContacts();
   }, []);
   return (
@@ -370,6 +398,7 @@ const Contact = () => {
                     <div className="col-sm-6 mt-5 md:mt-0">
                       <div className="flex items-center justify-center">
                         <h1 className="text-3xl font-bold">Sample csv</h1>
+                        <Download onClick={downloadCSV} className="cursor-pointer ml-4 text-blue-500"/>
                       </div>
                       <img
                         src={csvfile}

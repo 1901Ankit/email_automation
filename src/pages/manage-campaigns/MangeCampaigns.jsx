@@ -482,7 +482,7 @@ console.log("response",response)
                       : "Loading..."}
                   </td>
                   <td className="border border-gray-400 px-4 py-2">
-                    {comp.uploaded_file_id}
+                    {comp.uploaded_file_name}
                   </td>
                   <td className="px-4 py-2 flex gap-10">
                     <button

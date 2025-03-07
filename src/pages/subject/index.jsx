@@ -7,6 +7,7 @@ import { FiPlus } from "react-icons/fi";
 import axios from "axios";
 import { toast } from "react-toastify";
 import csvfile from "../../assests/image/csv/subject.png";
+import { Download } from "lucide-react";
 const Subject = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCsvPreviewOpen, setIsCsvPreviewOpen] = useState(false);
@@ -31,6 +32,34 @@ const Subject = () => {
   const HandleFileData = (data) => {
     setFileData(data);
   };
+
+
+  const downloadCSV = () => {
+    // Your CSV data
+    const csvContent = `Subject
+Thank you for contacting us
+We are here to support you
+Congratulations for onboarding 
+What Did You Think? Write a Review.
+What Can You Afford?
+`; // Modified to remove spaces and use actual domain
+
+    // Create blob
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    
+    // Create temporary link
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'sample.csv');
+    document.body.appendChild(link);
+    link.click();
+    
+    // Cleanup
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
+
   const handleEdit = async (file_id) => {
     setSelectedFileId(file_id);
     try {
@@ -388,6 +417,7 @@ const Subject = () => {
                     <div className="col-sm-6">
                       <div className="flex items-center justify-center">
                         <h1 className="text-3xl font-bold ">Sample csv</h1>
+                        <Download onClick={downloadCSV} className="cursor-pointer ml-4 text-blue-500"/>
                       </div>
                       <img
                         src={csvfile}
