@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assests/image/wishi.png";
 import people from "../../assests/image/support.webp";
 import blue from "../../assests/image/banner/blue.webp";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Footerfile from "../../component/footerfile";
 import girl2 from "../../../src/assests/image/banner/girl2.webp";
 import girl from "../../../src/assests/image/banner/girl.webp";
@@ -11,9 +11,23 @@ import Plan_ui from "../../component/planui";
 import Contactui from "../../component/contactui";
 import Service_ui from "../../component/serviceui";
 import About_ui from "../../component/aboutui";
+import {
+  FaHome,
+  FaInfoCircle,
+  FaServicestack,
+  FaClipboardList,
+  FaPhoneAlt,
+} from "react-icons/fa";
+import instagram from "../../assests/image/social/instagram.png";
+import facebook from "../../assests/image/social/facebook.png";
+import linkedin from "../../assests/image/social/linkdin.png";
+import skype from "../../assests/image/social/skype.png";
+import sugest from "../../assests/image/sugest.png";
 const Landing = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
+  const navigate = useNavigate();
+
   // const links = [
   //   { name: "Home", url: "/" },
   //   { name: "About", url: "/about" },
@@ -21,7 +35,18 @@ const Landing = () => {
   //   { name: "Plan", url: "/plan" },
   //   { name: "Contact", url: "/Contact" },
   // ];
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
+
+  const handleUserClick = () => {
+    navigate("/home");
+  };
   return (
     <>
       <div className="container-fluid max-h-[100vh] overflow-auto p-0">
@@ -40,9 +65,22 @@ const Landing = () => {
               <img className="w-36 md:w-48" src={logo} alt="Logo" />
             </Link>
 
-            <button className="md:hidden px-4 py-2 bg-blue-600 text-white rounded-lg no-underline">
-              Login
-            </button>
+            <div>
+              {user ? (
+                <button
+                  onClick={handleUserClick}
+                  className="bg-blue-600 text-white px-3.5 py-2 rounded-full shadow-md font-semibold md:hidden"
+                >
+                  {user.charAt(0).toUpperCase()}
+                </button>
+              ) : (
+                <a href="/auth">
+                  <button className="px-4 py-2 border border-blue-500 text-white rounded-lg bg-blue-500 transition hover:bg-blue-700 md:hidden">
+                    Login
+                  </button>
+                </a>
+              )}
+            </div>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-6">
@@ -119,14 +157,22 @@ const Landing = () => {
                 Contact
               </button>
 
-              <a href="/auth">
-                <button
-                  className="px-4 py-2 border border-blue-500 text-white rounded-lg bg-blue-500 transition
-                hover:bg-blue-700 no-underline"
-                >
-                  Login
-                </button>
-              </a>
+              <div>
+                {user ? (
+                  <button
+                    onClick={handleUserClick}
+                    className="bg-blue-600 text-white px-3.5 py-2 rounded-full shadow-md font-semibold"
+                  >
+                    {user.charAt(0).toUpperCase()}
+                  </button>
+                ) : (
+                  <a href="/auth">
+                    <button className="px-4 py-2 border border-blue-500 text-white rounded-lg bg-blue-500 transition hover:bg-blue-700">
+                      Login
+                    </button>
+                  </a>
+                )}
+              </div>
 
               {/* Support Icon */}
               <a href="tel:+18002102858">
@@ -137,86 +183,153 @@ const Landing = () => {
 
           {/* Mobile Menu */}
           {isOpen && (
-            <div className="md:hidden bg-white border-t border-gray-200">
-              <Link
-                to="/"
-                className="block p-4 border-b border-gray-200 hover:bg-gray-100"
+            <div
+              className={`fixed top-18 left-0 h-full w-full bg-gray-100 shadow-lg z-50 transform transition-all duration-700 ease-in-out md:hidden
+        ${
+          isOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+        }`}
+            >
+              {/* <button
+                className="absolute top-4 right-4 text-gray-700 hover:text-gray-900"
                 onClick={() => setIsOpen(false)}
               >
-                Home
-              </Link>
-              <button
-                to="/about"
-                className="block p-4 border-b border-gray-200 hover:bg-gray-100"
-                onClick={() => {
-                  const aboutSection = document.getElementById("aboutui");
-                  if (aboutSection) {
-                    aboutSection.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
-                    setTimeout(() => {
-                      window.scrollBy(0, -100);
-                    }, 300);
-                  }
-                }}
-              >
-                About
-              </button>
-              <button
-                to="/services"
-                className="block p-4 border-b border-gray-200 hover:bg-gray-100"
-                onClick={() => {
-                  const aboutSection = document.getElementById("serviceui");
-                  if (aboutSection) {
-                    aboutSection.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
-                    setTimeout(() => {
-                      window.scrollBy(0, -100);
-                    }, 300);
-                  }
-                }}
-              >
-                Our Services
-              </button>
-              <button
-                to="/plan"
-                className="block p-4 border-b border-gray-200 hover:bg-gray-100"
-                onClick={() => {
-                  const aboutSection = document.getElementById("planui");
-                  if (aboutSection) {
-                    aboutSection.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
-                    setTimeout(() => {
-                      window.scrollBy(0, -100);
-                    }, 300);
-                  }
-                }}
-              >
-                Plan
-              </button>
-              <button
-                to="/contact"
-                className="block p-4 border-b border-gray-200 hover:bg-gray-100"
-                onClick={() => {
-                  const aboutSection = document.getElementById("contactui");
-                  if (aboutSection) {
-                    aboutSection.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
-                    setTimeout(() => {
-                      window.scrollBy(0, -100);
-                    }, 300);
-                  }
-                }}
-              >
-                Contact
-              </button>
+                <FaTimes size={24} />
+              </button> */}
+              {/* Sidebar Links */}
+              <div className="mt-2 cursor-pointer p-2 rounded-lg transition-all font-semibold text-xl">
+                <Link
+                  to="/"
+                  className="flex items-center gap-3 p-4 border-b border-gray-200 hover:bg-gray-100 transition-all text-black no-underline"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FaHome className="text-blue-600 text-[30px]" /> Home
+                </Link>
+
+                <button
+                  className="flex items-center gap-3 p-4 border-b border-gray-200 hover:bg-gray-100"
+                  onClick={() => {
+                    const aboutSection = document.getElementById("aboutui");
+                    if (aboutSection) {
+                      aboutSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                      setTimeout(() => window.scrollBy(0, -100), 300);
+                    }
+                    setIsOpen(false);
+                  }}
+                >
+                  <FaInfoCircle className="text-blue-600 text-[30px]" /> About
+                </button>
+
+                <button
+                  className="flex items-center gap-3 p-4 border-b border-gray-200 hover:bg-gray-100"
+                  onClick={() => {
+                    const serviceSection = document.getElementById("serviceui");
+                    if (serviceSection) {
+                      serviceSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                      setTimeout(() => window.scrollBy(0, -100), 300);
+                    }
+                    setIsOpen(false);
+                  }}
+                >
+                  <FaServicestack className="text-blue-600 text-[30px]" /> Our
+                  Services
+                </button>
+
+                <button
+                  className="flex items-center gap-3 p-4 border-b border-gray-200 hover:bg-gray-100"
+                  onClick={() => {
+                    const planSection = document.getElementById("planui");
+                    if (planSection) {
+                      planSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                      setTimeout(() => window.scrollBy(0, -100), 300);
+                    }
+                    setIsOpen(false);
+                  }}
+                >
+                  <FaClipboardList className="text-blue-600 text-[30px]" /> Plan
+                </button>
+
+                <button
+                  className="flex items-center gap-3 p-4 border-b border-gray-200 hover:bg-gray-100"
+                  onClick={() => {
+                    const contactSection = document.getElementById("contactui");
+                    if (contactSection) {
+                      contactSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                      setTimeout(() => window.scrollBy(0, -100), 300);
+                    }
+                    setIsOpen(false);
+                  }}
+                >
+                  <FaPhoneAlt className="text-blue-600 text-[30px]" /> Contact
+                </button>
+
+                <div class="p-2 border border-[#ebf4ff] bg-[#ebf4ff] transition-all duration-300 block">
+                  <div class="flex flex-row justify-between items-center">
+                    <div class="w-4/12">
+                      <img
+                        src={sugest}
+                        alt="sugest"
+                        loading="lazy"
+                        width="864"
+                        height="860"
+                        decoding="async"
+                        data-nimg="1"
+                        class="w-full"
+                      />
+                    </div>
+                    <div class="w-8/12">
+                      <p class="text-justify">
+                        <span class="text-[#338DFB] text-lg font-semibold">
+                          Get 20% off
+                        </span>
+                        <span class="text-sm mx-2 font-semibold">
+                          on our Technical Support Application for a limited
+                          time! Enjoy 24/7 expert assistance and fast issue
+                          resolution—sign up today!
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-around mt-5">
+                  <Link to="https://www.facebook.com/wishgeekstechserve">
+                    <img
+                      src={facebook}
+                      alt="facebook icon"
+                      className="w-10 h-auto"
+                    />
+                  </Link>
+                  <Link to="https://www.instagram.com/wishgeekstechserve">
+                    <img
+                      src={instagram}
+                      alt="instagram icon"
+                      className="w-10 h-auto"
+                    />
+                  </Link>
+                  <Link to="https://www.linkedin.com/company/wishgeekstechserve">
+                    <img
+                      src={linkedin}
+                      alt="linkedin icon"
+                      className="w-10 h-auto"
+                    />
+                  </Link>
+                  <Link to="skype:live:.cid.73628076fa84e06f?call">
+                    <img src={skype} alt="Skype Logo" className="w-10 h-auto" />
+                  </Link>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -244,12 +357,37 @@ const Landing = () => {
                   </p>
                   <div class="flex space-x-4 mt-3">
                     <button
+                      onClick={() => {
+                        const aboutSection =
+                          document.getElementById("contactui");
+                        if (aboutSection) {
+                          aboutSection.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                          setTimeout(() => {
+                            window.scrollBy(0, -100);
+                          }, 300);
+                        }
+                      }}
                       class="border border-blue-500 rounded-lg p-2 font-semibold flex items-center justify-center 
                     cursor-pointer bg-white text-blue-500 w-4/12 "
                     >
                       <span>Enquire </span>
                     </button>
                     <button
+                      onClick={() => {
+                        const aboutSection = document.getElementById("aboutui");
+                        if (aboutSection) {
+                          aboutSection.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                          setTimeout(() => {
+                            window.scrollBy(0, -100);
+                          }, 300);
+                        }
+                      }}
                       class="border border-blue-500 rounded-lg p-2 font-semibold flex items-center justify-center
                     cursor-pointer bg-transparent text-white w-4/12 "
                     >

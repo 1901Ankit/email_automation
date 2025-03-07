@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import "./index.css";
 import { BiMessageAltDetail } from "react-icons/bi";
-import { VscPreview } from "react-icons/vsc";
 import { VscServerEnvironment } from "react-icons/vsc";
 import { IoHomeOutline } from "react-icons/io5";
-import { AiOutlineLogin } from "react-icons/ai";
-import { toast } from "react-toastify";
 import { RiSendPlaneFill } from "react-icons/ri";
-import { IoMdContacts } from "react-icons/io";
+import { IoIosContacts } from "react-icons/io";
 import { HiMenu, HiX } from "react-icons/hi"; // Toggle button ke icons
 import { LuLayoutTemplate } from "react-icons/lu";
+import { GiNotebook } from "react-icons/gi";
+import { FaBullhorn } from "react-icons/fa";
 
 const Sidebar = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -25,45 +23,43 @@ const Sidebar = () => {
     {
       name: "Analytics",
       path: "/home",
-      icon: <IoHomeOutline style={{ fontSize: "18px" }} />,
+      icon: <IoHomeOutline style={{ fontSize: "22px" }} />,
     },
     {
       name: "Plan",
       path: "/subscribe-plan",
-      icon: <RiSendPlaneFill style={{ fontSize: "18px" }} />,
+      icon: <RiSendPlaneFill style={{ fontSize: "22px" }} />,
     },
     {
       name: "Subject",
       path: "/subject",
-      icon: <IoMdContacts style={{ fontSize: "18px" }} />,
+      icon: <GiNotebook style={{ fontSize: "22px" }} />,
     },
     {
       name: "Contact",
       path: "/contact",
-      icon: <IoMdContacts style={{ fontSize: "18px" }} />,
+      icon: <IoIosContacts style={{ fontSize: "22px" }} />,
     },
     {
       name: "SMTP Setup",
       path: "/smtp",
-      icon: <VscServerEnvironment style={{ fontSize: "18px" }} />,
+      icon: <VscServerEnvironment style={{ fontSize: "22px" }} />,
     },
     {
       name: "Template",
       path: "/template",
-      icon: <LuLayoutTemplate style={{ fontSize: "18px" }} />,
+      icon: <LuLayoutTemplate style={{ fontSize: "22px" }} />,
     },
     {
       name: "Manage  Campaigns",
       path: "/manage-campaigns",
-      icon: <BiMessageAltDetail style={{ fontSize: "18px" }} />,
+      icon: <FaBullhorn  style={{ fontSize: "22px" }} />,
     },
     {
       name: "Campaigns",
       path: "/detail",
-      icon: <BiMessageAltDetail style={{ fontSize: "18px" }} />,
+      icon: <BiMessageAltDetail style={{ fontSize: "22px" }} />,
     },
-
-   
   ];
 
   useEffect(() => {
