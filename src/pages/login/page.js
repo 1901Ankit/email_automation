@@ -59,7 +59,6 @@ const Login = () => {
       setShowResetFields(true);
       setShowSignupFields(false);
       setShowSigninFields(false);
-      setShow2fa(false);
     }
   }, [location]);
 

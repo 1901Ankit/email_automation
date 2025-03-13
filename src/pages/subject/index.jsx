@@ -224,6 +224,8 @@ What Can You Afford?
         toast.error("Failed to upload file.");
       }
     } catch (error) {
+      console.log(error);
+      
       toast.error("An error occurred while uploading the file.");
     }
   };
