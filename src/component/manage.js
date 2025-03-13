@@ -78,7 +78,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
 
       const formData = new FormData();
       formData.append("device_id", selectedDeviceId);
-      formData.append("system_info", system_info);
+      // formData.append("system_info", system_info);
       formData.append("otp", enteredOtp);
 
       const res = await UserAPI.logoutOTP(formData);
@@ -91,7 +91,12 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
         localStorage.setItem("user", signInEmail);
         localStorage.setItem("access_token", res.data.access_token);
         localStorage.setItem("refresh_token", res.data.refresh_token);
-        navigate("/home");
+        if (localStorage.getItem("from_home")) {
+          navigate("/subscribe-plan");
+          localStorage.removeItem("from_home");
+        } else {
+          navigate("/home");
+        }
       } else {
         toast.error("Invalid OTP, please try again!");
       }

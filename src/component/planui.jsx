@@ -1,8 +1,21 @@
 import React from "react";
 import Techserve from "../assests/image/banner/Techserve.png";
 import { SiTicktick } from "react-icons/si";
-
+import { useNavigate } from "react-router-dom";
 const Plan_ui = () => {
+  const navigate = useNavigate();
+
+  const onGoPlan = async () => {
+    const access_token = localStorage.getItem("access_token");
+    const user = localStorage.getItem("user");
+
+    if (access_token && user) {
+      navigate("/subscribe-plan");
+    } else {
+      localStorage.setItem("from_home", "getStarted");
+      navigate("/auth");
+    }
+  };
   const plans = [
     {
       name: "Basic",
@@ -109,6 +122,7 @@ const Plan_ui = () => {
             <button
               className="border-2 border-blue-500 rounded-lg p-2 font-semibold flex items-center justify-center tracking-wider
                   cursor-pointer bg-white text-blue-500 w-full mt-3"
+              onClick={onGoPlan}
             >
               Get Started
             </button>

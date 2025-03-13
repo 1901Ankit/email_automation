@@ -54,13 +54,14 @@ const Login = () => {
   const { uidID, token } = useParams();
   const location = useLocation();
 
-  // useEffect(() => {
-  //   if (location.pathname.includes("/reset_password")) {
-  //     setShowResetFields(true);
-  //     setShowSignupFields(false);
-  //     setShowSigninFields(false);
-  //   }
-  // }, [location]);
+  useEffect(() => {
+    if (location.pathname.includes("/reset_password")) {
+      setShowResetFields(true);
+      setShowSignupFields(false);
+      setShowSigninFields(false);
+      setShow2fa(false);
+    }
+  }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -188,6 +189,7 @@ const Login = () => {
         const systemInfo = `${browserName}, ${osName}, ${new Date().toLocaleString()}`;
         formData.append("system_info", systemInfo);
         // Perform login request
+        const fromurl= localStorage.getItem("from_home");
         const res = await API.login(formData);
         if (res.data.user_id) {
           localStorage.setItem("id", res.data.user_id);
@@ -198,6 +200,7 @@ const Login = () => {
           console.log("res", res);
 
           toast.success(res.data.message);
+          
           if (res?.data?.redirect !== "home") {
             setShowSigninFields(false);
             setShowOtpField(false);
@@ -209,7 +212,13 @@ const Login = () => {
             setOtp(new Array(6).fill(""));
           } else {
             setShow(true);
-            navigate("/home");
+            if(fromurl){
+               navigate("/subscribe-plan");
+               localStorage.removeItem("from_home");
+            } else {
+              navigate("/home");
+            }
+           
           }
         } else {
           toast.warning("Device limit exceeded!");

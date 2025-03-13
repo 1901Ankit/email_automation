@@ -18,6 +18,12 @@ export const upgradePlan = (plan) => API.put('/upgrade-plan/', plan, {
   headers: {
     'Content-Type': 'application/json'
   }
+});
+
+export const  verifyUpgradePlan = (plan) => API.put('/verify-upgrade-payment/', plan, {
+  headers: {
+    'Content-Type': 'application/json'
+  }
 })
 
 export default API
