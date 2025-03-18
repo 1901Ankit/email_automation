@@ -218,26 +218,26 @@ const Smtp = () => {
                   <tbody className="bg-gray-50 divide-y divide-gray-200">
                     {tableData.map((data, i) => (
                       <tr key={i}>
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           {data.name}
                         </td>
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           {data.host}
                         </td>
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           {data.port}
                         </td>
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           {data?.use_tls && "True"}
                         </td>
 
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           {data.username}
                         </td>
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           ***************
                         </td>
-                        <td className="px-6 py-4 text-xs text-gray-500 border flex space-x-2">
+                        <td className="px-6 py-4 text-xs text-black border flex space-x-2">
                           <button
                             onClick={() => handleEdit(i, data.id)}
                             className="text-blue-500 hover:text-blue-700"
