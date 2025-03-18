@@ -71,19 +71,20 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   const handleVerifyOtp = async () => {
     try {
       const enteredOtp = otp.join("");
-      let system_info = devices.map((device) => {
-        if (device.device_id == selectedDeviceId) {
-          return device;
-        }
-      })[0]["system_info"];
+      let selectedDevice = devices.find((device) => device.device_id === selectedDeviceId);
+
+      if (!selectedDevice) return
+
+      let system_info = selectedDevice["system_info"];
 
       const formData = new FormData();
       formData.append("device_id", selectedDeviceId);
-      // formData.append("system_info", system_info);
+      if (signInEmail) {
+        formData.append("system_info", system_info);
+      }
       formData.append("otp", enteredOtp);
 
       const res = await UserAPI.logoutOTP(formData);
-      console.log(res.data);
 
       if (res.data.success) {
         toast.success("OTP verified! Logging out...");
@@ -92,6 +93,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
         localStorage.setItem("user", signInEmail);
         localStorage.setItem("access_token", res.data.access_token);
         localStorage.setItem("refresh_token", res.data.refresh_token);
+        setOtp(new Array(otpLength).fill(""))
         if (localStorage.getItem("from_home")) {
           navigate("/subscribe-plan");
           localStorage.removeItem("from_home");
@@ -99,9 +101,12 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
           navigate("/home");
         }
       } else {
+        setOtp(new Array(otpLength).fill(""))
         toast.error("Invalid OTP, please try again!");
       }
     } catch (error) {
+      console.log(error);
+
       toast.error("OTP verification failed!");
     }
   };
@@ -118,7 +123,6 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
           },
         }
       );
-      console.log("Handle_Dd", res);
       toast.success("Device removed successfully");
       if (id == localStorage.getItem("device_id")) {
         localStorage.clear();
@@ -408,10 +412,10 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
                         </span>
                         {localStorage.getItem("device_id") ==
                           item.device_id && (
-                          <span className=" text-green-500 text-sm font-bold px-2 py-0.5 rounded-md">
-                            Current
-                          </span>
-                        )}
+                            <span className=" text-green-500 text-sm font-bold px-2 py-0.5 rounded-md">
+                              Current
+                            </span>
+                          )}
                       </div>
 
                       <ol className="mt-3 text-gray-700 space-y-1 text-sm ">
@@ -500,7 +504,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
               Verify
             </button>
             <button
-              onClick={() => setShowOtpModal(false)}
+              onClick={() => { setShowOtpModal(false); setOtp(new Array(otpLength).fill("")) }}
               className="text-gray-600 mt-2 block"
             >
               Cancel

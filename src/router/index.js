@@ -78,14 +78,14 @@ const Router = () => {
 
   const isProtectedRoute = (path) => {
     return (
-      !["/", "/auth", "/404", "/login"].includes(path) &&
+      !["/", "/auth", "/404", "/auth"].includes(path) &&
      
       !path.startsWith("/reset_password/")
     );
   };
 
   const shouldShowHeader =
-    !["/", "/auth", "/reset_password/:uidID/:token","/login"].includes(
+    !["/", "/auth", "/reset_password/:uidID/:token","/auth"].includes(
       location.pathname
     ) && !location.pathname.startsWith("/reset_password");
 
@@ -100,35 +100,35 @@ const Router = () => {
           <Route path="/reset_password/:uidID/:token" element={<Login />} />
           <Route
             path="/home"
-            element={token ? <Home /> : <Navigate to="/login" replace />}
+            element={token ? <Home /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/Textpreview"
-            element={token ? <Textpreview /> : <Navigate to="/login" replace />}
+            element={token ? <Textpreview /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/detail"
-            element={token ? <Content /> : <Navigate to="/login" replace />}
+            element={token ? <Content /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/preview/:id"
-            element={token ? <Preview /> : <Navigate to="/login" replace />}
+            element={token ? <Preview /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/subject"
-            element={token ? <Subject /> : <Navigate to="/login" replace />}
+            element={token ? <Subject /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/contact"
-            element={token ? <Contact /> : <Navigate to="/login" replace />}
+            element={token ? <Contact /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/smtp"
-            element={token ? <Smtp /> : <Navigate to="/login" replace />}
+            element={token ? <Smtp /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/template"
-            element={token ? <Template /> : <Navigate to="/login" replace />}
+            element={token ? <Template /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/manage-campaigns"
@@ -136,29 +136,29 @@ const Router = () => {
           />
           <Route
             path="/subscribe-plan"
-            element={token ? <Subscribe /> : <Navigate to="/login" replace />}
+            element={token ? <Subscribe /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/user-profile"
-            element={token ? <User_profile /> : <Navigate to="/login" replace />}
+            element={token ? <User_profile /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/manage"
-            element={token ? <Manage /> : <Navigate to="/login" replace />}
+            element={token ? <Manage /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/template/:category"
             element={
-              token ? <CategoryTemplates /> : <Navigate to="/login" replace />
+              token ? <CategoryTemplates /> : <Navigate to="/auth" replace />
             }
           />
           <Route
             path="/privacy_policy"
-            element={token ? <Privacy /> : <Navigate to="/login" replace />}
+            element={token ? <Privacy /> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/terms_condition"
-            element={token ? <Terms_condition /> : <Navigate to="/login" replace />}
+            element={token ? <Terms_condition /> : <Navigate to="/auth" replace />}
           />
           <Route path="/404" element={<Errorpage />} />
           <Route path="*" element={<Errorpage />} />
