@@ -89,11 +89,11 @@ const Contactui = () => {
                   </div>
                   <span className="text-[#828080] font-semibold text-base ">
                     <a
-                      href="mailto:Wishgeekstechserve.com"
+                      href="mailto:infowishgeekstechserve.com"
                       title="Send me an email"
                       className="text-[#828080] font-semibold text-base no-underline"
                     >
-                      Wishgeekstechserve.com
+                      Info@wishgeekstechserve.com
                     </a>
                   </span>
                 </li>

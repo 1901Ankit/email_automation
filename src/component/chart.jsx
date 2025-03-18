@@ -127,7 +127,7 @@ const Barchart = () => {
         Email Report ({dayjs(startDate).format("DD MMM")} -{" "}
         {dayjs(endDate).format("DD MMM")})
       </h2>
-      <div className="flex flex-col md:flex-row md:justify-around items-center mb-6 gap-2 w-full">
+      <div className="flex flex-col md:flex-row md:justify-between items-center mb-6 gap-1 w-full">
         <div className="w-full md:w-auto">
           <label className="block text-sm font-medium text-gray-700">
             Start Date
@@ -150,14 +150,14 @@ const Barchart = () => {
             className="border p-2 rounded-md w-full"
           />
         </div>
-      </div>
-      <div className="text-center">
-        <button
-          onClick={() => setIsClicked(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md"
-        >
-          Get Data
-        </button>
+        <div className="w-full md:w-auto">
+          <button
+            onClick={() => setIsClicked(true)}
+            className="bg-blue-500 text-white px-2 py-2 rounded-md shadow-md mt-3 text-sm"
+          >
+            Get Data
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center justify-center mt-3">

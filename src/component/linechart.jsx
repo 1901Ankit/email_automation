@@ -98,7 +98,7 @@ const Linechart = ({ total_emails }) => {
 
   return (
     <div className="container w-full mx-auto p-4">
-      <div className="relative w-full h-[400px]">
+      <div className="relative w-full h-[300px]">
         <Doughnut data={chartData} options={options} />
       </div>
     </div>

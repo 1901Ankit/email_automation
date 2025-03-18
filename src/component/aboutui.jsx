@@ -7,7 +7,7 @@ import user from "../assests/image/banner/user.webp";
 import about from "../assests/image/banner/about.webp";
 const About_ui = () => {
   return (
-    <div className="container" id="aboutui">
+    <div className="container mx-auto md:py-8  px-3 md:px-20" id="aboutui">
       <div className="row justify-center items-center">
         <div className="col-sm-6 pr-10">
           <h5 className="text-black font-bold text-3xl md:text-4xl mt-3 leading-snug tracking-tight">

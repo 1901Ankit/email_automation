@@ -1,8 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import * as templateAPI from "../api/emailTemplate";
-import img1 from "../assests/image/3d.jpg";
-import img2 from "../assests/image/3d.jpg";
-import img3 from "../assests/image/3d.jpg";
 import html2canvas from "html2canvas";
 import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";

@@ -159,13 +159,13 @@ const Smtp = () => {
         ) : (
           <div className="mb-2">
             <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold uppercase">SMTP SERVER</h1>
+              <h1 className="text-3xl font-bold uppercase">SMTP SERVER SERVER</h1>
               <button
                 className="bg-[#3B82F6] text-white border-[#3B82F6] rounded-md p-2 text-lg font-semibold"
                 type="button"
                 onClick={openModal}
               >
-                Import Contact
+                Import SMTP 
               </button>
             </div>
 

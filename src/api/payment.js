@@ -14,16 +14,16 @@ export const verifyPayment = (data) =>
       'Content-Type': 'application/json'
     }
   });
-  export const upgradePlan = (plan) => API.put('upgrade-plan/', plan, {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  export const verifyUpgradePayment = (data) =>
-    API.post("/verify-upgrade-payment/", data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+export const upgradePlan = (plan) => API.put('/upgrade-plan/', plan, {
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+export const  verifyUpgradePlan = (plan) => API.put('/verify-upgrade-payment/', plan, {
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
 
 export default API
