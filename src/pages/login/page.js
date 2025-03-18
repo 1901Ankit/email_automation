@@ -348,6 +348,7 @@ const Login = () => {
       formData.append("email", signInEmail);
       const response = await API.forgotPassword(formData);
       toast.success(response.data.message);
+      setSignInEmail("");
     } catch (error) {
       error.response.status === 400
         ? toast.error(error.response.data.errors.email[0])

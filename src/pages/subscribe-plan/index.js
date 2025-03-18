@@ -184,7 +184,7 @@ const Subscribe = () => {
           setUserData(response.data);
         }
       } else {
-        toast.error("Failed to upgrade plan");
+        toast.error("Failed to initiate payment to upgrade plan");
       }
     } catch (error) {
       console.error("Error upgrading plan:", error);
