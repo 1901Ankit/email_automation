@@ -61,15 +61,18 @@ const benefits = [
 
 const Service_ui = () => {
   return (
-    <div className="relative container-fluid py-5 px-4 mx-auto  mt-5" id="serviceui">
+    <div
+      className="relative container-fluid py-5 px-4 mx-auto "
+      id="serviceui"
+    >
       {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className=" absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${background})`, zIndex: -1 }}
       ></div>
 
       {/* Content on top of Background */}
-      <div className="relative text-center">
+      <div className=" container mx-auto px-3 md:px-20 relative text-center">
         <h5 className="text-black font-bold text-3xl md:text-4xl mb-10 leading-snug tracking-tight">
           BENEFITS <span className="text-blue-500 mx-2">WE PROVIDE</span>
         </h5>

@@ -334,7 +334,7 @@ const Landing = () => {
           )}
         </div>
         {/* Banner Section */}
-        <div className="relative h-[100vh] md:h-[450px] xl:h-[520px] w-full">
+        <div className="relative h-[100vh] md:h-[450px] xl:h-[450px] w-full">
           {/* Background Image */}
           <img
             src={blue}
