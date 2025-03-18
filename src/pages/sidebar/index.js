@@ -132,7 +132,7 @@ const Sidebar = () => {
       <div
         className={`bg-gray-100 h-full shadow-lg fixed md:static transition-all duration-300 sidebar z-10
       ${
-        isMobileMenuOpen ? "w-60" : "w-0 md:w-52"
+        isMobileMenuOpen ? "w-60" : "w-0 md:w-56"
       } overflow-hidden md:overflow-visible`}
       >
         <ul className="space-y-2 sidebar-menu">
@@ -140,7 +140,7 @@ const Sidebar = () => {
             <React.Fragment key={index}>
               <li
                 onClick={() => handleTabChange(index)}
-                className={`flex items-center justify-between cursor-pointer p-2 rounded-lg transition-all font-semibold text-base
+                className={`flex items-center justify-between cursor-pointer p-2 rounded-lg transition-all font-semibold text-[15px]
                 ${
                   activeTabIndex === index && !tab.hasDropdown
                     ? "bg-[#3B82F6] text-white"
@@ -166,15 +166,15 @@ const Sidebar = () => {
 
               {/* Dropdown items */}
               {tab.hasDropdown && expandedTab === index && (
-                <div className="ml-8 mt-2 space-y-2">
+                <div className=" mt-2 space-y-2">
                   {tab.dropdownItems.map((item, itemIndex) => (
                     <li
                       key={itemIndex}
-                      onClick={() => handleDropdownItemClick(index, item.path)}
-                      className={`flex items-center gap-3 cursor-pointer p-2 rounded-lg transition-all
+                      onClick={() => handleDropdownItemClick(index, item.path)} 
+                      className={`flex items-center gap-3 cursor-pointer p-2 font-semibold rounded-lg text-sm transition-all
                       ${
                         location.pathname === item.path
-                          ? "bg-blue-400 text-white"
+                          ? "bg-[#3B82F6] text-white"
                           : "hover:bg-gray-200"
                       }`}
                     >
