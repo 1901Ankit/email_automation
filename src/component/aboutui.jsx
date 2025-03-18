@@ -22,26 +22,43 @@ const About_ui = () => {
             cater to our clients' unique needs and help them achieve their
             marketing goals.
           </p>
-          <div className="mt-4">
+          <div className="mt-4 mx-3">
             <div className="flex justify-between items-center">
-              <p className="w-9/12 text-justify font-semibold">
-                Email Marketing
-              </p>
-              <p className="w-9/12 text-justify font-semibold">Track changes</p>
+              <ul className="w-9/12 text-justify font-semibold list-disc pl-5 marker:text-blue-500 text-black">
+                <li>Email Marketing</li>
+              </ul>
+              <ul className="w-9/12 text-justify font-semibold list-disc pl-5 marker:text-blue-500 text-black">
+                <li>Track changes</li>
+              </ul>
             </div>
             <div className="flex justify-between items-center mt-2">
-              <p className="w-9/12 text-justify font-semibold">
-                Email Automation
-              </p>
-              <p className="w-9/12 text-justify font-semibold">
-                Inbuilt templates
-              </p>
+              <ul className="w-9/12 text-justify font-semibold list-disc pl-5 marker:text-blue-500 text-black">
+                <li>Email Automation</li>
+              </ul>
+              <ul className="w-9/12 text-justify font-semibold list-disc pl-5 marker:text-blue-500 text-black">
+                <li>Inbuilt templates</li>
+              </ul>
             </div>
           </div>
 
           {/* Learn More Button */}
-          <button className="border border-blue-500 rounded-lg p-2 font-semibold flex items-center justify-center cursor-pointer bg-white text-blue-500 w-4/12 mt-3">
-            Learn More
+          <button
+            onClick={() => {
+              const aboutSection = document.getElementById("planui");
+              if (aboutSection) {
+                aboutSection.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+                setTimeout(() => {
+                  window.scrollBy(0, -100);
+                }, 300);
+              }
+            }}
+            class="border border-blue-500 rounded-lg p-2 font-semibold flex items-center justify-center
+                    cursor-pointer bg-transparent text-blue-500 w-4/12 "
+          >
+            <span>Learn More </span>
           </button>
         </div>
         <div

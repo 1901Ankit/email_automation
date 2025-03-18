@@ -33,7 +33,6 @@ const Subject = () => {
     setFileData(data);
   };
 
-
   const downloadCSV = () => {
     // Your CSV data
     const csvContent = `Subject
@@ -45,16 +44,16 @@ What Can You Afford?
 `; // Modified to remove spaces and use actual domain
 
     // Create blob
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = window.URL.createObjectURL(blob);
-    
+
     // Create temporary link
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.setAttribute('download', 'sample.csv');
+    link.setAttribute("download", "sample.csv");
     document.body.appendChild(link);
     link.click();
-    
+
     // Cleanup
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
@@ -225,7 +224,7 @@ What Can You Afford?
       }
     } catch (error) {
       console.log(error);
-      
+
       toast.error("An error occurred while uploading the file.");
     }
   };
@@ -273,19 +272,19 @@ What Can You Afford?
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-[#3B82F6] text-white">
                 <tr>
-                  <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
+                  <th className="px-6 py-3 text-sm font-bold uppercase tracking-wider text-center border cursor-pointer">
                     Id
                   </th>
-                  <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
+                  <th className="px-6 py-3 text-sm font-bold uppercase tracking-wider text-center border cursor-pointer">
                     List Name
                   </th>
-                  {/* <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
+                  {/* <th className="px-6 py-3 text-sm font-bold uppercase tracking-wider text-center border cursor-pointer">
                     Number of Subject
                   </th> */}
-                  <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
+                  <th className="px-6 py-3 text-sm font-bold uppercase tracking-wider text-center border cursor-pointer">
                     Creation Date
                   </th>
-                  <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
+                  <th className="px-6 py-3 text-sm font-bold uppercase tracking-wider text-center border cursor-pointer">
                     Action
                   </th>
                 </tr>
@@ -293,19 +292,25 @@ What Can You Afford?
               <tbody className="bg-gray-50 divide-y divide-gray-200">
                 {subjects?.map((item, index) => (
                   <tr key={index}>
-                    <td className="px-6 py-4 text-xs text-gray-500 border text-center">
+                    <td className="px-6 py-4 text-sm text-black border text-center">
                       {item.id}
                     </td>
-                    <td className="px-6 py-4 text-xs text-gray-500 border text-center truncate">
+                    <td className="px-6 py-4 text-sm text-black border text-center truncate">
                       {item?.name || "N/A"}
                     </td>
-                    {/* <td className="px-6 py-4 text-xs text-gray-500 border text-center">
-                      {item?.contacts?.length || 0}
-                    </td> */}
-                    <td className="px-6 py-4 text-xs text-gray-500 border text-center">
-                      {item?.uploaded_at || "N/A"}
+
+                    <td className="px-6 py-4 text-sm text-black border truncate text-center">
+                      {new Intl.DateTimeFormat("en-US", {
+                        month: "long",
+                        day: "2-digit",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        second: "numeric",
+                        hour12: true,
+                      }).format(new Date(item?.uploaded_at))}
                     </td>
-                    <td className="px-6 py-4 text-xs text-gray-500 border flex items-center justify-center space-x-2">
+                    <td className="px-6 py-4 text-sm text-black border flex items-center justify-center space-x-2">
                       <button
                         className="text-blue-500 hover:text-blue-700"
                         onClick={() => handleEdit(item.id)}
@@ -419,7 +424,10 @@ What Can You Afford?
                     <div className="col-sm-6">
                       <div className="flex items-center justify-center">
                         <h1 className="text-3xl font-bold ">Sample csv</h1>
-                        <Download onClick={downloadCSV} className="cursor-pointer ml-4 text-blue-500"/>
+                        <Download
+                          onClick={downloadCSV}
+                          className="cursor-pointer ml-4 text-blue-500"
+                        />
                       </div>
                       <img
                         src={csvfile}

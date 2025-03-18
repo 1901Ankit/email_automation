@@ -30,7 +30,6 @@ const Contact = () => {
   const [initialContact, setInitialContact] = useState([]);
   const [originalContacts, setOriginalContacts] = useState([]);
 
-
   const downloadCSV = () => {
     // Your CSV data
     const csvContent = `Email,firstName,lastName,companyName
@@ -40,16 +39,16 @@ jkl@outlook.com,Max,Clovis,AMD texture
 rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and use actual domain
 
     // Create blob
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = window.URL.createObjectURL(blob);
-    
+
     // Create temporary link
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.setAttribute('download', 'sample.csv');
+    link.setAttribute("download", "sample.csv");
     document.body.appendChild(link);
     link.click();
-    
+
     // Cleanup
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
@@ -174,7 +173,7 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
       setFileName(file.name);
     }
   };
-  
+
   const handleDeleteFile = () => {
     setCsvFile(null);
     setFileName("");
@@ -201,7 +200,7 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
       const response = await API.uploadContacts(formData);
       console.log("response_from_uploadContact", response);
       console.log("response_from", response.ok);
-      if (response. status === 201) {
+      if (response.status === 201) {
         toast.success("File uploaded successfully!");
         setTimeout(() => {
           closeModal();
@@ -227,7 +226,6 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
   };
 
   useEffect(() => {
-    
     fetchContacts();
   }, []);
   return (
@@ -252,16 +250,16 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-[#3B82F6] text-white">
                 <tr>
-                  <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
+                  <th className="px-6 py-3 text-sm font-bold uppercase tracking-wider text-center border cursor-pointer">
                     List Name
                   </th>
-                  <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
+                  <th className="px-6 py-3 text-sm font-bold uppercase tracking-wider text-center border cursor-pointer">
                     Number of Contacts
                   </th>
-                  <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
+                  <th className="px-6 py-3 text-sm font-bold uppercase tracking-wider text-center border cursor-pointer">
                     Creation Date
                   </th>
-                  <th className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-center border cursor-pointer">
+                  <th className="px-6 py-3 text-sm font-bold uppercase tracking-wider text-center border cursor-pointer">
                     Action
                   </th>
                 </tr>
@@ -269,16 +267,25 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
               <tbody className="bg-gray-50 divide-y divide-gray-200 items-center justify-center">
                 {contacts.map((item, index) => (
                   <tr key={index}>
-                    <td className="px-6 py-4 text-xs text-gray-500 border truncate text-center">
+                    <td className="px-6 py-4 text-sm text-black border truncate text-center">
                       {item.file_name}
                     </td>
-                    <td className="px-6 py-4 text-xs text-gray-500 border truncate text-center">
+                    <td className="px-6 py-4 text-sm text-black border truncate text-center">
                       {item?.contacts?.length}
                     </td>
-                    <td className="px-6 py-4 text-xs text-gray-500 border truncate text-center">
-                      {item?.created_at}
+                    <td className="px-6 py-4 text-sm text-black border truncate text-center">
+                      {new Intl.DateTimeFormat("en-US", {
+                        month: "long",
+                        day: "2-digit",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        second: "numeric",
+                        hour12: true,
+                      }).format(new Date(item?.created_at))}
                     </td>
-                    <td className="px-6 py-4 text-xs text-gray-500 border space-x-2 flex items-center justify-around">
+
+                    <td className="px-6 py-4 text-sm text-black border space-x-2 flex items-center justify-around">
                       <button
                         className="text-blue-500 hover:text-blue-700 text-center"
                         onClick={() => handleEdit(item.file_id)}
@@ -398,7 +405,10 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
                     <div className="col-sm-6 mt-5 md:mt-0">
                       <div className="flex items-center justify-center">
                         <h1 className="text-3xl font-bold">Sample csv</h1>
-                        <Download onClick={downloadCSV} className="cursor-pointer ml-4 text-blue-500"/>
+                        <Download
+                          onClick={downloadCSV}
+                          className="cursor-pointer ml-4 text-blue-500"
+                        />
                       </div>
                       <img
                         src={csvfile}
