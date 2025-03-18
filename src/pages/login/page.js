@@ -408,11 +408,10 @@ const Login = () => {
       <div className="container-fluid head p-0">
         <video
           autoPlay={true}
-          playsInline
           loop
-          controls
-          controlsList="nodownload"
           muted
+          playsInline
+          controlsList="nodownload noplaybackrate nofullscreen"
           id="background-video"
         >
           <source src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/icon_1.mp4" />

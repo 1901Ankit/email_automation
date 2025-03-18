@@ -62,7 +62,6 @@ const TwoFAStatus = () => {
           toast.success("2FA Disabled successfully");
         }
       } else {
-
         const response = await enable2FA();
 
         if (response.data) {
