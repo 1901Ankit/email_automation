@@ -29,7 +29,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       const authToken = localStorage.getItem("access_token");
-      await axios.post(
+      const res=  await axios.post(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
         {
           refresh: localStorage.getItem("refresh_token"),
@@ -42,7 +42,7 @@ const Header = () => {
           },
         }
       );
-
+  console.log("Res_From_Logout ", res);
       localStorage.clear();
       sessionStorage.clear();
       toast.success("Logout successfully");
