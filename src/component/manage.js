@@ -11,7 +11,8 @@ import * as DeviceAPI from "../api/user_profile";
 import * as UserAPI from "../api/user";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FaChrome, FaFirefox, FaEdge, FaSafari, FaOpera } from "react-icons/fa";
+import { FaChrome, FaEdge, FaSafari, FaOpera } from "react-icons/fa";
+import firefox from "../assests/image/social/firefox.png";
 import { FaBrave } from "react-icons/fa6";
 
 import { ChevronUp, LogOut } from "lucide-react";
@@ -352,6 +353,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
         ></path>
       </svg>
     ),
+    Firefox: <img src={firefox} alt="Firefox Logo" width={38} height={38} />,
   };
 
   const handleKeyDown = (e, index) => {

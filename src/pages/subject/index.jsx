@@ -264,7 +264,7 @@ What Can You Afford?
               type="button"
               onClick={openModal}
             >
-              Import Subjecs
+              Import Subject
             </button>
           </div>
         </div>
