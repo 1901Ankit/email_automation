@@ -1,88 +1,14 @@
 export const templates = [
   {
     id: 0,
-    category: "General",
-    html: `
-
-      <!DOCTYPE html>
-      <html lang="en">
-      
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Mail format 1</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-      
-      </head>
-      
-      <body>
-       <div class="container">
-         <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/dummy+email+template.jpg" width="500"
-             style="margin-right: 0px" alt="logo" loading="lazy" />
-        </div>
-      </body>
-      </html>
-      `,
-
-    title: "Select Template 1 ",
+    category: "Custom",
+    image: "https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/dummy+email+template.jpg",
   },
-  {
-    id: 1,
-    category: "General",
-    html: `
 
-      <!DOCTYPE html>
-      <html lang="en">
-      
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Mail format 1</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-      
-      </head>
-      
-      <body>
-       <div class="container">
-         <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/dummy+email+template.jpg" width="500"
-             style="margin-right: 0px" alt="logo" loading="lazy" />
-        </div>
-      </body>
-      </html>
-      `,
-
-    title: "Select Template 1 ",
-  },
-  {
-    id: 2,
-    category: "General",
-    html: `
-
-      <!DOCTYPE html>
-      <html lang="en">
-      
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Mail format 1</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-      
-      </head>
-      
-      <body>
-       <div class="container">
-         <img src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/dummy+email+template.jpg" width="500"
-             style="margin-right: 0px" alt="logo" loading="lazy" />
-        </div>
-      </body>
-      </html>
-      `,
-
-    title: "Select Template 1 ",
-  },
   {
     id: 3,
-    category: "Business",
+    category: "Announcement",
+    image: "https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/announcement.png",
     html: `
 <!DOCTYPE html>
 <html lang="en">
@@ -282,11 +208,13 @@ export const templates = [
 
 
       `,
-    title: "Select Template 1 ",
+    title: "Select Template 2 ",
   },
   {
     id: 4,
-    category: "Marketing",
+    category: "Announcement",
+    image: "https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/announcement.png",
+
     html: `
 <!DOCTYPE html>
 <html lang="en">
@@ -378,11 +306,14 @@ export const templates = [
 
 
       `,
-    title: "Select Template 1 ",
+    title: "Select Template 2",
   },
+ 
   {
     id: 5,
-    category: "Marketing",
+    category: "OnBoarding",
+    image: "https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/onboarding.png",
+
     html: `
 
    <!DOCTYPE html>
@@ -486,11 +417,13 @@ export const templates = [
 
 
       `,
-    title: "Select Template 1 ",
+    title: "Select Template 3 ",
   },
   {
     id: 6,
-    category: "google",
+    category: "OnBoarding",
+    image: "https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/onboarding.png",
+
     html: `
 <!DOCTYPE html>
 <html lang="en">
@@ -642,11 +575,13 @@ export const templates = [
 
 
       `,
-    title: "Select Template 1 ",
+    title: "Select Template 3 ",
   },
   {
     id: 7,
-    category: "google",
+    category: "Services",
+    image: "https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Desktop+-+53.png",
+
     html: `
 
   <!DOCTYPE html>
@@ -1058,11 +993,13 @@ export const templates = [
 
 
       `,
-    title: "Select Template 1 ",
+    title: "Select Template 4 ",
   },
   {
     id: 8,
-    category: "google",
+    category: "Services",
+    image: "https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/Desktop+-+53.png",
+
     html: `
 <!DOCTYPE html>
 <html>
@@ -1418,6 +1355,6 @@ export const templates = [
 
 
       `,
-    title: "Select Template 1 ",
+    title: "Select Template 4",
   },
 ];

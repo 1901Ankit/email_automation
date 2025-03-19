@@ -242,7 +242,7 @@ const Template = ({ placeholder }) => {
                     )
                   }
                 >
-                  {category} {expandedCategory === category ? "▲" : "▼"}
+                  {category} {expandedCategory === category}
                 </h2>
 
                 {/* Flex Layout for Templates */}
@@ -254,21 +254,24 @@ const Template = ({ placeholder }) => {
                   ).map((template) => (
                     <div
                       key={template.id}
-                      className="relative w-full  h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300"
-                      onClick={() => handleCategoryClick(template.category)}
+                      className={`relative w-full h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 
+          ${template.id === 0 ? "opacity-70  cursor-not-allowed" : ""}`}
+                      onClick={() =>
+                        template.id !== 0 &&
+                        handleCategoryClick(template.category)
+                      }
                     >
-                      {/* Template Preview */}
-                      <div className="absolute h-full w-full overflow-y-auto">
-                        <div
-                          dangerouslySetInnerHTML={{ __html: template.html }}
-                          className="w-full h-full"
-                        />
-                      </div>
+                      {/* Image */}
+                      <img
+                        src={template.image}
+                        alt={template.title}
+                        className="w-full h-full object-contain rounded-md"
+                      />
 
                       {/* Hover Overlay */}
                       <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <FaEye className=" to-black text-3xl mb-2" />
-                        <p className="text-black text-lg font-semibold">
+                        <FaEye className="text-white text-3xl mb-2" />
+                        <p className="text-white text-lg font-semibold">
                           View Template
                         </p>
                       </div>
@@ -276,10 +279,11 @@ const Template = ({ placeholder }) => {
                       {/* Button with Template Title */}
                       <button
                         type="button"
-                        className="absolute bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
-        text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
+                        className="absolute bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-700 to-blue-700 
+          text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-700 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
+                        disabled={template.id === 0} 
                       >
-                        {template.title}
+                        {template.title || "Custom"}
                       </button>
                     </div>
                   ))}
@@ -325,10 +329,10 @@ const Template = ({ placeholder }) => {
 
                   {/* Button with Template Title */}
                   <button
-              type="button"
-              className="relative bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
+                    type="button"
+                    className="relative bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
               text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
-            >
+                  >
                     {template.name}
                   </button>
                 </div>
