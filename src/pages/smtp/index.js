@@ -159,13 +159,13 @@ const Smtp = () => {
         ) : (
           <div className="mb-2">
             <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold uppercase">SMTP SERVER</h1>
+              <h1 className="text-3xl font-bold uppercase">SMTP SERVER SERVER</h1>
               <button
                 className="bg-[#3B82F6] text-white border-[#3B82F6] rounded-md p-2 text-lg font-semibold"
                 type="button"
                 onClick={openModal}
               >
-                Import Contact
+                Import SMTP 
               </button>
             </div>
 
@@ -218,26 +218,26 @@ const Smtp = () => {
                   <tbody className="bg-gray-50 divide-y divide-gray-200">
                     {tableData.map((data, i) => (
                       <tr key={i}>
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           {data.name}
                         </td>
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           {data.host}
                         </td>
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           {data.port}
                         </td>
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           {data?.use_tls && "True"}
                         </td>
 
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           {data.username}
                         </td>
-                        <td className="px-6 py-4 text-xs text-gray-500 border truncate">
+                        <td className="px-6 py-4 text-xs text-black border truncate">
                           ***************
                         </td>
-                        <td className="px-6 py-4 text-xs text-gray-500 border flex space-x-2">
+                        <td className="px-6 py-4 text-xs text-black border flex space-x-2">
                           <button
                             onClick={() => handleEdit(i, data.id)}
                             className="text-blue-500 hover:text-blue-700"

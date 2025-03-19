@@ -3,20 +3,16 @@ import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 
 import * as API from "../../api/user";
 import Select from "react-select";
- 
- 
+
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Dialog } from "@headlessui/react";
- 
- 
- 
+
 import * as SMTPAPI from "../../api/smtp";
 import Editing from "../../component/templatedit";
 import { IoSendOutline } from "react-icons/io5";
 const MangeCampaigns = () => {
- 
-  const [campaigns, setCampaigns] = useState([])
+  const [campaigns, setCampaigns] = useState([]);
   const [contactLists, setContactLists] = useState({});
   const [isEditModel, setIsEditModel] = useState(false);
   const navigate = useNavigate();
@@ -25,21 +21,19 @@ const MangeCampaigns = () => {
   const [contactOptions, setContactOptions] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [subjects,setSubjects]=useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [options, setOptions] = useState({
     smtps: [],
   });
-  const [subject,setSubject]=useState([]);
-  const [selectedSubjectName,setSelectedSubjectName]=useState(null);
+  const [subject, setSubject] = useState([]);
+  const [selectedSubjectName, setSelectedSubjectName] = useState(null);
   const [details, setDetails] = useState({
     display_name: "",
     campaign_name: "",
     delay_seconds: 5,
     subject: "",
-    uploaded_file_name:"",
+    uploaded_file_name: "",
   });
-
-  // State for contact lists
   const [contacts, setContacts] = useState(null);
 
   useEffect(() => {
@@ -69,12 +63,12 @@ const MangeCampaigns = () => {
   const handleSaveChanges = async () => {
     console.log("details", details);
     const isValid =
-      details.display_name  ||
-      details.campaign_name  ||
-      details.subject  ||
-      details.delay_seconds >= 0 ||  
-      options.smtps.length > 0  ||
-      details.contact_list_id
+      details.display_name ||
+      details.campaign_name ||
+      details.subject ||
+      details.delay_seconds >= 0 ||
+      options.smtps.length > 0 ||
+      details.contact_list_id;
 
     if (isValid) {
       const campaignData = {
@@ -83,13 +77,13 @@ const MangeCampaigns = () => {
         delay_seconds: details.delay_seconds,
         subject: details.subject,
         smtps: options.smtps.map((smtp) => smtp.value),
-        contact_list_id:  details.contact_list_id,
+        contact_list_id: details.contact_list_id,
       };
       console.log("ck", campaignData);
       const formData = new FormData();
       formData.append("name", details.campaign_name);
       formData.append("display_name", details.display_name);
-      formData.append("subject",  subject.value);
+      formData.append("subject", subject.value);
       formData.append("delay_seconds", details.delay_seconds);
       formData.append("uploaded_file__id", details.uploaded_file_name);
       formData.append("contact_list_id", campaignData.contact_list_id);
@@ -110,7 +104,7 @@ const MangeCampaigns = () => {
           // Update existing campaign
           try {
             const response = await updateCampaign(currentCampaignId, formData);
-console.log("response",response)
+            console.log("response", response);
             if (response && response.data) {
               console.log("Response Data:", response.data);
               toast.success("Campaign updated successfully");
@@ -165,7 +159,9 @@ console.log("response",response)
         toast.error(error.response?.data?.message || "Failed to save campaign");
       }
     } else {
-      toast.error("Please make Change at lease on field to update the campaign");
+      toast.error(
+        "Please make Change at lease on field to update the campaign"
+      );
     }
   };
 
@@ -209,7 +205,7 @@ console.log("response",response)
   const updateCampaign = async (id, data) => {
     try {
       const response = await API.updateCampaign(id, data);
-      console.log("response_updated",response)
+      console.log("response_updated", response);
       return response;
     } catch (error) {
       console.error("Error updating campaign:", error);
@@ -229,8 +225,6 @@ console.log("response",response)
       toast.error("Failed to refresh campaigns");
     }
   };
-
- 
 
   useEffect(() => {
     async function getAllCampaigns() {
@@ -311,7 +305,9 @@ console.log("response",response)
           `List ${campaignData?.contact_list_id}`;
         console.log("File Name:", filename);
 
-        const subjectName= subjects.find((subject)=>subject.value===campaignData.subject_file_id)
+        const subjectName = subjects.find(
+          (subject) => subject.value === campaignData.subject_file_id
+        );
         setSelectedSubjectName(subjectName);
         // Set form details
         setDetails({
@@ -400,29 +396,23 @@ console.log("response",response)
   };
 
   const onSend = async (id) => {
-        
-    navigate(`/preview/${id}`)
-     
-
-    
+    navigate(`/preview/${id}`);
   };
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
         const response = await API.getSubjectList();
         console.log("response_from_subject", response.data);
-        const  formatedSubjects = response.data.subject_file_list.map(
+        const formatedSubjects = response.data.subject_file_list.map(
           (file) => ({
             value: file.id,
             label: file.name,
           })
         );
-        console.log("formatedSubjects",formatedSubjects);
+        console.log("formatedSubjects", formatedSubjects);
         setSubjects(formatedSubjects);
-    
       } catch (error) {
         console.error("Error fetching contacts:", error);
-        
       }
     };
     fetchSubjects();
@@ -497,10 +487,13 @@ console.log("response",response)
                     >
                       <FaTrash size={18} />
                     </button>
-                    <button className="text-green-600 hover:text-red-800 transition" onClick={() => onSend(comp?.id)}>
-                  <IoSendOutline size={18}/>
-                  </button>
-                </td>
+                    <button
+                      className="text-green-600 hover:text-red-800 transition"
+                      onClick={() => onSend(comp?.id)}
+                    >
+                      <IoSendOutline size={18} />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -590,7 +583,10 @@ console.log("response",response)
                 isMulti={false}
                 value={contacts}
                 onChange={(selectedContacts) => {
-                  setDetails({ ...details, contact_list_id: selectedContacts.value });
+                  setDetails({
+                    ...details,
+                    contact_list_id: selectedContacts.value,
+                  });
                   setContacts(selectedContacts);
                 }}
                 className="react-select-container"
@@ -608,7 +604,6 @@ console.log("response",response)
                   }),
                 }}
               />
-              
             </div>
 
             {/* Display Name */}
@@ -702,41 +697,39 @@ console.log("response",response)
               </div>
 
               <div className="space-y-2">
-              <label
-                htmlFor="recipient-select"
-                className="block text-sm font-medium text-black "
-              >
-                 Subject
-              </label>
-              <Select
-                inputId="recipient-select"
-                options={subjects}
-                isMulti={false}
-                value={selectedSubjectName}
-                onChange={(selectedContacts) => {
-                   setSubject(selectedContacts);
-                   setDetails({...details , subject: selectedContacts.value})
-                }}
-                className="react-select-container"
-                classNamePrefix="react-select"
-                placeholder="Select contact lists"
-                noOptionsMessage={() => "No contact lists available"}
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    borderColor: "#93c3fd",
-                    boxShadow: "none",
-                    "&:hover": {
-                      borderColor: "#4f8af7",
-                    },
-                  }),
-                }}
-              />
-               
-            </div>
+                <label
+                  htmlFor="recipient-select"
+                  className="block text-sm font-medium text-black "
+                >
+                  Subject
+                </label>
+                <Select
+                  inputId="recipient-select"
+                  options={subjects}
+                  isMulti={false}
+                  value={selectedSubjectName}
+                  onChange={(selectedContacts) => {
+                    setSubject(selectedContacts);
+                    setDetails({ ...details, subject: selectedContacts.value });
+                  }}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select contact lists"
+                  noOptionsMessage={() => "No contact lists available"}
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      borderColor: "#93c3fd",
+                      boxShadow: "none",
+                      "&:hover": {
+                        borderColor: "#4f8af7",
+                      },
+                    }),
+                  }}
+                />
+              </div>
 
               {/* Subject Line */}
-              
             </div>
 
             <div className="space-y-2">
@@ -760,7 +753,6 @@ console.log("response",response)
             <button
               className="px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md transition-all font-medium flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleSaveChanges}
-              
               type="button"
             >
               {currentCampaignId ? "Update Campaign" : "Save Campaign"}

@@ -12,28 +12,28 @@ import { TbMail } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import Countries from "./countries";
 const links = [
-  { name: "Digital Marketing", url: "/digital-marketing-services" },
-  { name: "SEO Optimization", url: "/seo-services" },
-  { name: "PPC Advertising", url: "/pay-per-click-services" },
-  { name: "Email Marketing", url: "/email-marketing-services" },
-  { name: "Social Media Marketing", url: "/social-media-marketing-services" },
-  { name: "Content Writing", url: "/content-writing-service" },
-  { name: "Video Production", url: "/Video-Production-services" },
-  { name: "E-commerce Marketing", url: "/ecommerce-marketing-services" },
+  { name: "Digital Marketing", url: "https://www.wishgeekstechserve.com/digital-marketing-services" },
+  { name: "SEO Optimization", url: "https://www.wishgeekstechserve.com/seo-services" },
+  { name: "PPC Advertising", url: "https://www.wishgeekstechserve.com/pay-per-click-services" },
+  { name: "Email Marketing", url: "https://www.wishgeekstechserve.com/email-marketing-services" },
+  { name: "Social Media Marketing", url: "https://www.wishgeekstechserve.com/social-media-marketing-services" },
+  { name: "Content Writing", url: "https://www.wishgeekstechserve.com/content-writing-service" },
+  { name: "Video Production", url: "https://www.wishgeekstechserve.com/Video-Production-services" },
+  { name: "E-commerce Marketing", url: "https://www.wishgeekstechserve.com/ecommerce-marketing-services" },
   {
     name: "Analytics & Reporting",
-    url: "/web-analytics-and-reporting-services",
+    url: "https://www.wishgeekstechserve.com/web-analytics-and-reporting-services",
   },
 ];
 
 const services = [
-  { name: "Web Development", url: "/web-development-services" },
-  { name: "App Development", url: "/mobile-app-development-services" },
-  { name: "Software Development", url: "/software-development-services" },
-  { name: "Block Chain Development", url: "/blockchain-development-services" },
-  { name: "Data Analysis", url: "/data-analysis-services" },
-  { name: "Cyber Security", url: "/cyber-security-services" },
-  { name: "UI & UX Designing", url: "/ui-ux-design-services" },
+  { name: "Web Development", url: "https://www.wishgeekstechserve.com/web-development-services" },
+  { name: "App Development", url: "https://www.wishgeekstechserve.com/mobile-app-development-services" },
+  { name: "Software Development", url: "https://www.wishgeekstechserve.com/software-development-services" },
+  { name: "Block Chain Development", url: "https://www.wishgeekstechserve.com/blockchain-development-services" },
+  { name: "Data Analysis", url: "https://www.wishgeekstechserve.com/data-analysis-services" },
+  { name: "Cyber Security", url: "https://www.wishgeekstechserve.com/cyber-security-services" },
+  { name: "UI & UX Designing", url: "https://www.wishgeekstechserve.com/ui-ux-design-services" },
 ];
 
 const Footerfile = () => {

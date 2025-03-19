@@ -348,6 +348,7 @@ const Login = () => {
       formData.append("email", signInEmail);
       const response = await API.forgotPassword(formData);
       toast.success(response.data.message);
+      setSignInEmail("");
     } catch (error) {
       error.response.status === 400
         ? toast.error(error.response.data.errors.email[0])
@@ -416,11 +417,10 @@ const Login = () => {
       <div className="container-fluid head p-0">
         <video
           autoPlay={true}
-          playsInline
           loop
-          controls
-          controlsList="nodownload"
           muted
+          playsInline
+          controlsList="nodownload noplaybackrate nofullscreen"
           id="background-video"
         >
           <source src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/icon_1.mp4" />

@@ -29,7 +29,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       const authToken = localStorage.getItem("access_token");
-      const res=  await axios.post(
+      const res = await axios.post(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/logout/`,
         {
           refresh: localStorage.getItem("refresh_token"),
@@ -42,13 +42,17 @@ const Header = () => {
           },
         }
       );
-  console.log("Res_From_Logout ", res);
       localStorage.clear();
       sessionStorage.clear();
       toast.success("Logout successfully");
       setUser(null);
       navigate("/");
     } catch (error) {
+      if (error.response.status === 401 ||error.response.data.message=="Device not found." || error.response.status === 404) {
+        localStorage.clear();
+        navigate("/auth");
+      }
+
       toast.error(error.response?.data?.message || "Logout failed");
     }
   };
@@ -132,21 +136,19 @@ const Header = () => {
                   <div className="absolute top-12 right-0 bg-white shadow-md rounded-lg w-40">
                     <button
                       onClick={() => handleOptionClick("/user-profile")}
-                      className={`block w-full text-left px-4 py-2 text-gray-700 font-semibold ${
-                        selectedOption === "/user-profile"
+                      className={`block w-full text-left px-4 py-2 text-gray-700 font-semibold ${selectedOption === "/user-profile"
                           ? "bg-transparent text-black"
                           : "hover:bg-blue-500 hover:text-white"
-                      }`}
+                        }`}
                     >
                       User Profile
                     </button>
                     <button
                       onClick={() => handleOptionClick("/manage")}
-                      className={`block w-full text-left px-4 py-2 text-gray-700 font-semibold ${
-                        selectedOption === "/manage"
+                      className={`block w-full text-left px-4 py-2 text-gray-700 font-semibold ${selectedOption === "/manage"
                           ? "bg-transparent text-black"
                           : "hover:bg-blue-500 hover:text-white"
-                      }`}
+                        }`}
                     >
                       Manage Device
                     </button>
