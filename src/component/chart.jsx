@@ -10,16 +10,74 @@ import { getdaterange } from "../api/emailTemplate";
 const Barchart = () => {
   Chart.register(...registerables, ChartDataLabels);
 
-  const [startDate, setStartDate] = useState(new Date("2025-02-10"));
-  const [endDate, setEndDate] = useState(new Date("2025-02-16"));
+  // Calculate default dates (end date = today, start date = 6 days before)
+  const today = new Date();
+  const defaultEndDate = new Date(today);
+  const defaultStartDate = new Date(today);
+  defaultStartDate.setDate(today.getDate() - 6);
+
+  const [startDate, setStartDate] = useState(defaultStartDate);
+  const [endDate, setEndDate] = useState(defaultEndDate);
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [loading, setLoading] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
+  const [isClicked, setIsClicked] = useState(true); // Set to true to load data on initial render
   const [emailStats, setEmailStats] = useState({
     successful: 0,
     failed: 0,
     total: 0,
   });
+
+  // Calculate the actual interval between selected dates
+  const actualInterval =
+    Math.round((endDate - startDate) / (24 * 60 * 60 * 1000)) + 1;
+
+  // Calculate the earliest allowed start date (7 days before today)
+  const earliestStartDate = new Date(today);
+  earliestStartDate.setDate(today.getDate() - 7 + 1);
+
+  // Handle start date change
+  const handleStartDateChange = (date) => {
+    // Calculate max allowed days from this start date
+    const maxEndDate = new Date(date);
+    maxEndDate.setDate(date.getDate() + 7 - 1);
+
+    // If current end date is more than 7 days away, adjust it
+    if ((endDate - date) / (24 * 60 * 60 * 1000) >= 7) {
+      setEndDate(maxEndDate > today ? today : maxEndDate);
+    }
+
+    // If current end date is before new start date, set end date to start date
+    if (endDate < date) {
+      setEndDate(date);
+    }
+
+    setStartDate(date);
+  };
+
+  // Handle end date change
+  const handleEndDateChange = (date) => {
+    // Don't allow end date beyond today
+    if (date > today) {
+      setEndDate(today);
+      return;
+    }
+
+    // Calculate minimum allowed start date based on this end date
+    const minStartDate = new Date(date);
+    minStartDate.setDate(date.getDate() - 7 + 1);
+
+    // If current start date is more than 7 days before end date, adjust it
+    if ((date - startDate) / (24 * 60 * 60 * 1000) >= 7) {
+      setStartDate(minStartDate);
+    }
+
+    // If current start date is after new end date, set start date to end date
+    if (startDate > date) {
+      setStartDate(date);
+    }
+
+    setEndDate(date);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,7 +109,9 @@ const Barchart = () => {
 
         // Calculate email stats
         const successful = successfulSendsData.reduce((a, b) => a + b, 0);
-        const failed = apiData.failed_sends.reduce((a, b) => a + b, 0);
+        const failed = apiData.failed_sends
+          ? apiData.failed_sends.reduce((a, b) => a + b, 0)
+          : 0;
         const total = successful + failed;
         setEmailStats({ successful, failed, total });
 
@@ -127,6 +187,7 @@ const Barchart = () => {
         Email Report ({dayjs(startDate).format("DD MMM")} -{" "}
         {dayjs(endDate).format("DD MMM")})
       </h2>
+
       <div className="flex flex-col md:flex-row md:justify-between items-center mb-6 gap-1 w-full">
         <div className="w-full md:w-auto">
           <label className="block text-sm font-medium text-gray-700">
@@ -134,8 +195,9 @@ const Barchart = () => {
           </label>
           <DatePicker
             selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            onChange={handleStartDateChange}
             dateFormat="yyyy-MM-dd"
+            maxDate={endDate}
             className="border p-2 rounded-md w-full"
           />
         </div>
@@ -145,15 +207,22 @@ const Barchart = () => {
           </label>
           <DatePicker
             selected={endDate}
-            onChange={(date) => setEndDate(date)}
+            onChange={handleEndDateChange}
             dateFormat="yyyy-MM-dd"
+            minDate={startDate}
+            maxDate={today}
             className="border p-2 rounded-md w-full"
           />
         </div>
         <div className="w-full md:w-auto">
           <button
             onClick={() => setIsClicked(true)}
-            className="bg-blue-500 text-white px-2 py-2 rounded-md shadow-md mt-3 text-sm"
+            disabled={actualInterval > 7}
+            className={`text-white px-2 py-2 rounded-md shadow-md mt-3 text-sm ${
+              actualInterval > 7
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500"
+            }`}
           >
             Get Data
           </button>
@@ -161,7 +230,11 @@ const Barchart = () => {
       </div>
 
       <div className="flex items-center justify-center mt-3">
-        <p className="text-white text-sm font-normal text-center bg-[#3B82F6] px-4 py-2 rounded-lg shadow-lg">
+        <p
+          className={`text-white text-sm font-normal text-center px-4 py-2 rounded-lg shadow-lg ${
+            actualInterval > 7 ? "bg-red-500" : "bg-[#3B82F6]"
+          }`}
+        >
           <svg
             stroke="currentColor"
             fill="currentColor"
@@ -174,7 +247,11 @@ const Barchart = () => {
           >
             <path d="M463 192H315.9L271.2 58.6C269 52.1 262.9 48 256 48s-13 4.1-15.2 10.6L196.1 192H48c-8.8 0-16 7.2-16 16 0 .9.1 1.9.3 2.7.2 3.5 1.8 7.4 6.7 11.3l120.9 85.2-46.4 134.9c-2.3 6.5 0 13.8 5.5 18 2.9 2.1 5.6 3.9 9 3.9 3.3 0 7.2-1.7 10-3.6l118-84.1 118 84.1c2.8 2 6.7 3.6 10 3.6 3.4 0 6.1-1.7 8.9-3.9 5.6-4.2 7.8-11.4 5.5-18L352 307.2l119.9-86 2.9-2.5c2.6-2.8 5.2-6.6 5.2-10.7 0-8.8-8.2-16-17-16z"></path>
           </svg>
-          The end date cannot exceed the current date for accurate reporting.
+          {actualInterval > 7
+            ? `Date range exceeds maximum of 7 days. Current: ${actualInterval} days.`
+            : `Date range: ${actualInterval} day${
+                actualInterval !== 1 ? "s" : ""
+              }. Today is the latest selectable date.`}
         </p>
       </div>
       {loading ? (

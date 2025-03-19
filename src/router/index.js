@@ -27,6 +27,7 @@ import Terms_condition from "../pages/subfooter/terms";
 import MangeCampaigns from "../pages/manage-campaigns/MangeCampaigns";
 import Subject from "../pages/subject";
 import Landing from "../pages/landingpage";
+import PaymentSuccess from "../component/PaymentSuccess";
 const Router = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -160,6 +161,7 @@ const Router = () => {
             path="/terms_condition"
             element={token ? <Terms_condition /> : <Navigate to="/auth" replace />}
           />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/404" element={<Errorpage />} />
           <Route path="*" element={<Errorpage />} />
         </Routes>
