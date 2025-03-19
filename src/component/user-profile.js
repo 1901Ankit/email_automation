@@ -25,7 +25,7 @@ const User_profile = () => {
           },
           user: localStorage.getItem("id"),
         });
-         console.log("Uset", response);
+        console.log("Uset", response);
         if (response.data) {
           setUserData(response.data);
         } else {
@@ -105,7 +105,15 @@ const User_profile = () => {
                   type="text"
                   value={
                     userData.plan_start_date
-                      ? new Date(userData.plan_start_date).toLocaleDateString()
+                      ? new Date(userData.plan_start_date).toLocaleDateString(
+                          "en-US",
+                          {
+                            weekday: "short",
+                            month: "long",
+                            day: "2-digit",
+                            year: "numeric",
+                          }
+                        )
                       : "N/A"
                   }
                   readOnly
@@ -120,11 +128,23 @@ const User_profile = () => {
                   type="text"
                   value={
                     userData.plan_expiry_date
-                      ? `${new Date(
-                          userData.plan_expiry_date
-                        ).toLocaleDateString()} (${new Date(
-                          userData.plan_expiry_date
-                        ).toLocaleTimeString()})`
+                      ? `${new Date(userData.plan_expiry_date)
+                          .toLocaleDateString("en-US", {
+                            month: "long",  
+                            day: "2-digit",
+                            year: "numeric",
+                          })
+                          .replace(",", "-")} (${
+                          new Date(userData.plan_expiry_date)
+                            .toLocaleTimeString("en-US", {
+                              hour: "numeric",
+                              minute: "2-digit",
+                              second: "2-digit",
+                              hour12: true,
+                            })
+                            .replace(":", " hours ")
+                            .replace(":", " minutes ") + " seconds"
+                        })`
                       : "N/A"
                   }
                   readOnly
