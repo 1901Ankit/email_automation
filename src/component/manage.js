@@ -15,6 +15,7 @@ import { FaChrome, FaEdge, FaSafari, FaOpera } from "react-icons/fa";
 import firefox from "../assests/image/social/firefox.png";
 import { FaBrave } from "react-icons/fa6";
 
+
 import { ChevronUp, LogOut } from "lucide-react";
 const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   const [devices, setDevice] = useState(null);
@@ -74,7 +75,6 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
 
   const handleVerifyOtp = async () => {
     try {
-      debugger;
       const enteredOtp = otp.join("");
       let selectedDevice = devices.find(
         (device) => device.device_id === selectedDeviceId
@@ -82,7 +82,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
 
       if (!selectedDevice) return;
 
-      let system_info = selectedDevice["system_info"];
+      let system_info = `${browserName}, ${osName}, ${new Date().toLocaleString()}`;;
 
       const formData = new FormData();
       formData.append("device_id", selectedDeviceId);
@@ -92,7 +92,6 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
       formData.append("otp", enteredOtp);
 
       const res = await UserAPI.logoutOTP(formData);
-      console.log(res.data);
 
       if (res.data.success) {
         toast.success("OTP verified! Logging out...");
@@ -126,8 +125,6 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
         toast.error("Invalid OTP, please try again!");
       }
     } catch (error) {
-      console.log(error);
-
       toast.error("OTP verification failed!");
     }
   };
@@ -433,10 +430,10 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
                         </span>
                         {localStorage.getItem("device_id") ==
                           item.device_id && (
-                          <span className=" text-green-500 text-sm font-bold px-2 py-0.5 rounded-md">
-                            Current
-                          </span>
-                        )}
+                            <span className=" text-green-500 text-sm font-bold px-2 py-0.5 rounded-md">
+                              Current
+                            </span>
+                          )}
                       </div>
 
                       <ol className="mt-3 text-gray-700 space-y-1 text-sm ">
@@ -449,16 +446,11 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
                           <span className="font-medium">{operatingSystem}</span>
                         </li>
                         <li className="text-sm text-gray-600 font-bold">
-  Login Date:{" "}
-  <span className="font-medium">
-    {new Date(loginDate).toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "long",
-      day: "2-digit",
-      year: "numeric",
-    })}
-  </span>
-</li>
+                          Login Date:{" "}
+                          <span className="font-medium">
+                            {loginDate}
+                          </span>
+                        </li>
 
 
                         <li className="text-sm text-gray-600 font-bold">
