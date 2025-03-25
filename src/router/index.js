@@ -28,6 +28,8 @@ import MangeCampaigns from "../pages/manage-campaigns/MangeCampaigns";
 import Subject from "../pages/subject";
 import Landing from "../pages/landingpage";
 import PaymentSuccess from "../component/PaymentSuccess";
+import Paymentfailed from "../component/Paymentfailed";
+
 const Router = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -79,7 +81,7 @@ const Router = () => {
 
   const isProtectedRoute = (path) => {
     return (
-      !["/", "/auth", "/404", "/auth"].includes(path) &&
+      !["/", "/auth", "/404","/reset_password" ,"/auth"].includes(path) &&
      
       !path.startsWith("/reset_password/")
     );
@@ -137,7 +139,7 @@ const Router = () => {
           />
           <Route
             path="/subscribe-plan"
-            element={token ? <Subscribe /> : <Navigate to="/auth" replace />}
+            element={token ? <Subscribe/> : <Navigate to="/auth" replace />}
           />
           <Route
             path="/user-profile"
@@ -162,6 +164,7 @@ const Router = () => {
             element={token ? <Terms_condition /> : <Navigate to="/auth" replace />}
           />
           <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route  path="/payment-failed"  element={<Paymentfailed/>}    />
           <Route path="/404" element={<Errorpage />} />
           <Route path="*" element={<Errorpage />} />
         </Routes>
