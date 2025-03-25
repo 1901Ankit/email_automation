@@ -74,6 +74,8 @@ const Login = () => {
           formData.append("username", Username);
           formData.append("email", email);
           formData.append("password", password);
+          const systemInfo = `${browserName}, ${osName}, ${new Date().toLocaleString()}`;
+          formData.append("system_info", systemInfo);
           const res = await API.register(formData);
 
           toast.success(res.data.message);
@@ -82,7 +84,7 @@ const Login = () => {
           if (error.response.data?.error === "User already exists") {
             toast.error("User already exists. Please sign in.");
           } else {
-            toast.error("Something went wrong. Please try again.");
+            toast.error(error.response.data?.message || "Something went wrong. Please try again.");
           }
         } finally {
           setLoading(false);
@@ -188,7 +190,7 @@ const Login = () => {
         const systemInfo = `${browserName}, ${osName}, ${new Date().toLocaleString()}`;
         formData.append("system_info", systemInfo);
         // Perform login request
-        const fromurl= localStorage.getItem("from_home");
+        const fromurl = localStorage.getItem("from_home");
         const res = await API.login(formData);
         if (res.data.user_id) {
           localStorage.setItem("id", res.data.user_id);
@@ -196,10 +198,9 @@ const Login = () => {
           localStorage.setItem("user", signInEmail);
           localStorage.setItem("access_token", res.data.access);
           localStorage.setItem("refresh_token", res.data.refresh);
-          console.log("res", res);
 
           toast.success(res.data.message);
-          
+
           if (res?.data?.redirect !== "home") {
             setShowSigninFields(false);
             setShowOtpField(false);
@@ -211,13 +212,13 @@ const Login = () => {
             setOtp(new Array(6).fill(""));
           } else {
             setShow(true);
-            if(fromurl){
-               navigate("/subscribe-plan");
-               localStorage.removeItem("from_home");
+            if (fromurl) {
+              navigate("/subscribe-plan");
+              localStorage.removeItem("from_home");
             } else {
               navigate("/home");
             }
-           
+
           }
         } else {
           toast.warning("Device limit exceeded!");
@@ -332,8 +333,6 @@ const Login = () => {
       toast.success(response.data.message);
       navigate("/home");
     } catch (error) {
-      console.log("Error:", error);
-
       if (error.response) {
         toast.error(error.response.data.message || "Something went wrong!");
       } else {
@@ -344,12 +343,18 @@ const Login = () => {
 
   const handleResetPasswordClick = async () => {
     try {
+      if (signInEmail == "") {
+        toast.error("Please enter your email");
+        return;
+      }
       const formData = new FormData();
       formData.append("email", signInEmail);
       const response = await API.forgotPassword(formData);
       toast.success(response.data.message);
       setSignInEmail("");
     } catch (error) {
+      console.log("error", error);
+
       error.response.status === 400
         ? toast.error(error.response.data.errors.email[0])
         : toast.error(error.message);
@@ -426,9 +431,8 @@ const Login = () => {
           <source src="https://emailbulkshoot.s3.ap-southeast-2.amazonaws.com/icon_1.mp4" />
         </video>
         <div
-          className={`container sizeform ${
-            isSignUp ? "right-panel-active" : ""
-          }`}
+          className={`container sizeform ${isSignUp ? "right-panel-active" : ""
+            }`}
           id="container"
         >
           {/* signup */}
@@ -478,9 +482,8 @@ const Login = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${
-                        errors.password ? "mb-4" : "mt-3"
-                      }`}
+                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${errors.password ? "mb-4" : "mt-3"
+                        }`}
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
                     </button>
@@ -614,9 +617,8 @@ const Login = () => {
                   <input
                     type="email"
                     placeholder="Email"
-                    className={`block w-full mt-3 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:outline-none focus:ring-0 ${
-                      signInErrors.email ? "mb-0" : ""
-                    }`}
+                    className={`block w-full mt-3 border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 focus:outline-none focus:ring-0 ${signInErrors.email ? "mb-0" : ""
+                      }`}
                     value={signInEmail}
                     onChange={handleEmailChange}
                   />
@@ -628,18 +630,16 @@ const Login = () => {
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"
-                      className={`block w-full border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 pr-10 focus:outline-none focus:ring-0 ${
-                        signInErrors.password ? "mb-0" : ""
-                      }`}
+                      className={`block w-full border-[1px] border-[#93C3FD] rounded-md py-2 pl-2 pr-10 focus:outline-none focus:ring-0 ${signInErrors.password ? "mb-0" : ""
+                        }`}
                       value={signInPassword}
                       onChange={handlePasswordChange}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${
-                        signInErrors.password ? "mb-4" : "mt-2"
-                      }`}
+                      className={`absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer ${signInErrors.password ? "mb-4" : "mt-2"
+                        }`}
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </button>

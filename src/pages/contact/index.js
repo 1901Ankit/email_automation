@@ -89,7 +89,7 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
     updatedContacts[index].data[field] = value;
     setEditingContacts(updatedContacts);
   };
-  const handleSaveEdit = async () => {
+  const handleSaveEdit = async (isAddingNew) => {
     // Identify changed or newly added contacts
     const updatedContacts = editingContacts.filter((contact, index) => {
       const original = originalContacts[index] || {};
@@ -106,7 +106,6 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
       toast.info("No changes to update.");
       return;
     }
-    console.log("updated", updatedContacts);
 
     const formattedContacts = {
       contacts: updatedContacts.map((contact) => ({
@@ -131,11 +130,13 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
           },
         }
       );
-      setIsModalEditOpen(false);
-      toast.success("Contacts updated successfully!");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
+      if (isAddingNew !== "true") {
+        setIsModalEditOpen(false);
+        toast.success("Contacts updated successfully!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      }
     } catch (error) {
       console.error(
         "Error updating contacts:",
@@ -160,7 +161,7 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
     try {
       const res = await API.getSingleContactList(file_id);
       setPreviewData(res.data);
-    } catch (error) {}
+    } catch (error) { }
     setIsCsvPreviewOpen(true);
   };
   const handleCloseCsvPreview = () => {
@@ -214,7 +215,8 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
     }
   };
   const containerRef = useRef(null);
-  const addNew = () => {
+  const addNew = async () => {
+    await handleSaveEdit("true");
     setEditingContacts([
       { data: { firstName: "", lastName: "", Email: "", companyName: "" } },
     ]);

@@ -6,9 +6,11 @@ import JoditEditor from "jodit-react";
 import Select from "react-select";
 import * as SMTPAPI from "../../api/smtp";
 import * as templateAPI from "../../api/emailTemplate";
+import { Dialog } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as API from "../../api/user";
+import { set } from "react-hook-form";
 const Content = ({ placeholder }) => {
   const editor = useRef(null);
   const navigate = useNavigate();
@@ -23,16 +25,17 @@ const Content = ({ placeholder }) => {
     uploaded_file_key: "",
   });
   const [modalOpen, setModalOpen] = useState(false);
+   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [options, setOptions] = useState({ smtps: [] });
   const emailEditorRef = useRef(null);
   const [finalTemplate, setFinalTemplate] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({
     smtps: [],
-    recipients: null, // Single selection for recipients
+    recipients: null, 
     subjects: null,
   });
-    
+
   const [subjects, setSubjects] = useState([])
   const [contacts, setContacts] = useState([]);
   const [csvFile, setCsvFile] = useState();
@@ -85,12 +88,18 @@ const Content = ({ placeholder }) => {
 
   //   setSelectedOptions(updatedSelectedOptions);
   // };
-
+  const handleCloseModals = () => {
+    setIsNameModalOpen(false);
+    // setIsEditorModalOpen(false);
+    // setSelectedTemplate(null);
+    // setTemplateName("");
+    // setTemplateContent("");
+  };
   const handleChange = (selectedOption, type) => {
-    console.log("selectedOption", selectedOption); // Array of objects for smtp (due to isMulti), single object or null for others
+    console.log("selectedOption", selectedOption);
     console.log("type", type);
     const updatedSelectedOptions = { ...selectedOptions };
-  
+
     if (type === "smtp") {
       updatedSelectedOptions.smtps = selectedOption || []; // Directly use the array (or empty array if null)
       let smtp_server_ids = updatedSelectedOptions.smtps.map((smtp) => smtp.value); // Map values from the array
@@ -106,7 +115,7 @@ const Content = ({ placeholder }) => {
       let subject_id = selectedOption ? selectedOption.value : null;
       setDetails({ ...details, subject: subject_id });
     }
-  
+
     sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
     setSelectedOptions(updatedSelectedOptions);
   };
@@ -149,7 +158,6 @@ const Content = ({ placeholder }) => {
       toast.error("Please fill all the required fields");
       return;
     }
-    console.log("details", details);
     sessionStorage.setItem("details", JSON.stringify(details));
     if (selectedOptions.smtps.length < 1) {
       toast.error("Please select at least one SMTP host Info");
@@ -161,7 +169,6 @@ const Content = ({ placeholder }) => {
     const fetchSubjects = async () => {
       try {
         const response = await API.getSubjectList();
-        console.log("response_from_subject", response.data);
         setSubjects(response.data.subject_file_list);
         setLoading(false);
       } catch (error) {
@@ -186,13 +193,16 @@ const Content = ({ placeholder }) => {
       setModalOpen(false);
       // window.location.reload();
       setTimeout(() => {
+        sessionStorage.removeItem("options")
         window.location.reload();
       }, 1500);
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-console.log("details",details)
+    setIsNameModalOpen(true);
+  };
+  const handleNext = async () => {
     try {
       details.uploaded_file_key = JSON.parse(sessionStorage.getItem("tempId"));
 
@@ -203,9 +213,7 @@ console.log("details",details)
       formData.append("delay_seconds", details.delay_seconds);
       formData.append("uploaded_file", details.uploaded_file_key);
       formData.append("contact_list", details.contact_list);
-      formData.append("name",details.campaign_name)
-      // Append each SMTP ID separately
-   console.log("smtp_server_ids",details.smtp_server_ids)
+      formData.append("name", details.campaign_name)
       if (Array.isArray(details.smtp_server_ids)) {
         details.smtp_server_ids.forEach((id) => {
           formData.append("smtp_server_ids", id);
@@ -224,8 +232,9 @@ console.log("details",details)
         toast.error(res.response.data.campaign_name[0]);
         return; // Stop execution if there's an error
       }
-  
+
       toast.success(res?.data?.success || "Campaign created successfully!");
+      setIsNameModalOpen(false);
       navigate(`/preview/${res.data.campaign_id}`);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -320,42 +329,42 @@ console.log("details",details)
           <div className="container-fluid p-2">
             <form onSubmit={handleSubmit} className="p-0">
               <div className="flex ">
-              <div className="w-full">
-  <label htmlFor="Smtphost">Sender</label>
-  <Select
-    options={options.smtps} // Assuming this is an array like [{ value: "1", label: "SMTP 1" }, ...]
-    isMulti
-    value={selectedOptions.smtps} // Should be an array of selected options
-    onChange={(selectedOption) => handleChange(selectedOption, "smtp")}
-    className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
+                <div className="w-full">
+                  <label htmlFor="Smtphost">Sender</label>
+                  <Select
+                    options={options.smtps} // Assuming this is an array like [{ value: "1", label: "SMTP 1" }, ...]
+                    isMulti
+                    value={selectedOptions.smtps} // Should be an array of selected options
+                    onChange={(selectedOption) => handleChange(selectedOption, "smtp")}
+                    className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
       focus:border-blue-500 transition-colors duration-300 appearance-none 
       focus:outline-none focus:ring-0"
-    id="Smtphost"
-    name="Smtphost"
-    styles={customStyles}
-    placeholder="Select Sender(s)"
-  />
-</div>
+                    id="Smtphost"
+                    name="Smtphost"
+                    styles={customStyles}
+                    placeholder="Select Sender(s)"
+                  />
+                </div>
               </div>
 
               <div className="mt-4 w-full">
-  <label htmlFor="Recipient">Recipient</label>
-  <Select
-    options={contacts.map((liname) => ({
-      value: liname.file_id,
-      label: liname.file_name,
-    }))}
-    value={selectedOptions.recipients || null} // Single value or null
-    onChange={(selectedOption) => handleChange(selectedOption, "Recipient")}
-    className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
+                <label htmlFor="Recipient">Recipient</label>
+                <Select
+                  options={contacts.map((liname) => ({
+                    value: liname.file_id,
+                    label: liname.file_name,
+                  }))}
+                  value={selectedOptions.recipients || null} // Single value or null
+                  onChange={(selectedOption) => handleChange(selectedOption, "Recipient")}
+                  className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
       focus:border-blue-500 transition-colors duration-300 appearance-none 
       focus:outline-none focus:ring-0"
-    id="Recipient"
-    name="Recipient"
-    styles={customStyles}
-    placeholder="Select Recipient"
-  />
-</div>
+                  id="Recipient"
+                  name="Recipient"
+                  styles={customStyles}
+                  placeholder="Select Recipient"
+                />
+              </div>
 
               <div className="flex mt-4">
                 <div className="w-full ">
@@ -373,7 +382,7 @@ console.log("details",details)
                   />
                 </div>
               </div>
-              <div className="flex mt-4">
+              {/* <div className="flex mt-4">
                 <div className="w-full ">
                   <label htmlFor="Subject">Campaign Name</label>
                   <input
@@ -388,7 +397,7 @@ console.log("details",details)
                 rounded-md py-2 pl-2 focus:border-blue-500 transition-colors duration-300 focus:outline-none focus:ring-0"
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="   mt-4 w-full">
                 <label htmlFor="secondsInput">
                   Time gap between each emails (Seconds)
@@ -423,28 +432,28 @@ console.log("details",details)
                 />
               </div>
 
- 
-               
+
+
               <div className="mt-4 w-full">
-  <label htmlFor="EmailUseTLS">Subject</label>
-  <Select
-    options={subjects.map((liname) => ({
-      value: liname.id,
-      label: liname.name,
-    }))}
-    value={selectedOptions.subjects || null} // Ensure single value or null
-    onChange={(selectedOption) =>
-      handleChange(selectedOption, "Subjects")
-    }
-    className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
+                <label htmlFor="EmailUseTLS">Subject</label>
+                <Select
+                  options={subjects.map((liname) => ({
+                    value: liname.id,
+                    label: liname.name,
+                  }))}
+                  value={selectedOptions.subjects || null} // Ensure single value or null
+                  onChange={(selectedOption) =>
+                    handleChange(selectedOption, "Subjects")
+                  }
+                  className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
       focus:border-blue-500 transition-colors duration-300 appearance-none 
       focus:outline-none focus:ring-0"
-    id="Recipient"
-    name="Recipient"
-    styles={customStyles}
-    placeholder="Recipient"
-  />
-</div>
+                  id="Recipient"
+                  name="Recipient"
+                  styles={customStyles}
+                  placeholder="Recipient"
+                />
+              </div>
               <div className="" onClick={saveEnteredDetails}>
                 <Editing
                   setSelectedTemplate={setSelectedTemplate}
@@ -530,8 +539,8 @@ console.log("details",details)
                             >
                               {selectedOptions.smtps.length > 0
                                 ? selectedOptions.smtps
-                                    .map((opt) => opt.label)
-                                    .join(", ")
+                                  .map((opt) => opt.label)
+                                  .join(", ")
                                 : "Sender"}
                             </p>
                           </div>
@@ -553,14 +562,14 @@ console.log("details",details)
                           >
                             {details.display_name || "Display Name"}
                           </p>
-                          <p
+                          {/* <p
                             className="dynamic_subject_container___SyG68 sib-typo_text--bold sib-typo_text_size--md"
                             style={{
                               color: "var(--sib-color_content-primary,#1f2d3d)",
                             }}
                           >
                             {details?.campaign_name || "Campaign Name"}
-                          </p>
+                          </p> */}
                           <p
                             className="dynamic_subject_container___SyG68 sib-typo_text--bold sib-typo_text_size--md"
                             style={{
@@ -584,6 +593,39 @@ console.log("details",details)
           </div>
         </div>
       </div>
+
+      <Dialog
+        open={isNameModalOpen}
+        onClose={handleCloseModals}
+        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <h2 className="text-lg font-semibold mb-4 text-center">
+            Enter Campaign Name
+          </h2>
+          <input
+            type="text"
+            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            placeholder="Enter Template Name"
+            value={details.campaign_name}
+            onChange={(e) => setDetails({ ...details, campaign_name: e.target.value })}
+          />
+          <div className="flex justify-between mt-4">
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              onClick={handleNext}
+            >
+              Next
+            </button>
+            <button
+              className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
+              onClick={handleCloseModals}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </Dialog>
 
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">

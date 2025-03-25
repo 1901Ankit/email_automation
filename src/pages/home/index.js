@@ -5,6 +5,8 @@ import Footer from "../../component/footer/footer";
 import people from "../../assests/image/people.png";
 import grph from "../../assests/image/grph.png";
 import cube from "../../assests/image/cube.png";
+import { useNavigate } from "react-router-dom";
+import TokenAPI from "../../api/user_profile";
 
 const Home = () => {
   const [emailStats, setEmailStats] = useState({
