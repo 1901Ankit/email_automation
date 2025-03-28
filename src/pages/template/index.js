@@ -7,7 +7,8 @@ import { FaEye } from "react-icons/fa"; // Import eye icon
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
-// import sanitizeHtml from 'sanitize-html';
+import Switch from "react-switch";
+
 const Template = ({ placeholder }) => {
   const editor = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -174,59 +175,97 @@ const Template = ({ placeholder }) => {
     <div className="container-fluid pt-24 max-h-[100vh] overflow-auto">
       <div className="hsyw p-0">
         {/* Category Selector */}
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-bold uppercase">Templates</h1>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4 w-full">
+  <h1 className="text-2xl md:text-3xl font-bold uppercase">Templates</h1>
 
-          <TabGroup>
-            <div className="flex flex-wrap items-center justify-center md:justify-between gap-2 md:gap-4">
-              {/* Tabs */}
-              <TabList className="flex flex-wrap items-center justify-center gap-2">
-                <Tab
-                  className="px-2 py-2 w-auto text-center rounded-md cursor-pointer bg-white border-[1px] 
-        border-red-500 text-red-500 focus:border-blue-500 transition-colors duration-300 justify-center
-        focus:outline-none focus:ring-0 appearance-none"
-                  onClick={() => setTelectedteptab("All Templates")}
-                >
-                  All Templates
-                </Tab>
-                <Tab
-                  className="px-2 py-2 w-auto text-center rounded-md cursor-pointer bg-white border-[1px] 
-        border-green-500 text-green-500 focus:border-blue-500 transition-colors duration-300 
-        focus:outline-none focus:ring-0 appearance-none"
-                  onClick={() => {
-                    setTelectedteptab("Saved Templates");
-                    setSelectedCategory("All");
-                  }}
-                >
-                  Saved Templates
-                </Tab>
-              </TabList>
+  <TabGroup className="w-full md:w-auto">
+    <div className="flex flex-wrap items-center justify-center md:justify-between gap-2 md:gap-4 w-full">
+      {/* Tabs */}
+      <div className="flex items-center gap-3">
+        <span
+          className={`text-sm font-medium ${
+            selectedteptab === "All Templates"
+              ? "text-red-500"
+              : "text-gray-500"
+          }`}
+        >
+          All Templates
+        </span>
+        <Switch
+          checked={selectedteptab === "Saved Templates"}
+          onChange={() => {
+            const newValue =
+              selectedteptab === "All Templates"
+                ? "Saved Templates"
+                : "All Templates";
+            setTelectedteptab(newValue);
+            if (newValue === "Saved Templates") {
+              setSelectedCategory("All");
+            }
+          }}
+          onColor="#48bb78" // green-500
+          offColor="#f56565" // red-500
+          handleDiameter={24}
+          uncheckedIcon={false}
+          checkedIcon={false}
+          height={28}
+          width={56}
+          className="react-switch"
+        />
+        <span
+          className={`text-sm font-medium ${
+            selectedteptab === "Saved Templates"
+              ? "text-green-500"
+              : "text-gray-500"
+          }`}
+        >
+          Saved Templates
+        </span>
+      </div>
 
-              {/* Dropdown - Only Show When "All Templates" is Selected */}
-              {selectedteptab == "All Templates" && (
-                <select
-                  className="px-3 w-auto py-2 text-center rounded-md cursor-pointer bg-white border-[1px] 
-         border-blue-500 text-blue-500 focus:border-blue-500 transition-colors duration-300 justify-center
-                focus:outline-none focus:ring-0 appearance-none items-center "
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
+      {/* Dropdown - Only Show When "All Templates" is Selected */}
+      {selectedteptab === "All Templates" && (
+        <div className="flex items-center gap-3 w-auto max-w-full sm:max-w-sm md:max-w-sm lg:max-w-lg">
+          <label
+            htmlFor="category-select"
+            className="font-medium text-sm text-gray-700"
+          ></label>
+          <div className="relative w-full">
+            <select
+              id="category-select"
+              className="px-3 py-2 pr-8 w-full text-center rounded-md cursor-pointer bg-white border-[1px]
+              border-blue-500 text-blue-500 focus:border-blue-500 hover:border-blue-600
+              transition-colors duration-300 focus:outline-none focus:ring-0 appearance-none"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              {categories.map((category, index) => (
+                <option
+                  key={index}
+                  value={category}
+                  className="bg-white text-gray-900"
                 >
-                  {categories.map((category, index) => (
-                    <option
-                      key={index}
-                      value={category}
-                      className="bg-white text-gray-900 items-center justify-center px-5"
-                    >
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
-
-            <TabPanels>{/* Tab Content */}</TabPanels>
-          </TabGroup>
+                  {category === "All" ? "Select Category" : category}
+                </option>
+              ))}
+            </select>
+            {/* <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-blue-500">
+              <svg
+                className="h-4 w-4 fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+              </svg>
+            </div> */}
+          </div>
         </div>
+      )}
+    </div>
+
+    <TabPanels>{/* Tab Content */}</TabPanels>
+  </TabGroup>
+</div>
 
         {/* Templates by Category */}
         {selectedteptab == "All Templates" && (
@@ -281,7 +320,7 @@ const Template = ({ placeholder }) => {
                         type="button"
                         className="absolute bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-700 to-blue-700 
           text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-700 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
-                        disabled={template.id === 0} 
+                        disabled={template.id === 0}
                       >
                         {template.title || "Custom"}
                       </button>
@@ -293,53 +332,103 @@ const Template = ({ placeholder }) => {
           </div>
         )}
 
-        {selectedteptab == "Saved Templates" && (
-          <div key={""} className="bg-white p-6 shadow-lg rounded-lg ">
-            {/* Flex Layout for Templates */}
-
-            <div className=" flex-wrap justify-between  grid grid-cols-1 md:grid-cols-2 gap-8">
-              {allsavedTemp?.map((template) => (
-                <div
-                  key={template.id}
-                  className="relative w-full h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 overflow-y-auto"
-                  onClick={() => EditHelper(template)}
-                >
-                  {/* Template Preview */}
-                  <div className=" w-full overflow-auto">
-                    <iframe
-                      src={template.file_url}
-                      title="Email Template"
-                      width="100%"
-                      height="400vh"
-                      style={{
-                        border: "1px solid #ddd",
-                        borderRadius: "4px",
-                        backgroundColor: "#fff",
-                      }}
-                    />
+        {selectedteptab == "Saved Templates" &&
+          (allsavedTemp?.length == 0 ? (
+            <div class="bg-white p-6 shadow-lg rounded-lg animate-pulse">
+              <div class="flex-wrap justify-between grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="relative w-full h-[380px] border rounded-md">
+                  <div class="w-full h-96 bg-gray-200">
+                    <button
+                      type="button"
+                      class="relative bottom-5  w-1/3 bg-gray-300 
+            text-white py-2 mx-3 rounded-md text-center font-bold "
+                    >
+                      <div class="h-4   rounded"></div>
+                    </button>
                   </div>
-
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <FaEye className=" to-black text-3xl mb-2" />
-                    <p className="text-black text-lg font-semibold">
-                      View Template
-                    </p>
-                  </div>
-
-                  {/* Button with Template Title */}
+                  {/* <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center">
+        <div class="w-12 h-12 bg-gray-200 rounded-full mb-2"></div>
+        <div class="w-full h-4 bg-gray-200 rounded mt-2 mb-4"></div>
+      </div> */}
                   <button
                     type="button"
-                    className="relative bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
-              text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
+                    class="relative bottom-5 left-[25%] w-1/2 bg-blue-500 
+            text-white py-2 mx-3 rounded-md text-center font-bold shadow-md"
                   >
-                    {template.name}
+                    <div class="h-4   rounded"></div>
                   </button>
                 </div>
-              ))}
+                <div class="relative w-full h-[380px] border rounded-md">
+                  <div class="w-full h-96 bg-gray-200">
+                    <button
+                      type="button"
+                      class="relative bottom-5  w-1/3 bg-gray-300 
+            text-white py-2 mx-3 rounded-md text-center font-bold  "
+                    >
+                      <div class="h-4   rounded"></div>
+                    </button>
+                  </div>
+                  {/* <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center">
+        <div class="w-12 h-12 bg-gray-200 rounded-full mb-2"></div>
+        <div class="w-full h-4 bg-gray-200 rounded mt-2 mb-4"></div>
+      </div> */}
+                  <button
+                    type="button"
+                    class="relative bottom-5 left-[25%] w-1/2 bg-blue-500 
+            text-white py-2 mx-3 rounded-md text-center font-bold shadow-md"
+                  >
+                    <div class="h-4  rounded"></div>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <div key={""} className="bg-white p-6 shadow-lg rounded-lg ">
+              {/* Flex Layout for Templates */}
+
+              <div className=" flex-wrap justify-between  grid grid-cols-1 md:grid-cols-2 gap-8">
+                {allsavedTemp?.map((template) => (
+                  <div
+                    key={template.id}
+                    className="relative w-full h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 overflow-y-auto"
+                    onClick={() => EditHelper(template)}
+                  >
+                    {/* Template Preview */}
+                    <div className=" w-full overflow-auto">
+                      <iframe
+                        src={template.file_url}
+                        title="Email Template"
+                        width="100%"
+                        height="400vh"
+                        style={{
+                          border: "1px solid #ddd",
+                          borderRadius: "4px",
+                          backgroundColor: "#fff",
+                        }}
+                      />
+                    </div>
+
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <FaEye className=" to-black text-3xl mb-2" />
+                      <p className="text-black text-lg font-semibold">
+                        View Template
+                      </p>
+                    </div>
+
+                    {/* Button with Template Title */}
+                    <button
+                      type="button"
+                      className="relative bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
+                text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
+                    >
+                      {template.name}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
       </div>
 
       {/* Modal for Editing Template */}

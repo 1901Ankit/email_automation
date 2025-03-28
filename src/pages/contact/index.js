@@ -266,58 +266,94 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-gray-50 divide-y divide-gray-200 items-center justify-center">
-                {contacts.map((item, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 text-sm text-black border truncate text-center">
-                      {item.file_name}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-black border truncate text-center">
-                      {item?.contacts?.length}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-black border truncate text-center">
-                      {new Intl.DateTimeFormat("en-US", {
-                        month: "long",
-                        day: "2-digit",
-                        year: "numeric",
-                        hour: "numeric",
-                        minute: "numeric",
-                        second: "numeric",
-                        hour12: true,
-                      }).format(new Date(item?.created_at))}
-                    </td>
+                      <tbody className="bg-gray-50 divide-y divide-gray-200 items-center justify-center">
 
-                    <td className="px-6 py-4 text-sm text-black border space-x-2 flex items-center justify-around">
-                      <button
-                        className="text-blue-500 hover:text-blue-700 text-center"
-                        onClick={() => handleEdit(item.file_id)}
-                      >
-                        <FaEdit
-                          className="text-center"
-                          style={{ fontSize: "20px" }}
-                        />
-                      </button>
-                      <button
-                        className="text-red-500 hover:text-red-700 text-center"
-                        onClick={() => handleDelete(item.file_id)}
-                      >
-                        <FaTrash
-                          className="text-center"
-                          style={{ fontSize: "20px" }}
-                        />
-                      </button>
-                      <button
-                        className="text-black hover:text-black text-center"
-                        onClick={() => handleCsvPreview(item?.file_id)}
-                      >
-                        <FaEye
-                          className="text-center"
-                          style={{ fontSize: "20px" }}
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+        {
+
+      contacts.length === 0 ? ( 
+         
+        <tr className="animate-pulse">
+          <td class="px-6 py-4 text-sm text-black border truncate text-center">
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          </td>
+          <td class="px-6 py-4 text-sm text-black border truncate text-center">
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          </td>
+          <td class="px-6 py-4 text-sm text-black border truncate text-center">
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          </td>
+          <td class="px-6 py-4 text-sm text-black border truncate text-center">
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          </td>
+        </tr>
+   
+      
+
+      ) : (
+
+        contacts?.map((item, index) => (
+          <tr key={index}>
+            <td className="px-6 py-4 text-sm text-black border truncate text-center">
+              {item.file_name}
+            </td>
+            <td className="px-6 py-4 text-sm text-black border truncate text-center">
+              {item?.contacts?.length}
+            </td>
+            <td className="px-6 py-4 text-sm text-black border truncate text-center">
+              {new Intl.DateTimeFormat("en-US", {
+                month: "long",
+                day: "2-digit",
+                year: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                second: "numeric",
+                hour12: true,
+              }).format(new Date(item?.created_at))}
+            </td>
+  
+            <td className="px-6 py-4 text-sm text-black border space-x-2 flex items-center justify-around">
+              <button
+                className="text-blue-500 hover:text-blue-700 text-center"
+                onClick={() => handleEdit(item.file_id)}
+              >
+                <FaEdit
+                  className="text-center"
+                  style={{ fontSize: "20px" }}
+                />
+              </button>
+              <button
+                className="text-red-500 hover:text-red-700 text-center"
+                onClick={() => handleDelete(item.file_id)}
+              >
+                <FaTrash
+                  className="text-center"
+                  style={{ fontSize: "20px" }}
+                />
+              </button>
+              <button
+                className="text-black hover:text-black text-center"
+                onClick={() => handleCsvPreview(item?.file_id)}
+              >
+                <FaEye
+                  className="text-center"
+                  style={{ fontSize: "20px" }}
+                />
+              </button>
+            </td>
+          </tr>
+        )) 
+
+
+      )
+
+
+   
+
+
+        }
+
+                 
+               
               </tbody>
             </table>
           </div>
