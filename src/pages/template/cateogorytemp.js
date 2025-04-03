@@ -6,8 +6,13 @@ import * as templateAPI from "../../api/emailTemplate";
 import { IoArrowBack } from "react-icons/io5";
 import { Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
-import service1 from "../../assests/image/cate/Services1.png";
-import service2 from "../../assests/image/cate/Services2.png";
+import service2 from "../../assests/image/cate/servicenew1.png";
+import service1 from "../../assests/image/cate/Services2.png";
+import announce2 from "../../assests/image/cate/announcment2.png";
+import annonce1 from "../../assests/image/cate/Announcement1.png";
+import onBoardingnew from "../../assests/image/cate/Onboardingnew1.png";
+import onBoarding from "../../assests/image/cate/onboarding.png";
+import custom from "../../assests/image/cate/Custom.png";
 const CategoryTemplates = () => {
   const { category } = useParams();
   const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -128,21 +133,56 @@ const CategoryTemplates = () => {
     }
   };
 
-
-
-
-  const returnurl=  [
+  const returnurl = [
     {
       category: "Services",
-      images:[{
-         id:7,
-         imgurl: service1,
-      }, {
-         id:8,
+      images: [
+        {
+          id: 7,
+          imgurl: service1,
+        },
+        {
+          id: 8,
           imgurl: service2,
-      }]
-    }
-  ]
+        },
+      ],
+    },
+    {
+      category: "Announcement",
+      images: [
+        {
+          id: 3,
+          imgurl: annonce1,
+        },
+        {
+          id: 4,
+          imgurl: announce2,
+        },
+      ],
+    },
+    {
+      category: "OnBoarding",
+      images: [
+        {
+          id: 5,
+          imgurl: onBoardingnew,
+        },
+        {
+          id: 6,
+          imgurl: onBoarding,
+        },
+      ],
+    },
+    {
+      category: "Custom",
+      images: [
+        {
+          id: 0,
+          imgurl: custom,
+        },
+      ],
+    },
+  ];
   const handleName = () => {
     setIsNameModalOpen(true);
   };
@@ -183,49 +223,53 @@ const CategoryTemplates = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {filteredTemplates.map((template) => (
-          
           <div
             key={template.id}
             className="relative w-full h-[380px]   rounded-md cursor-pointer   transition-all duration-300"
             onClick={() => handleEditTemplate(template)}
           >
             {console.log("templates for all category ", template)}
-             <button
-  type="button"
-  className="absolute top-2 right-20 bg-black hover:bg-gray-200 text-white 
+            <button
+              type="button"
+              className="absolute top-2 right-20 bg-black hover:bg-gray-200 text-white  hover:text-blak 
              p-2 rounded-full shadow-md z-10 transition-all duration-300"
-  onClick={(e) => handlePreviewClick(e, template)}
-  aria-label="Preview template"
->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-    <circle cx="12" cy="12" r="3"></circle>
-  </svg>
-</button>
+              onClick={(e) => handlePreviewClick(e, template)}
+              aria-label="Preview template"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
 
-<div className="absolute h-full w-full overflow-y-hidden">
-  {returnurl
-    .filter((item) => item.category === template.category)
-    .flatMap((item) => item.images)
-    .filter((image) => image.id === template.id)
-    .map((image) => (
-      <img key={image.id} src={image.imgurl} alt={`Image ${image.id}`} className="w-full h-full object-contain" />
-    ))}
-</div>
+            <div className="absolute h-full w-full overflow-y-hidden">
+              {returnurl
+                .filter((item) => item.category === template.category)
+                .flatMap((item) => item.images)
+                .filter((image) => image.id === template.id)
+                .map((image) => (
+                  <img
+                    key={image.id}
+                    src={image.imgurl}
+                    alt={`Image ${image.id}`}
+                    className="w-full h-full object-contain"
+                  />
+                ))}
+            </div>
 
             <button
               type="button"
-              className="absolute bottom-5 left-1/2 transform -translate-x-1/2 p-2 shadow-md
+              className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-4 py-2 shadow-md
              bg-gradient-to-r from-blue-500 to-blue-600 text-white 
              rounded-md text-center font-bold  
              hover:from-blue-600 hover:to-blue-700 hover:shadow-lg 
