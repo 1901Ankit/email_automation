@@ -128,6 +128,21 @@ const CategoryTemplates = () => {
     }
   };
 
+
+
+
+  const returnurl=  [
+    {
+      category: "Services",
+      images:[{
+         id:7,
+         imgurl: service1,
+      }, {
+         id:8,
+          imgurl: service2,
+      }]
+    }
+  ]
   const handleName = () => {
     setIsNameModalOpen(true);
   };
@@ -168,11 +183,13 @@ const CategoryTemplates = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {filteredTemplates.map((template) => (
+          
           <div
             key={template.id}
             className="relative w-full h-[380px]   rounded-md cursor-pointer   transition-all duration-300"
             onClick={() => handleEditTemplate(template)}
           >
+            {console.log("templates for all category ", template)}
              <button
   type="button"
   className="absolute top-2 right-20 bg-black hover:bg-gray-200 text-white 
@@ -196,12 +213,16 @@ const CategoryTemplates = () => {
   </svg>
 </button>
 
-            <div className="absolute h-full w-full overflow-y-hidden">
-              <div
-                dangerouslySetInnerHTML={{ __html: template.html }}
-                className="w-full h-full"
-              />
-            </div>
+<div className="absolute h-full w-full overflow-y-hidden">
+  {returnurl
+    .filter((item) => item.category === template.category)
+    .flatMap((item) => item.images)
+    .filter((image) => image.id === template.id)
+    .map((image) => (
+      <img key={image.id} src={image.imgurl} alt={`Image ${image.id}`} className="w-full h-full object-contain" />
+    ))}
+</div>
+
             <button
               type="button"
               className="absolute bottom-5 left-1/2 transform -translate-x-1/2 p-2 shadow-md
