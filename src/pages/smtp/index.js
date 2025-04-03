@@ -215,47 +215,76 @@ const Smtp = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-gray-50 divide-y divide-gray-200">
-                    {tableData.map((data, i) => (
-                      <tr key={i}>
-                        <td className="px-6 py-4 text-xs text-black border truncate">
-                          {data.name}
-                        </td>
-                        <td className="px-6 py-4 text-xs text-black border truncate">
-                          {data.host}
-                        </td>
-                        <td className="px-6 py-4 text-xs text-black border truncate">
-                          {data.port}
-                        </td>
-                        <td className="px-6 py-4 text-xs text-black border truncate">
-                          {data?.use_tls && "True"}
-                        </td>
+                  
+                  <tbody className="bg-gray-50 divide-y divide-gray-200 ">
+                         
 
-                        <td className="px-6 py-4 text-xs text-black border truncate">
-                          {data.username}
-                        </td>
-                        <td className="px-6 py-4 text-xs text-black border truncate">
-                          ***************
-                        </td>
-                        <td className="px-6 py-4 text-xs text-black border flex space-x-2">
-                          <button
-                            onClick={() => handleEdit(i, data.id)}
-                            className="text-blue-500 hover:text-blue-700"
-                          >
-                            <FaEdit className="" style={{ fontSize: "20px" }} />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(i, data.id)}
-                            className="text-red-500 hover:text-red-700"
-                          >
-                            <FaTrash
-                              className=""
-                              style={{ fontSize: "20px" }}
-                            />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {tableData.length === 0  ? (
+
+<tr className="animate-pulse">
+{Array(7).fill("").map((_, index) => (
+  <td key={index} className="w-full h-12 bg-gray-200 rounded">
+    <div className="flex justify-center items-center h-full">
+      <div className="h-4 bg-gray-400 rounded w-1/2"></div>
+    </div>
+  </td>
+))}
+</tr>
+
+                              
+                    ) : (
+
+                      tableData.map((data, i) => (
+                        <tr key={i}>
+                          <td className="px-6 py-4 text-xs text-black border truncate">
+                            {data.name}
+                          </td>
+                          <td className="px-6 py-4 text-xs text-black border truncate">
+                            {data.host}
+                          </td>
+                          <td className="px-6 py-4 text-xs text-black border truncate">
+                            {data.port}
+                          </td>
+                          <td className="px-6 py-4 text-xs text-black border truncate">
+                            {data?.use_tls && "True"}
+                          </td>
+  
+                          <td className="px-6 py-4 text-xs text-black border truncate">
+                            {data.username}
+                          </td>
+                          <td className="px-6 py-4 text-xs text-black border truncate">
+                            ***************
+                          </td>
+                          <td className="px-6 py-4 text-xs text-black border flex space-x-2">
+                            <button
+                              onClick={() => handleEdit(i, data.id)}
+                              className="text-blue-500 hover:text-blue-700"
+                            >
+                              <FaEdit className="" style={{ fontSize: "20px" }} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(i, data.id)}
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              <FaTrash
+                                className=""
+                                style={{ fontSize: "20px" }}
+                              />
+                            </button>
+                          </td>
+                        </tr>
+                      )) 
+
+
+
+
+                    )                                       
+
+                    }
+
+
+
+                
                   </tbody>
                 </table>
               </div>

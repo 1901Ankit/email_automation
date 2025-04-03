@@ -290,7 +290,35 @@ What Can You Afford?
                 </tr>
               </thead>
               <tbody className="bg-gray-50 divide-y divide-gray-200">
-                {subjects?.map((item, index) => (
+               {
+
+               subjects?.length === 0 ? (  
+              
+                
+                 <tr class="animate-pulse">
+                   <td class="px-6 py-4 text-sm text-black border text-center">
+                     <div class="h-4 bg-gray-200 rounded"></div>
+                   </td>
+                   <td class="px-6 py-4 text-sm text-black border text-center truncate">
+                     <div class="h-4 bg-gray-200 rounded"></div>
+                   </td>
+                   <td class="px-6 py-4 text-sm text-black border truncate text-center">
+                     <div class="h-4 bg-gray-200 rounded"></div>
+                   </td>
+                   <td class="px-6 py-4 text-sm text-black border flex items-center justify-center space-x-2">
+                     <div class="h-6 w-6 bg-gray-200 rounded"></div>
+                     <div class="h-6 w-6 bg-gray-200 rounded"></div>
+                     <div class="h-6 w-6 bg-gray-200 rounded"></div>
+                   </td>
+                 </tr>
+             
+            
+                       
+
+
+               ) : (
+
+                subjects?.map((item, index) => (
                   <tr key={index}>
                     <td className="px-6 py-4 text-sm text-black border text-center">
                       {item.id}
@@ -331,7 +359,15 @@ What Can You Afford?
                       </button>
                     </td>
                   </tr>
-                ))}
+                ))
+
+
+               )
+
+
+
+               }
+               
               </tbody>
             </table>
           </div>

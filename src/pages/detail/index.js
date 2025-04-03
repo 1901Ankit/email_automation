@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import "react-image-crop/dist/ReactCrop.css";
 import "./index.css";
+
+import "react-tooltip/dist/react-tooltip.css";
 import Editing from "../../component/templatedit";
 import JoditEditor from "jodit-react";
 import Select from "react-select";
@@ -11,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as API from "../../api/user";
 import { set } from "react-hook-form";
+import SMTPTooltipList from "../../component/Tooltip";
 const Content = ({ placeholder }) => {
   const editor = useRef(null);
   const navigate = useNavigate();
@@ -25,18 +28,20 @@ const Content = ({ placeholder }) => {
     uploaded_file_key: "",
   });
   const [modalOpen, setModalOpen] = useState(false);
-   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
+  const [isNameModalOpen, setIsNameModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [options, setOptions] = useState({ smtps: [] });
   const emailEditorRef = useRef(null);
   const [finalTemplate, setFinalTemplate] = useState(null);
+  const [smtpResponse, setSmtpResponse] = useState(null);
+  const [smtpDetailsByEmail, setSmtpDetailsByEmail] = useState({});
   const [selectedOptions, setSelectedOptions] = useState({
     smtps: [],
-    recipients: null, 
+    recipients: null,
     subjects: null,
   });
 
-  const [subjects, setSubjects] = useState([])
+  const [subjects, setSubjects] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [csvFile, setCsvFile] = useState();
 
@@ -102,7 +107,9 @@ const Content = ({ placeholder }) => {
 
     if (type === "smtp") {
       updatedSelectedOptions.smtps = selectedOption || []; // Directly use the array (or empty array if null)
-      let smtp_server_ids = updatedSelectedOptions.smtps.map((smtp) => smtp.value); // Map values from the array
+      let smtp_server_ids = updatedSelectedOptions.smtps.map(
+        (smtp) => smtp.value
+      ); // Map values from the array
       console.log("smtp_server_ids", smtp_server_ids);
       setDetails({ ...details, smtp_server_ids: smtp_server_ids });
     } else if (type === "Recipient") {
@@ -119,28 +126,53 @@ const Content = ({ placeholder }) => {
     sessionStorage.setItem("options", JSON.stringify(updatedSelectedOptions));
     setSelectedOptions(updatedSelectedOptions);
   };
+  const memoizedSmtpDetailsByEmail = useMemo(() => {
+    if (!smtpResponse?.data?.servers) return {};
+
+    return smtpResponse.data.servers.reduce((acc, obj) => {
+      acc[obj.username] = obj; // Using username (email) as the key
+      return acc;
+    }, {});
+  }, [smtpResponse]);
+
   useEffect(() => {
     const loadData = async () => {
-      const smtpResponse = await SMTPAPI.getAllSMTPs({
-        user_id: localStorage.getItem("id"),
-      });
-      if (smtpResponse?.data?.servers.length < 0) {
-        toast.error("You do not have smtps information ");
-        navigate("/smtp");
-        return;
-      }
-      console.log(smtpResponse?.data?.servers, "hello");
-      const modifiedSMTPsResponse = smtpResponse?.data?.servers?.map((obj) => {
-        return { label: obj.username, value: obj.id };
-      });
+      try {
+        const response = await SMTPAPI.getAllSMTPs({
+          user_id: localStorage.getItem("id"),
+        });
 
-      setOptions({
-        smtps: modifiedSMTPsResponse,
-      });
-      setLoading(false);
+        setSmtpResponse(response);
+
+        if (response?.data?.servers?.length > 0) {
+          const modifiedSMTPsResponse = response.data.servers.map((obj) => ({
+            label: obj.username,
+            value: obj.id,
+          }));
+
+          setOptions({
+            smtps: modifiedSMTPsResponse,
+          });
+        } else {
+          toast.error("You do not have SMTP information");
+          navigate("/smtp");
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching SMTPs:", error);
+        toast.error("Failed to load SMTP information");
+        setLoading(false);
+      }
     };
+
     loadData();
-  }, [selectedTemplate]);
+  }, [selectedTemplate, navigate]);
+
+  // Use memoizedSmtpDetailsByEmail instead of the state
+  useEffect(() => {
+    setSmtpDetailsByEmail(memoizedSmtpDetailsByEmail);
+  }, [memoizedSmtpDetailsByEmail]);
 
   const handleTemplateClick = (template) => {
     setSelectedTemplate(template.html);
@@ -193,10 +225,10 @@ const Content = ({ placeholder }) => {
       setModalOpen(false);
       // window.location.reload();
       setTimeout(() => {
-        sessionStorage.removeItem("options")
+        sessionStorage.removeItem("options");
         window.location.reload();
       }, 1500);
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -213,7 +245,7 @@ const Content = ({ placeholder }) => {
       formData.append("delay_seconds", details.delay_seconds);
       formData.append("uploaded_file", details.uploaded_file_key);
       formData.append("contact_list", details.contact_list);
-      formData.append("name", details.campaign_name)
+      formData.append("name", details.campaign_name);
       if (Array.isArray(details.smtp_server_ids)) {
         details.smtp_server_ids.forEach((id) => {
           formData.append("smtp_server_ids", id);
@@ -245,7 +277,6 @@ const Content = ({ placeholder }) => {
         Object.values(error.response.data).forEach((errMsg) => {
           toast.error(errMsg[0]); // Show all errors in toast
         });
-
       } else {
         toast.error("Something went wrong! Please try again.");
       }
@@ -330,12 +361,13 @@ const Content = ({ placeholder }) => {
             <form onSubmit={handleSubmit} className="p-0">
               <div className="flex ">
                 <div className="w-full">
-                  <label htmlFor="Smtphost">Sender</label>
                   <Select
-                    options={options.smtps} // Assuming this is an array like [{ value: "1", label: "SMTP 1" }, ...]
+                    options={options.smtps} // SMTP options
                     isMulti
-                    value={selectedOptions.smtps} // Should be an array of selected options
-                    onChange={(selectedOption) => handleChange(selectedOption, "smtp")}
+                    value={selectedOptions.smtps} // Selected SMTPs
+                    onChange={(selectedOption) =>
+                      handleChange(selectedOption, "smtp")
+                    }
                     className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
       focus:border-blue-500 transition-colors duration-300 appearance-none 
       focus:outline-none focus:ring-0"
@@ -343,6 +375,11 @@ const Content = ({ placeholder }) => {
                     name="Smtphost"
                     styles={customStyles}
                     placeholder="Select Sender(s)"
+                  />
+
+                  <SMTPTooltipList
+                    selectedOptions={selectedOptions}
+                    smtpDetailsByEmail={smtpDetailsByEmail}
                   />
                 </div>
               </div>
@@ -355,7 +392,9 @@ const Content = ({ placeholder }) => {
                     label: liname.file_name,
                   }))}
                   value={selectedOptions.recipients || null} // Single value or null
-                  onChange={(selectedOption) => handleChange(selectedOption, "Recipient")}
+                  onChange={(selectedOption) =>
+                    handleChange(selectedOption, "Recipient")
+                  }
                   className="block w-full mt-1 border-[1px] border-[#93c3fd] rounded-md pl-2
       focus:border-blue-500 transition-colors duration-300 appearance-none 
       focus:outline-none focus:ring-0"
@@ -431,8 +470,6 @@ const Content = ({ placeholder }) => {
                  duration-300 focus:outline-none focus:ring-0"
                 />
               </div>
-
-
 
               <div className="mt-4 w-full">
                 <label htmlFor="EmailUseTLS">Subject</label>
@@ -539,8 +576,8 @@ const Content = ({ placeholder }) => {
                             >
                               {selectedOptions.smtps.length > 0
                                 ? selectedOptions.smtps
-                                  .map((opt) => opt.label)
-                                  .join(", ")
+                                    .map((opt) => opt.label)
+                                    .join(", ")
                                 : "Sender"}
                             </p>
                           </div>
@@ -608,7 +645,9 @@ const Content = ({ placeholder }) => {
             className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
             placeholder="Enter Template Name"
             value={details.campaign_name}
-            onChange={(e) => setDetails({ ...details, campaign_name: e.target.value })}
+            onChange={(e) =>
+              setDetails({ ...details, campaign_name: e.target.value })
+            }
           />
           <div className="flex justify-between mt-4">
             <button
