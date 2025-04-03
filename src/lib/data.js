@@ -1,3 +1,4 @@
+const unsubscribe_url = "";
 export const templates = [
   {
     id: 0,
@@ -194,7 +195,7 @@ export const templates = [
             Contact Us- <strong>8700133076</strong>
           </p>
           <a
-            href="#"
+            href=${unsubscribe_url}
             style="color: white; font-size: 16px; font-weight: 700; text-decoration: none;"
             >Unsubscribe</a
           >
@@ -296,7 +297,7 @@ export const templates = [
         <td class="container" style="background-color: #338dfb; color: white; text-align: center; padding: 15px 20px; position: relative;">
           <p style="font-size: 12px;">support mail-hr@wishgeekstechserve.com</p>
           <p style="font-size: 12px;">Contact Us - <b>8700133076</b></p>
-          <a href="#" style="font-size: 12px; color: #fff;">Unsubscribe</a>
+          <a href=${unsubscribe_url} style="font-size: 12px; color: #fff;">Unsubscribe</a>
         </td>
       </tr>
     </table>
@@ -406,7 +407,7 @@ export const templates = [
             <h2 style="font-size: 16px; font-weight: 400;">We can't wait to get to know you!</h2>
             <p style="font-size: 12px; margin-top: 10px;">support mail: hr@wishgeekstechserve.com</p>
             <p style="font-size: 12px; margin-top: 10px;">Contact Us: 8700133076</p>
-            <a href="#" style="margin-bottom: 20px; color: white; font-size: 14px;">Unsubscribe</a>
+            <a href=${unsubscribe_url} style="margin-bottom: 20px; color: white; font-size: 14px;">Unsubscribe</a>
           </div>
           
         </td>
@@ -565,7 +566,7 @@ export const templates = [
       <td style="background-color: #338dfb; color: white; text-align: center; padding: 30px 20px 20px 20px;">
         <p style="margin: 0; font-size: 14px;">support mail-hr@wishgeekstechserve.com</p>
         <p style="margin: 0; font-size: 14px;">Contact Us - <b>8700133076</b></p>
-        <a href="#" style="color: white; text-decoration: underline; font-weight: bold; font-size: 16px;">Unsubscribe</a>
+        <a href=${unsubscribe_url} style="color: white; text-decoration: underline; font-weight: bold; font-size: 16px;">Unsubscribe</a>
       </td>
     </tr>
     
@@ -975,7 +976,7 @@ export const templates = [
                 </p>
                 <p style="line-height: 3px; font-family: inter, sans-serif;">
                   <a
-                    href="#"
+                    href=${unsubscribe_url}
                     style="color: white; text-decoration: underline; font-family: inter, sans-serif;"
                   >
                     Unsubscribe
@@ -1336,7 +1337,7 @@ export const templates = [
                 </p>
                 <p style="line-height: 3px; font-family: inter, sans-serif;">
                   <a
-                    href="#"
+                    href=${unsubscribe_url}
                     style="color: white; text-decoration: underline; font-family: inter, sans-serif;"
                   >
                     Unsubscribe
