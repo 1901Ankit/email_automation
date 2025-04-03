@@ -8,10 +8,10 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
 import Switch from "react-switch";
-import announce from "../../assests/image/cate/announce.png"
-import onboard from "../../assests/image/cate/onboarding.png"
-import service from "../../assests/image/cate/ser.png"
-import  custom  from "../../assests/image/cate/Custom.png"
+import announce from "../../assests/image/cate/announce.png";
+import onboard from "../../assests/image/cate/onboarding.png";
+import service from "../../assests/image/cate/ser.png";
+import custom from "../../assests/image/cate/Custom.png";
 import { FaLocationArrow } from "react-icons/fa6";
 const Template = ({ placeholder }) => {
   const editor = useRef(null);
@@ -34,24 +34,21 @@ const Template = ({ placeholder }) => {
   const [Error, setError] = useState("");
   const [htmlContent, setHtmlContent] = useState(null);
   const [modalSize, setModalSize] = useState({ width: "90%", height: "90%" });
-  
+
   const [scale, setScale] = useState(1);
 
   function getImageUrl(category) {
     switch (category) {
-        case 'Custom':
-            return custom;
-        case 'Announcement':
-            return announce;
-        case 'OnBoarding':
-            return onboard;
-        case 'Services':
-            return  service;
-         
+      case "Custom":
+        return custom;
+      case "Announcement":
+        return announce;
+      case "OnBoarding":
+        return onboard;
+      case "Services":
+        return service;
     }
-}
-
- 
+  }
 
   useEffect(() => {
     const fetchHtml = async () => {
@@ -63,7 +60,9 @@ const Template = ({ placeholder }) => {
           setHtmlContent(html);
         } catch (error) {
           console.error("Error fetching HTML:", error);
-          setHtmlContent("<p class='text-center text-gray-500'>Failed to load content</p>");
+          setHtmlContent(
+            "<p class='text-center text-gray-500'>Failed to load content</p>"
+          );
         }
       }
     };
@@ -382,12 +381,11 @@ const Template = ({ placeholder }) => {
               <div key={category} className="  p-6   rounded-lg">
                 {/* Category Label */}
                 <h2
-  className="text-2xl font-extrabold text-center text-gray-600 mb-4 cursor-pointer 
+                  className="text-2xl font-extrabold text-center text-gray-600 mb-4 cursor-pointer 
              hover:text-blue-600 transition duration-300 ease-in-out transform hover:scale-105"
->
-  {category}
-</h2>
-
+                >
+                  {category}
+                </h2>
 
                 {/* Flex Layout for Templates */}
 
@@ -396,17 +394,11 @@ const Template = ({ placeholder }) => {
                     ? templates
                     : [templates[0]]
                   ).map((template) => (
-                    
                     <div
                       key={template.id}
-                      className={`relative w-full h-[380px]   rounded-md cursor-pointer   transition-all duration-300 
-          ${template.id === 0 ? "opacity-70  cursor-not-allowed" : ""}`}
-                      onClick={() =>
-                        template.id !== 0 &&
-                        handleCategoryClick(template.category)
-                      }
+                      className="relative w-full h-[380px] rounded-md cursor-pointer transition-all duration-300"
+                      onClick={() => handleCategoryClick(template.category)}
                     >
-                      
                       {/* Image */}
                       <img
                         src={getImageUrl(template.category)}
@@ -414,35 +406,29 @@ const Template = ({ placeholder }) => {
                         className="w-full h-full object-contain rounded-md"
                       />
 
-                      {/* Hover Overlay */}
-                      
-
                       {/* Button with Template Title */}
                       <button
-  type="button"
-  className="absolute bottom-5 left-1/2 transform -translate-x-1/2 w-auto bg-gradient-to-r from-blue-700 to-blue-700 
-    text-white py-2 px-4 rounded-md flex items-center gap-2 font-bold shadow-md hover:from-blue-700 hover:to-blue-700 
-    hover:shadow-lg transition-all duration-300"
-  onClick={() => {
-    if (template.title) {
-      console.log("Redirect to view all templates");
-      // Add navigation logic here
-    } else {
-      console.log("Perform custom action");
-       
-    }
-  }}
-  disabled={template.id === 0}
->
-  {template.title ? (
-    <>
-      View All Templates <FaLocationArrow />
-    </>
-  ) : (
-    "Custom"
-  )}
-</button>
-
+                        type="button"
+                        className="absolute bottom-5 left-1/2 transform -translate-x-1/2 w-auto bg-gradient-to-r from-blue-700 to-blue-700 
+          text-white py-2 px-4 rounded-md flex items-center gap-2 font-bold shadow-md hover:from-blue-700 hover:to-blue-700 
+          hover:shadow-lg transition-all duration-300"
+                        onClick={() => {
+                          if (template.title) {
+                            console.log("Redirect to view all templates");
+                            // Add navigation logic here
+                          } else {
+                            console.log("Perform custom action");
+                          }
+                        }}
+                      >
+                        {template.title ? (
+                          <>
+                            View All Templates <FaLocationArrow />
+                          </>
+                        ) : (
+                          "Custom"
+                        )}
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -562,7 +548,7 @@ const Template = ({ placeholder }) => {
                       className="relative bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
                 text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
                     >
-                      {template.name.split(".")[0] }
+                      {template.name.split(".")[0]}
                     </button>
                   </div>
                 ))}
@@ -764,19 +750,21 @@ const Template = ({ placeholder }) => {
             {/* Modal Content - Image-like display */}
             <div className="flex-1 overflow-auto p-4 bg-gray-100 min-h-[500px]">
               <div className="flex items-center justify-center min-h-full">
-              <div
-          className="    origin-center p-4 w-full"
-          style={{
-            transform: `scale(${scale})`,
-            transition: "transform 0.2s ease",
-          }}
-        >
-          {htmlContent ? (
-            <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-          ) : (
-            <p className="text-center text-gray-500">Loading preview...</p>
-          )}
-        </div>
+                <div
+                  className="    origin-center p-4 w-full"
+                  style={{
+                    transform: `scale(${scale})`,
+                    transition: "transform 0.2s ease",
+                  }}
+                >
+                  {htmlContent ? (
+                    <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+                  ) : (
+                    <p className="text-center text-gray-500">
+                      Loading preview...
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
