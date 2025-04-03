@@ -45,7 +45,7 @@ const Landing = () => {
   }, []);
 
   const handleUserClick = () => {
-    navigate("/home");
+    navigate("/user-profile");
   };
   return (
     <>
@@ -156,6 +156,21 @@ const Landing = () => {
               >
                 Contact
               </button>
+              
+             {
+              user && 
+                <button
+                className="text-black font-medium no-underline hover:text-blue-600"
+                onClick={ 
+                   ()=>{
+                    navigate("/Home")
+                   }
+                }
+              >
+                 Dashboard
+              </button>
+              
+             }
 
               <div>
                 {user ? (

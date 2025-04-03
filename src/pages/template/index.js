@@ -8,7 +8,11 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
 import Switch from "react-switch";
-
+import announce from "../../assests/image/cate/announce.png"
+import onboard from "../../assests/image/cate/onboarding.png"
+import service from "../../assests/image/cate/ser.png"
+import  custom  from "../../assests/image/cate/Custom.png"
+import { FaLocationArrow } from "react-icons/fa6";
 const Template = ({ placeholder }) => {
   const editor = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -23,10 +27,110 @@ const Template = ({ placeholder }) => {
   const [templateName, setTemplateName] = useState("");
   const [isNameModalOpen, setisNameModalOpen] = useState(false);
   const [selectedteptab, setTelectedteptab] = useState("All Templates");
+  const [previewTemplate, setPreviewTemplate] = useState(null);
   const navigate = useNavigate();
   const editorRef = useRef(null);
   const [Loading, setIsLoading] = useState(false);
   const [Error, setError] = useState("");
+  const [htmlContent, setHtmlContent] = useState(null);
+  const [modalSize, setModalSize] = useState({ width: "90%", height: "90%" });
+  
+  const [scale, setScale] = useState(1);
+
+  function getImageUrl(category) {
+    switch (category) {
+        case 'Custom':
+            return custom;
+        case 'Announcement':
+            return announce;
+        case 'OnBoarding':
+            return onboard;
+        case 'Services':
+            return  service;
+         
+    }
+}
+
+ 
+
+  useEffect(() => {
+    const fetchHtml = async () => {
+      if (previewTemplate?.file_url) {
+        try {
+          const response = await fetch(previewTemplate.file_url);
+          if (!response.ok) throw new Error("Failed to load HTML");
+          const html = await response.text();
+          setHtmlContent(html);
+        } catch (error) {
+          console.error("Error fetching HTML:", error);
+          setHtmlContent("<p class='text-center text-gray-500'>Failed to load content</p>");
+        }
+      }
+    };
+
+    fetchHtml();
+  }, [previewTemplate?.file_url]);
+
+  // Handle responsive modal sizing
+  useEffect(() => {
+    const handleResize = () => {
+      // Set appropriate modal size based on screen width
+      if (window.innerWidth < 640) {
+        // Mobile
+        setModalSize({ width: "95%", height: "85%" });
+        setScale(0.8);
+      } else if (window.innerWidth < 1024) {
+        // Tablet
+        setModalSize({ width: "90%", height: "90%" });
+        setScale(0.9);
+      } else {
+        // Desktop
+        setModalSize({ width: "85%", height: "90%" });
+        setScale(1);
+      }
+    };
+
+    // Set initial size
+    handleResize();
+
+    // Add event listener for resize
+    window.addEventListener("resize", handleResize);
+
+    // Clean up
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Handle preview click - show modal with HTML content
+  const handlePreviewClick = (e, template) => {
+    console.log("Preview clicked for template:", template);
+    console.log("Template HTML:", template.html);
+    e.stopPropagation();
+    setPreviewTemplate(template);
+
+    // Prevent body scrolling when modal is open
+    document.body.style.overflow = "hidden";
+  };
+
+  const closePreview = () => {
+    setPreviewTemplate(null);
+    // Restore body scrolling
+    document.body.style.overflow = "auto";
+  };
+
+  const handleOutsideClick = (e) => {
+    if (e.target === e.currentTarget) {
+      closePreview();
+    }
+  };
+
+  const zoomIn = () => {
+    setScale((prevScale) => Math.min(prevScale + 0.1, 2));
+  };
+
+  // Handle zoom out
+  const zoomOut = () => {
+    setScale((prevScale) => Math.max(prevScale - 0.1, 0.5));
+  };
   const handleCategoryClick = (category) => {
     navigate(`/template/${category}`);
   };
@@ -62,16 +166,16 @@ const Template = ({ placeholder }) => {
     }),
     []
   );
+  const getTemp = async () => {
+    try {
+      const res = await templateAPI.getUserSavedTemplates();
+      console.log("res_for_saved_templets", res);
+      setAllsavedTemp(res.data);
+    } catch (error) {
+      console.log("erroor", error);
+    }
+  };
   useEffect(() => {
-    const getTemp = async () => {
-      try {
-        const res = await templateAPI.getUserSavedTemplates();
-        console.log("res_for_saved_templets", res);
-        setAllsavedTemp(res.data);
-      } catch (error) {
-        console.log("erroor", error);
-      }
-    };
     getTemp();
   }, []);
   const handleUpdateTemplate = async () => {
@@ -90,6 +194,7 @@ const Template = ({ placeholder }) => {
         selctedTemplate.id
       );
       toast.success(response.data.message);
+      getTemp();
       setIsEditorModalOpen(false);
       console.log("response", response);
     } catch (error) {
@@ -130,7 +235,8 @@ const Template = ({ placeholder }) => {
   };
 
   const EditHelper = (template) => {
-    console.log("tempp", template);
+    console.log("template", template);
+    setTemplateName(template.name.split(".")[0]);
     setisNameModalOpen(true);
     setSeectedTemplate(template);
     loadTemplateFromUrl(template.file_url);
@@ -176,80 +282,82 @@ const Template = ({ placeholder }) => {
       <div className="hsyw p-0">
         {/* Category Selector */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-4 w-full">
-  <h1 className="text-2xl md:text-3xl font-bold uppercase">Templates</h1>
+          <h1 className="text-2xl md:text-3xl font-bold uppercase">
+            Templates
+          </h1>
 
-  <TabGroup className="w-full md:w-auto">
-    <div className="flex flex-wrap items-center justify-center md:justify-between gap-2 md:gap-4 w-full">
-      {/* Tabs */}
-      <div className="flex items-center gap-3">
-        <span
-          className={`text-sm font-medium ${
-            selectedteptab === "All Templates"
-              ? "text-red-500"
-              : "text-gray-500"
-          }`}
-        >
-          All Templates
-        </span>
-        <Switch
-          checked={selectedteptab === "Saved Templates"}
-          onChange={() => {
-            const newValue =
-              selectedteptab === "All Templates"
-                ? "Saved Templates"
-                : "All Templates";
-            setTelectedteptab(newValue);
-            if (newValue === "Saved Templates") {
-              setSelectedCategory("All");
-            }
-          }}
-          onColor="#48bb78" // green-500
-          offColor="#f56565" // red-500
-          handleDiameter={24}
-          uncheckedIcon={false}
-          checkedIcon={false}
-          height={28}
-          width={56}
-          className="react-switch"
-        />
-        <span
-          className={`text-sm font-medium ${
-            selectedteptab === "Saved Templates"
-              ? "text-green-500"
-              : "text-gray-500"
-          }`}
-        >
-          Saved Templates
-        </span>
-      </div>
+          <TabGroup className="w-full md:w-auto">
+            <div className="flex flex-wrap items-center justify-center md:justify-between gap-2 md:gap-4 w-full">
+              {/* Tabs */}
+              <div className="flex items-center gap-3">
+                <span
+                  className={`text-sm font-medium ${
+                    selectedteptab === "All Templates"
+                      ? "text-red-500"
+                      : "text-gray-500"
+                  }`}
+                >
+                  All Templates
+                </span>
+                <Switch
+                  checked={selectedteptab === "Saved Templates"}
+                  onChange={() => {
+                    const newValue =
+                      selectedteptab === "All Templates"
+                        ? "Saved Templates"
+                        : "All Templates";
+                    setTelectedteptab(newValue);
+                    if (newValue === "Saved Templates") {
+                      setSelectedCategory("All");
+                    }
+                  }}
+                  onColor="#48bb78" // green-500
+                  offColor="#f56565" // red-500
+                  handleDiameter={24}
+                  uncheckedIcon={false}
+                  checkedIcon={false}
+                  height={28}
+                  width={56}
+                  className="react-switch"
+                />
+                <span
+                  className={`text-sm font-medium ${
+                    selectedteptab === "Saved Templates"
+                      ? "text-green-500"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Saved Templates
+                </span>
+              </div>
 
-      {/* Dropdown - Only Show When "All Templates" is Selected */}
-      {selectedteptab === "All Templates" && (
-        <div className="flex items-center gap-3 w-auto max-w-full sm:max-w-sm md:max-w-sm lg:max-w-lg">
-          <label
-            htmlFor="category-select"
-            className="font-medium text-sm text-gray-700"
-          ></label>
-          <div className="relative w-full">
-            <select
-              id="category-select"
-              className="px-3 py-2 pr-8 w-full text-center rounded-md cursor-pointer bg-white border-[1px]
+              {/* Dropdown - Only Show When "All Templates" is Selected */}
+              {selectedteptab === "All Templates" && (
+                <div className="flex items-center gap-3 w-auto max-w-full sm:max-w-sm md:max-w-sm lg:max-w-lg">
+                  <label
+                    htmlFor="category-select"
+                    className="font-medium text-sm text-gray-700"
+                  ></label>
+                  <div className="relative w-full">
+                    <select
+                      id="category-select"
+                      className="px-3 py-2 pr-8 w-full text-center rounded-md cursor-pointer bg-white border-[1px]
               border-blue-500 text-blue-500 focus:border-blue-500 hover:border-blue-600
               transition-colors duration-300 focus:outline-none focus:ring-0 appearance-none"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              {categories.map((category, index) => (
-                <option
-                  key={index}
-                  value={category}
-                  className="bg-white text-gray-900"
-                >
-                  {category === "All" ? "Select Category" : category}
-                </option>
-              ))}
-            </select>
-            {/* <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-blue-500">
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                      {categories.map((category, index) => (
+                        <option
+                          key={index}
+                          value={category}
+                          className="bg-white text-gray-900"
+                        >
+                          {category === "All" ? "Select Category" : category}
+                        </option>
+                      ))}
+                    </select>
+                    {/* <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-blue-500">
               <svg
                 className="h-4 w-4 fill-current"
                 xmlns="http://www.w3.org/2000/svg"
@@ -258,31 +366,28 @@ const Template = ({ placeholder }) => {
                 <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
               </svg>
             </div> */}
-          </div>
-        </div>
-      )}
-    </div>
+                  </div>
+                </div>
+              )}
+            </div>
 
-    <TabPanels>{/* Tab Content */}</TabPanels>
-  </TabGroup>
-</div>
+            <TabPanels>{/* Tab Content */}</TabPanels>
+          </TabGroup>
+        </div>
 
         {/* Templates by Category */}
         {selectedteptab == "All Templates" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {Object.entries(displayedTemplates).map(([category, templates]) => (
-              <div key={category} className="bg-white p-6 shadow-lg rounded-lg">
+              <div key={category} className="  p-6   rounded-lg">
                 {/* Category Label */}
                 <h2
-                  className="text-xl font-bold text-gray-800 mb-4 cursor-pointer hover:text-blue-600 transition duration-300"
-                  onClick={() =>
-                    setExpandedCategory(
-                      expandedCategory === category ? null : category
-                    )
-                  }
-                >
-                  {category} {expandedCategory === category}
-                </h2>
+  className="text-2xl font-extrabold text-center text-gray-600 mb-4 cursor-pointer 
+             hover:text-blue-600 transition duration-300 ease-in-out transform hover:scale-105"
+>
+  {category}
+</h2>
+
 
                 {/* Flex Layout for Templates */}
 
@@ -291,39 +396,53 @@ const Template = ({ placeholder }) => {
                     ? templates
                     : [templates[0]]
                   ).map((template) => (
+                    
                     <div
                       key={template.id}
-                      className={`relative w-full h-[380px] border rounded-md cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 
+                      className={`relative w-full h-[380px]   rounded-md cursor-pointer   transition-all duration-300 
           ${template.id === 0 ? "opacity-70  cursor-not-allowed" : ""}`}
                       onClick={() =>
                         template.id !== 0 &&
                         handleCategoryClick(template.category)
                       }
                     >
+                      
                       {/* Image */}
                       <img
-                        src={template.image}
+                        src={getImageUrl(template.category)}
                         alt={template.title}
                         className="w-full h-full object-contain rounded-md"
                       />
 
                       {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <FaEye className="text-white text-3xl mb-2" />
-                        <p className="text-white text-lg font-semibold">
-                          View Template
-                        </p>
-                      </div>
+                      
 
                       {/* Button with Template Title */}
                       <button
-                        type="button"
-                        className="absolute bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-700 to-blue-700 
-          text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-700 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
-                        disabled={template.id === 0}
-                      >
-                        {template.title || "Custom"}
-                      </button>
+  type="button"
+  className="absolute bottom-5 left-1/2 transform -translate-x-1/2 w-auto bg-gradient-to-r from-blue-700 to-blue-700 
+    text-white py-2 px-4 rounded-md flex items-center gap-2 font-bold shadow-md hover:from-blue-700 hover:to-blue-700 
+    hover:shadow-lg transition-all duration-300"
+  onClick={() => {
+    if (template.title) {
+      console.log("Redirect to view all templates");
+      // Add navigation logic here
+    } else {
+      console.log("Perform custom action");
+       
+    }
+  }}
+  disabled={template.id === 0}
+>
+  {template.title ? (
+    <>
+      View All Templates <FaLocationArrow />
+    </>
+  ) : (
+    "Custom"
+  )}
+</button>
+
                     </div>
                   ))}
                 </div>
@@ -394,6 +513,27 @@ const Template = ({ placeholder }) => {
                     onClick={() => EditHelper(template)}
                   >
                     {/* Template Preview */}
+                    <button
+                      type="button"
+                      className="absolute top-2 right-2 bg-black hover:bg-gray-200 text-white p-2 rounded-full shadow-md z-10 transition-all duration-300"
+                      onClick={(e) => handlePreviewClick(e, template)}
+                      aria-label="Preview template"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    </button>
                     <div className=" w-full overflow-auto">
                       <iframe
                         src={template.file_url}
@@ -422,7 +562,7 @@ const Template = ({ placeholder }) => {
                       className="relative bottom-5 left-[25%] w-1/2 bg-gradient-to-r from-blue-500 to-blue-600 
                 text-white py-2 mx-3 rounded-md text-center font-bold shadow-md hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300"
                     >
-                      {template.name}
+                      {template.name.split(".")[0] }
                     </button>
                   </div>
                 ))}
@@ -466,7 +606,7 @@ const Template = ({ placeholder }) => {
       <Dialog
         open={isNameModalOpen}
         onClose={handleCloseModals}
-        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
       >
         <div className="bg-white p-6 rounded-lg shadow-lg w-96">
           <h2 className="text-lg font-semibold mb-4 text-center">
@@ -540,6 +680,108 @@ const Template = ({ placeholder }) => {
           </div>
         </div>
       </Dialog>
+      {previewTemplate && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+          onClick={handleOutsideClick}
+        >
+          <div
+            className="bg-white rounded-lg shadow-xl flex flex-col max-h-full"
+            style={{
+              width: modalSize?.width || "80vw",
+              height: modalSize?.height || "80vh",
+            }}
+          >
+            {/* Modal Header */}
+            <div className="p-2 sm:p-4 border-b flex justify-between items-center sticky top-0 bg-white z-10">
+              <h3 className="text-base sm:text-lg font-medium truncate">
+                {previewTemplate?.name?.split(".")[0]} - Preview
+              </h3>
+              <div className="flex items-center space-x-2">
+                {/* Zoom controls */}
+                <button
+                  onClick={zoomOut}
+                  className="text-gray-600 hover:text-gray-800 p-1 bg-gray-100 rounded-full"
+                  aria-label="Zoom out"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </button>
+                <button
+                  onClick={zoomIn}
+                  className="text-gray-600 hover:text-gray-800 p-1 bg-gray-100 rounded-full"
+                  aria-label="Zoom in"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </button>
+                <button
+                  onClick={closePreview}
+                  className="text-gray-500 hover:text-gray-700 p-1 bg-gray-100 rounded-full"
+                  aria-label="Close preview"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content - Image-like display */}
+            <div className="flex-1 overflow-auto p-4 bg-gray-100 min-h-[500px]">
+              <div className="flex items-center justify-center min-h-full">
+              <div
+          className="    origin-center p-4 w-full"
+          style={{
+            transform: `scale(${scale})`,
+            transition: "transform 0.2s ease",
+          }}
+        >
+          {htmlContent ? (
+            <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+          ) : (
+            <p className="text-center text-gray-500">Loading preview...</p>
+          )}
+        </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
