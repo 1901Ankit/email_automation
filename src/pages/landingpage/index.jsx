@@ -156,21 +156,21 @@ const Landing = () => {
               >
                 Contact
               </button>
-              
-             {
-              user && 
+
+              {
+                user &&
                 <button
-                className="text-black font-medium no-underline hover:text-blue-600"
-                onClick={ 
-                   ()=>{
-                    navigate("/Home")
-                   }
-                }
-              >
-                 Dashboard
-              </button>
-              
-             }
+                  className="text-black font-medium no-underline hover:text-blue-600"
+                  onClick={
+                    () => {
+                      navigate("/Home")
+                    }
+                  }
+                >
+                  Dashboard
+                </button>
+
+              }
 
               <div>
                 {user ? (
@@ -200,9 +200,8 @@ const Landing = () => {
           {isOpen && (
             <div
               className={`fixed top-18 left-0 h-full w-full bg-gray-100 shadow-lg z-50 transform transition-all duration-700 ease-in-out md:hidden
-        ${
-          isOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
-        }`}
+        ${isOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+                }`}
             >
               {/* <button
                 className="absolute top-4 right-4 text-gray-700 hover:text-gray-900"
@@ -362,13 +361,11 @@ const Landing = () => {
             <div className="container px-0 md:px-4">
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
                 <div className="sm:col-span-7 text-center text-white px-4">
-                  <h1 className="mb-6 font-extrabold text-start text-3xl md:text-5xl md:w-9/12 w-full">
-                    THE NEW GO -TO EMAIL PLATFORM
+                  <h1 className="mb-6 font-extrabold text-start text-3xl md:text-5xl md:w-12/12 w-full">
+                    Smart Email Automation to Boost Your Business
                   </h1>
                   <p className="md:w-9/12 w-full text-justify">
-                    We provide you with RERA registration, RERA consultancy,
-                    RERA implementation, RERA complaints and many more other
-                    services.
+                    Wish Geeks Digital – Smart Email Marketing with Automation, Analytics & Custom Templates to Drive Engagement and Business Growth!
                   </p>
                   <div class="flex space-x-4 mt-3">
                     <button
@@ -410,8 +407,7 @@ const Landing = () => {
                     </button>
                   </div>
                   <p className="md:w-9/12 w-full text-justify mt-3 ">
-                    We provide you with RERA registration, RERA consultancy,
-                    RERA implementation.
+                    From Campaign Creation to Real-Time Results – Everything You Need in One Powerful Platform
                   </p>
                 </div>
 

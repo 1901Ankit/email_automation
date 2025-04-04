@@ -10,52 +10,52 @@ import manage from "../../src/assests/image/manage.png";
 import background from "../assests/image/banner/serviceui.png";
 const benefits = [
   {
-    title: "Analytics",
+    title: "Advanced Analytics",
     image: analysis,
     description:
-      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet..",
+      "Get deep insights into your email campaign performance with detailed reports on open rates, click-through rates, bounce rates, and conversions. Our analytics help you track audience engagement, optimize email content, and improve future campaigns.",
   },
   {
     title: "Multiple Contact Storage",
     image: multiple,
     description:
-      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+      "Store and manage a large database of contacts efficiently. Our platform allows seamless segmentation and categorization, making it easier to personalize email campaigns and target specific customer groups.",
   },
   {
     title: "Real Time Tracking",
     image: real,
     description:
-      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+      "Monitor your emails in real-time to see when and where they are opened, which links are clicked, and how recipients interact with your messages. This data-driven approach helps refine marketing strategies for better engagement.",
   },
   {
     title: "Custom Templates",
     image: custom,
     description:
-      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+      "Save time and enhance branding with our professionally designed, ready-to-use email templates. Easily customize colors, fonts, and layouts to match your brand identity and create visually appealing emails.",
   },
   {
     title: "Multiple SMTP Server",
     image: smtp,
     description:
-      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+      "Increase email deliverability and reduce the risk of emails landing in spam folders. Our platform supports multiple SMTP servers, ensuring high email-sending efficiency and uninterrupted marketing campaigns.",
   },
   {
     title: "Campaign Creation",
     image: campaign,
     description:
-      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+      "Design and automate email campaigns effortlessly. Our intuitive campaign builder lets you create newsletters, promotional emails, and drip campaigns that align with your marketing goals.",
   },
   {
     title: "Two Factor Authentication",
     image: factor,
     description:
-      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+      "Secure your email marketing platform with an extra layer of protection. With two-factor authentication (2FA), unauthorized access is prevented, keeping your account and customer data safe.",
   },
   {
     title: "Manage Campaigns",
     image: manage,
     description:
-      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+      "Gain full control over your email marketing strategy. Schedule campaigns, track performance, automate follow-ups, and refine messaging—all from a single, easy-to-use dashboard.",
   },
 ];
 

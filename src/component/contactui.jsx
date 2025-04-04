@@ -55,8 +55,7 @@ const Contactui = () => {
               Enquiry Form
             </h5>
             <p className="block mt-4 mb-10 text-[#000] font-semibold w-10/12 text-base md:text-lg leading-snug tracking-tight">
-              Please fill out the form below to submit your enquiry. We will get
-              back to you as soon as possible.
+            Want to supercharge your email marketing? Fill out the form below, and our team will connect with you!
             </p>
             <div className="container-fluid mt-4 p-0">
               <ul className="space-y-6">
