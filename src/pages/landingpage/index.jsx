@@ -49,7 +49,7 @@ const Landing = () => {
   };
   return (
     <>
-      <div className="container-fluid max-h-[100vh] overflow-auto p-0">
+      <div className="container-fluid max-h-[100vh] overflow-auto p-0 scrollbar">
         {/* Navbar */}
         <div className="container-fluid bg-white shadow-lg sticky top-0 z-50">
           <div className="container-fluid flex justify-between items-center p-2">
@@ -157,20 +157,16 @@ const Landing = () => {
                 Contact
               </button>
 
-              {
-                user &&
+              {user && (
                 <button
                   className="text-black font-medium no-underline hover:text-blue-600"
-                  onClick={
-                    () => {
-                      navigate("/Home")
-                    }
-                  }
+                  onClick={() => {
+                    navigate("/Home");
+                  }}
                 >
                   Dashboard
                 </button>
-
-              }
+              )}
 
               <div>
                 {user ? (
@@ -200,8 +196,9 @@ const Landing = () => {
           {isOpen && (
             <div
               className={`fixed top-18 left-0 h-full w-full bg-gray-100 shadow-lg z-50 transform transition-all duration-700 ease-in-out md:hidden
-        ${isOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
-                }`}
+        ${
+          isOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+        }`}
             >
               {/* <button
                 className="absolute top-4 right-4 text-gray-700 hover:text-gray-900"
@@ -365,7 +362,9 @@ const Landing = () => {
                     Smart Email Automation to Boost Your Business
                   </h1>
                   <p className="md:w-9/12 w-full text-justify">
-                    Wish Geeks Digital – Smart Email Marketing with Automation, Analytics & Custom Templates to Drive Engagement and Business Growth!
+                    Wish Geeks Digital – Smart Email Marketing with Automation,
+                    Analytics & Custom Templates to Drive Engagement and
+                    Business Growth!
                   </p>
                   <div class="flex space-x-4 mt-3">
                     <button
@@ -407,7 +406,8 @@ const Landing = () => {
                     </button>
                   </div>
                   <p className="md:w-9/12 w-full text-justify mt-3 ">
-                    From Campaign Creation to Real-Time Results – Everything You Need in One Powerful Platform
+                    From Campaign Creation to Real-Time Results – Everything You
+                    Need in One Powerful Platform
                   </p>
                 </div>
 
@@ -416,19 +416,19 @@ const Landing = () => {
                   <div className="absolute inset-0 flex items-center justify-between">
                     <img
                       src={girl2}
-                      className=" w-[80%] object-cover animate-[spin_12s_linear_infinite] "
+                      className="w-[80%] object-center animate-[spin_12s_linear_infinite]  ml-[30px]  md:ml-[80px]"
                       alt="Girl2"
-                      style={{
-                        marginLeft: "90px",
-                      }}
                     />
                   </div>
 
                   {/* Girl (On Top) */}
                   <img
                     src={girl}
-                    className="w-full  object-cover relative z-10"
+                    className="w-full  object-center relative z-10"
                     alt="Girl"
+                    style={{
+                      marginRight: "56px",
+                    }}
                   />
                 </div>
               </div>

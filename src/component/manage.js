@@ -398,7 +398,7 @@ const Manage = ({ signInEmail, newDeviceInfo, loggedInDevices }) => {
   };
 
   return (
-    <div className="container mx-auto px-4 max-h-[100vh] overflow-auto py-2">
+    <div className="container mx-auto px-4 max-h-[100vh] overflow-auto py-2 scrollbar">
       <h1 className="text-3xl font-bold uppercase  p-3 mt-24">
         Logged-in Devices
       </h1>

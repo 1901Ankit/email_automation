@@ -151,7 +151,7 @@ const Smtp = () => {
 
   return (
     <>
-      <div className="container-fluid  pt-32  max-h-[100vh] overflow-auto">
+      <div className="container-fluid  pt-32  max-h-[100vh] overflow-auto scrollbar">
         {loading ? (
           <div className="loders">
             <div id="loader"></div>

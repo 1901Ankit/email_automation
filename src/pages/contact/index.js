@@ -232,7 +232,7 @@ rst@yourdomainname.com,Bryan,Smith,Deiolite`; // Modified to remove spaces and u
   }, []);
   return (
     <>
-      <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
+      <div className="container-fluid pt-32 max-h-[100vh] overflow-auto scrollbar">
         <div className="mb-2">
           <div className="flex items-center justify-between">
             <h1 className="text-xl md:text-3xl font-bold uppercase">

@@ -254,7 +254,7 @@ What Can You Afford?
   }, []);
   return (
     <>
-      <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
+      <div className="container-fluid pt-32 max-h-[100vh] overflow-auto scrollbar">
         <div className="mb-2">
           <div className="flex items-center justify-between">
             <h1 className="text-xl md:text-3xl font-bold uppercase">Subject</h1>

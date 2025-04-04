@@ -11,22 +11,24 @@ html {
   overflow: hidden;
 }
 
-:root{
-  --sib-color_surface-hover-background: var(--brand-charcoal-grey-300, hsl(0, 2%, 64%));
+:root {
+  --sib-color_surface-hover-background: var(
+    --brand-charcoal-grey-300,
+    hsl(0, 2%, 64%)
+  );
   --sib-color_content-white: var(--brand-white, hsl(0, 0%, 100%));
 }
 .hidden {
   display: none;
 }
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none !important;
-}
+} */
 ol {
   padding: 0 !important;
 }
-ul{
+ul {
   padding: 0 !important;
-
 }
 
 .modal-contact {
@@ -34,11 +36,9 @@ ul{
   border-radius: 8px;
   padding: 20px;
   width: 50% !important;
-  overflow: auto; 
+  overflow: auto;
   position: relative;
-
 }
-
 
 /* preiveew */
 .fromContent__block___HFBiB .fromRight__section___YhH13 {
@@ -57,13 +57,20 @@ ul{
   z-index: 1;
 }
 
-.device___wtqZo, .device___wtqZo::before, .device___wtqZo::after, .device___wtqZo *, .device___wtqZo *::before, .device___wtqZo *::after {
+.device___wtqZo,
+.device___wtqZo::before,
+.device___wtqZo::after,
+.device___wtqZo *,
+.device___wtqZo *::before,
+.device___wtqZo *::after {
   box-sizing: border-box;
   display: block;
 }
 .device-iphone-x___CX\+Wj .device-frame___RJu0u {
   border-radius: 68px;
-  box-shadow: inset 0 0 2px 2px var(--sib-color_surface-hover-background, #7a8087), inset 0 0 0 2px var(--sib-color_surface-hover-background, #c0ccda);
+  box-shadow: inset 0 0 2px 2px
+      var(--sib-color_surface-hover-background, #7a8087),
+    inset 0 0 0 2px var(--sib-color_surface-hover-background, #c0ccda);
   height: 500px;
   padding: 28px 23px 26px 23px;
   width: 364px;
@@ -73,15 +80,16 @@ ul{
   border-radius: 40px;
   height: 452px;
   object-fit: cover;
-    position: relative;
+  position: relative;
 
   width: 318px;
-  box-shadow: inset 0 0 2px 2px var(--sib-color_surface-hover-background, #c0ccda), inset 0 0 0 2px var(--sib-color_surface-hover-background, #c0ccda);
+  box-shadow: inset 0 0 2px 2px
+      var(--sib-color_surface-hover-background, #c0ccda),
+    inset 0 0 0 2px var(--sib-color_surface-hover-background, #c0ccda);
   background: var(--sib-color_surface-white-background, #fff);
 }
 .header-left___7IGfK {
-  display: flex
-;
+  display: flex;
   gap: 0.5rem;
   position: absolute;
   left: 78%;
@@ -93,7 +101,7 @@ ul{
   max-width: fit-content;
   position: absolute;
   left: 10%;
-  top: 1.5%
+  top: 1.5%;
 }
 .iphone__body___ssaS6 {
   padding: 2.5rem 0rem 0.75rem 0rem;
@@ -105,8 +113,7 @@ ul{
   height: 2.5rem;
 }
 .iphone__body___ssaS6 .iphoneBody__row___l1wvy {
-  display: flex
-;
+  display: flex;
   padding: 0.5rem;
   flex-direction: column;
   align-items: flex-start;
@@ -117,15 +124,16 @@ ul{
 .iphone__body___ssaS6 .iphoneBody__row___l1wvy .iphoneRight__block___TZEte {
   width: 100%;
   text-align: left;
-  display: flex
-;
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.25rem;
 }
-.iphone__body___ssaS6 .iphoneBody__row___l1wvy .iphoneRight__block___TZEte .iphoneRight__header___K9nS0 {
-  display: flex
-;
+.iphone__body___ssaS6
+  .iphoneBody__row___l1wvy
+  .iphoneRight__block___TZEte
+  .iphoneRight__header___K9nS0 {
+  display: flex;
   align-items: center;
   gap: 0.25rem;
   align-self: stretch;
@@ -143,8 +151,7 @@ ul{
   line-height: 18px;
 }
 .iphone__body___ssaS6 .iphoneBody__row___l1wvy {
-  display: flex
-;
+  display: flex;
   padding: 0.5rem;
   flex-direction: column;
   align-items: flex-start;
@@ -203,29 +210,29 @@ ul{
   top: 32px;
   width: 43px;
 }
-.device-iphone-x___CX\+Wj .device-sensors___VKCDn::after, .device-iphone-x___CX\+Wj .device-sensors___VKCDn::before {
+.device-iphone-x___CX\+Wj .device-sensors___VKCDn::after,
+.device-iphone-x___CX\+Wj .device-sensors___VKCDn::before {
   content: "";
   position: absolute;
 }
 
 
-/* .scrollbar::-webkit-scrollbar {
-    width: 4px;
-}
-
 
 .scrollbar::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
-  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #65abed;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 2px !important;
+  background-color: #65abed;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #65abed, #1e3a8a);
-  border-radius: 10px;
-  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2);
+  background-color: #65abed;
+  border: 2px solid #65abed;
 }
-
 .scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #65abed #f0f0f0;
-} */
+}

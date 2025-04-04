@@ -2,7 +2,7 @@ import React from "react";
 import "./index.css";
 const Rightside = ({ emailStatus }) => {
   return (
-    <div className="sidebarw  pt-24  max-h-[100vh] overflow-auto d-flex  border-l">
+    <div className="sidebarw  pt-24  max-h-[100vh] overflow-auto d-flex  border-l scrollbar">
       <h1 className="text-4xl font-bold mt-3 stama text-center">
         Email Status
       </h1>
