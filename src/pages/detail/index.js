@@ -376,11 +376,15 @@ const Content = ({ placeholder }) => {
                     styles={customStyles}
                     placeholder="Select Sender(s)"
                   />
-
-                  <SMTPTooltipList
+                 {
+                  selectedOptions.smtps.length > 0 && (
+                    <SMTPTooltipList
                     selectedOptions={selectedOptions}
                     smtpDetailsByEmail={smtpDetailsByEmail}
                   />
+                  )
+                 }
+                 
                 </div>
               </div>
 
@@ -507,7 +511,7 @@ const Content = ({ placeholder }) => {
             </form>
           </div>
         )}
-        <div className="w-full md:w-1/2 p-2">
+        <div className="w-full md:w-1/2 p-2 -z-50">
           <div
             className="fromRight__section___YhH13 max-h-[500px] overflow-auto"
             style={{ height: "500px" }}
