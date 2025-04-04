@@ -200,7 +200,7 @@ const CategoryTemplates = () => {
   };
 
   return (
-    <div className="container-fluid pt-32 max-h-[100vh] overflow-auto">
+    <div className="container-fluid pt-32 max-h-[100vh] overflow-auto scrollbar" >
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         {/* Heading */}
         <h1 className="text-xl md:text-3xl font-bold uppercase text-blue-600  ">

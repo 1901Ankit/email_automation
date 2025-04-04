@@ -277,7 +277,7 @@ const Template = ({ placeholder }) => {
 
   const handleSaveTemplate = () => {};
   return (
-    <div className="container-fluid pt-24 max-h-[100vh] overflow-auto">
+    <div className="container-fluid pt-24 max-h-[100vh] overflow-auto scrollbar">
       <div className="hsyw p-0">
         {/* Category Selector */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-4 w-full">

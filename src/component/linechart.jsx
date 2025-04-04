@@ -3,6 +3,7 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getEmailList } from "../api/emailTemplate";
+import { AlignCenter } from "lucide-react";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
@@ -48,7 +49,7 @@ const Linechart = ({ total_emails }) => {
         localStorage.setItem("emailStats", JSON.stringify(apiData));
 
         setChartData({
-          labels: ["Failed Sends", "Successful Sends"],
+          labels: ["Failed ", "Successful "],
           datasets: [
             {
               label: "Email Sends",
@@ -73,6 +74,7 @@ const Linechart = ({ total_emails }) => {
     plugins: {
       legend: {
         position: "top",
+        align: "center",
         labels: {
           font: {
             size: 12,
@@ -82,6 +84,8 @@ const Linechart = ({ total_emails }) => {
       },
       datalabels: {
         color: "#fff",
+        anchor: "center", 
+        align: "center", 
         font: {
           size: 12,
           weight: "bold",
@@ -97,8 +101,8 @@ const Linechart = ({ total_emails }) => {
   };
 
   return (
-    <div className="container w-full mx-auto p-4">
-      <div className="relative w-full h-[300px]">
+    <div className="container-fluid p-2">
+      <div className="relative w-full h-[350px]">
         <Doughnut data={chartData} options={options} />
       </div>
     </div>

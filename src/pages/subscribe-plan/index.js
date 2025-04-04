@@ -195,7 +195,7 @@ const Subscribe = () => {
   };
 
   return (
-    <div className="container-fluid mx-auto pt-28 pb-10 px-4 max-h-[100vh] overflow-auto">
+    <div className="container-fluid mx-auto pt-28 pb-10 px-4 max-h-[100vh] overflow-auto scrollbar">
       <div className="p-2">
         <h1 className="text-3xl font-bold uppercase">Subscription Plan</h1>
         {hasSubscription() && (

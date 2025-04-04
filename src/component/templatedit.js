@@ -14,8 +14,7 @@ const Editing = ({ placeholder }) => {
   const [templates, setTemplates] = useState([]);
   const dropdownRef = useRef(null);
   const editor = useRef(null);
-  const [selectedTemplatedDetails, setSelectedTemplatedDetails] =
-    useState(null);
+  const [selectedTemplatedDetails, setSelectedTemplatedDetails] = useState(null);
 
   const [imageURLs, setImageURLs] = useState({});
   const [htmlContents, setHtmlContents] = useState({});
@@ -53,7 +52,6 @@ const Editing = ({ placeholder }) => {
             return new Promise((resolve) => {
               img.onload = resolve;
               img.onerror = () => {
-      
                 resolve(); // Resolve even on error to continue
               };
             });
@@ -82,7 +80,7 @@ const Editing = ({ placeholder }) => {
     const fetchUserAllSavedTemplate = async () => {
       try {
         const response = await templateAPI.getSavedEmailTemplates();
-        console.log("responsee_temp",response);
+        console.log("responsee_temp", response);
         setTemplates(response.data);
       } catch (error) {
 
@@ -98,7 +96,7 @@ const Editing = ({ placeholder }) => {
       setViewModalOpen(true);
       setDropdownOpen(false);
     } catch (error) {
- 
+
     }
   };
 
@@ -123,18 +121,19 @@ const Editing = ({ placeholder }) => {
             <div
               id="dropdown"
               onClick={toggleDropdown}
-              className="block text-start w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-3 text-gray-400 cursor-pointer "
+              className="block text-start w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-3 text-gray-400 cursor-pointer"
             >
-              See your saved template and choose one
+              {selectedTemplateFileName
+                ? selectedTemplateFileName
+                : "See your saved template and choose one"}
             </div>
             {dropdownOpen && (
               <div
                 className="absolute left-0 w-full bg-gray-100 border border-[#93C3FD] 
-              shadow-2xl rounded-md mt-1 z-10 overflow-y-auto h-fit	"
+              shadow-2xl rounded-md mt-1 z-10 overflow-y-auto h-fit"
               >
                 {templates.length < 1 ? (
                   <p className=" mt-5 text-center">
-                    {" "}
                     You have no saved template.
                   </p>
                 ) : (
@@ -145,20 +144,15 @@ const Editing = ({ placeholder }) => {
                         className="p-2 cursor-pointer hover:bg-gray-100 my-1 flex justify-between"
                         onClick={(e) => {
                           e.stopPropagation();
-                          sessionStorage.setItem(
-                            "key",
-                            JSON.stringify(item.name)
-                          );
-                          sessionStorage.setItem(
-                            "tempId",
-                            JSON.stringify(item.id)
-                          );
+                          sessionStorage.setItem("key", JSON.stringify(item.name));
+                          sessionStorage.setItem("tempId", JSON.stringify(item.id));
                           setSelectedTemplateFileName(item.name);
+                          setDropdownOpen(false); // Close the dropdown
                         }}
                       >
                         <p
                           className={
-                            selectedTemplateFileName == item.name
+                            selectedTemplateFileName === item.name
                               ? "font-bold"
                               : ""
                           }
@@ -166,7 +160,7 @@ const Editing = ({ placeholder }) => {
                           {item.name}
                         </p>
                         <p
-                          className="preview-buttoon "
+                          className="preview-buttoon"
                           onClick={() => {
                             handleImageClick(imageURLs[item.id], item.id);
                             setSelectedTemplateKey(item.name);
@@ -184,12 +178,6 @@ const Editing = ({ placeholder }) => {
           </div>
         </div>
       </div>
-      <div className="w-full h-full mt-3">
-          <label> Selected template</label>
-          <div className="block text-start w-full border border-red-700 mt-1 rounded-md py-2 pl-3 text-gray-600 font-bold">
-            {selectedTemplateFileName || "No template is selected"}
-          </div>
-        </div>
 
       {viewModalOpen && (
         <EmailEditor
