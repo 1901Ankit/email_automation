@@ -121,7 +121,7 @@ const Editing = ({ placeholder }) => {
             <div
               id="dropdown"
               onClick={toggleDropdown}
-              className="block text-start w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-3 text-gray-400 cursor-pointer"
+              className="block text-start w-full mt-1 border border-[#93C3FD] rounded-md py-2 pl-3 text-black cursor-pointer"
             >
               {selectedTemplateFileName
                 ? selectedTemplateFileName
